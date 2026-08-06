@@ -39,7 +39,7 @@ export function Hero() {
           {[
             ["09:00", "Deep work", "Build landing page"],
             ["10:30", "Standup", "Team sync"],
-            ["11:30", "Project", "ElevenLabs voice pass"],
+            ["11:30", "Project", "Fish Audio voice pass"],
             ["02:00", "Notes", "Organize research"],
           ].map(([time, type, title]) => (
             <div

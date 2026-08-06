@@ -4,7 +4,7 @@ Read `AGENTS.md` first. It is the canonical cross-agent guide for this project; 
 
 ## Project Reminder
 
-Vibetask is a personal-first productivity app that may later support other users through login. The app is planned around Next.js App Router, TypeScript, Vercel, Supabase Auth/Postgres/RLS, OpenAI API, and ElevenLabs.
+Vibetask is a personal-first productivity app that may later support other users through login. The app is planned around Next.js App Router, TypeScript, Vercel, Supabase Auth/Postgres/RLS, OpenAI API, and Fish Audio.
 
 Core features include tasks, calendar, projects, notes, analytics, focus sessions, habits/streaks, account-level XP, AI Text Mode, and AI Voice Mode.
 
@@ -18,4 +18,4 @@ Use `mockup.png` as the visual reference for the authenticated dashboard: retro-
 - Ask before changing foundational choices such as backend provider, auth model, hosting target, AI provider, or voice provider.
 - Keep generated code scoped and consistent with the existing repository once the app scaffold exists.
 - Treat auth, user data isolation, service-role access, AI side effects, XP calculations, and assistant-created calendar/task/note mutations as high-risk areas.
-- Never commit real secrets. OpenAI, ElevenLabs, and Supabase service-role keys must stay server-only.
+- Never commit real secrets. OpenAI, Fish Audio, and Supabase service-role keys must stay server-only.

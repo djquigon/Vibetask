@@ -2,7 +2,7 @@ const plan = [
     ['09:00 AM', 'Focus Session', 'Build dashboard shell'],
     ['10:30 AM', 'Team Standup', '30 min'],
     ['11:30 AM', 'Deep Work', 'Design system updates'],
-    ['02:00 PM', 'Project', 'ElevenLabs app'],
+    ['02:00 PM', 'Project', 'Fish Audio app'],
     ['04:30 PM', 'Admin', 'Review analytics'],
 ];
 

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { openai } from '@/lib/openai/client';
+import { openai } from '@/lib/openai/server';
 import { serverEnv } from '@/lib/env/server';
 import type { AssistantChatResponse } from '../types';
 

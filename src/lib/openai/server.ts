@@ -1,4 +1,4 @@
-// src/lib/openai/client.ts
+// src/lib/openai/server.ts
 import 'server-only';
 
 import OpenAI from 'openai';

@@ -13,7 +13,7 @@ The app's central differentiator is an AI assistant that can help users operate 
 - Supabase Auth plus Supabase Postgres as the preferred backend default.
 - Supabase Row Level Security for user-owned productivity data.
 - OpenAI API for assistant reasoning and text responses.
-- ElevenLabs for AI voice mode and generated voice options.
+- Fish Audio for AI voice mode and generated voice options.
 - Tailwind-style utility CSS unless the project scaffold establishes a different styling system.
 
 Use Supabase as the default auth/backend recommendation unless the user explicitly changes direction. Expected auth methods include email/password or magic-link style email login, plus Google OAuth.
@@ -35,7 +35,7 @@ Official reference starting points:
 - Habits and Streaks: daily streaks and repeated behaviors that feed gamification.
 - XP and Gamification: account-level XP, streak bonuses, and other earned progress.
 - AI Text Mode: typed prompts with text responses and suggested actions.
-- AI Voice Mode: prompts and responses with text plus ElevenLabs-generated voice output.
+- AI Voice Mode: prompts and responses with text plus Fish Audio-generated voice output.
 
 All persisted user data for these areas must be scoped to the authenticated account. Avoid global data access patterns unless the data is intentionally public or system-level.
 
@@ -69,8 +69,8 @@ Expected future environment variables include:
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - Supabase service-role key for trusted server-only contexts only.
 - `OPENAI_API_KEY`
-- `ELEVENLABS_API_KEY`
-- ElevenLabs voice IDs or voice configuration values.
+- `FISH_API_KEY`
+- Fish Audio voice IDs or voice configuration values.
 
 Never commit real secrets. Keep service-role access out of client components and browser-delivered code.
 
