@@ -13,12 +13,24 @@ type ChatMessage = {
     revealDurationMs?: number;
 };
 
-type AssistantChatProps = {
-    mode: AssistantMode;
-    selectedVoiceId: string;
+type VoiceOption = {
+    id: string;
+    name: string;
 };
 
-export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
+type AssistantChatProps = {
+    mode: AssistantMode;
+    onVoiceChange: (voiceId: string) => void;
+    selectedVoiceId: string;
+    voiceOptions: VoiceOption[];
+};
+
+export function AssistantChat({
+    mode,
+    onVoiceChange,
+    selectedVoiceId,
+    voiceOptions,
+}: AssistantChatProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             role: 'assistant',
@@ -147,9 +159,21 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
     return (
         <section className="rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
             <div className="mb-4 flex items-center justify-between border-b border-[#25392f] pb-3">
-                <h2 className="font-mono text-lg font-black uppercase text-[#ff7b39]">
-                    AI Assistant
-                </h2>
+                <label className="sr-only" htmlFor="assistant-voice">
+                    Assistant voice
+                </label>
+                <select
+                    className="min-w-0 rounded-md border border-[#f5bf76]/25 bg-[#08110f] px-3 py-2 font-mono text-sm font-black uppercase text-[#ff7b39] outline-none transition focus:border-[#50d678]"
+                    id="assistant-voice"
+                    value={selectedVoiceId}
+                    onChange={(event) => onVoiceChange(event.target.value)}
+                >
+                    {voiceOptions.map((voice) => (
+                        <option key={voice.id} value={voice.id}>
+                            {voice.name}
+                        </option>
+                    ))}
+                </select>
                 <span className="font-mono text-sm text-[#50d678]">
                     {isVoiceLoading ? 'SPEAKING' : 'ONLINE'}
                 </span>
