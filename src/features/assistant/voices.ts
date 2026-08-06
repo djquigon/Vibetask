@@ -45,6 +45,14 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
         name: 'Monk',
     },
     {
+        id: '16ad95ddabdf40b1b695caa5cec14bf8',
+        name: 'A Sponge',
+    },
+    {
+        id: '63d5460e91e2411fa2e6bf95e7456f03',
+        name: 'News Anchor',
+    },
+    {
         id: '8a5a849eff184046ae6bdb9a1825165c',
         name: 'Sleepy Man',
     },

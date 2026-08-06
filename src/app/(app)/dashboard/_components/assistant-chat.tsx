@@ -65,7 +65,7 @@ export function AssistantChat({
                 behavior: 'smooth',
             });
         });
-    }, [messages]);
+    }, [messages, isLoading]);
 
     async function prepareVoiceResponse(text: string) {
         if (!selectedVoiceId) {
@@ -323,6 +323,7 @@ export function AssistantChat({
                             </p>
                         </div>
                     ))}
+                    {isLoading ? <AssistantThinkingMessage /> : null}
                 </div>
 
                 <form
@@ -444,6 +445,25 @@ function AnimatedText({
                 </span>
             ))}
         </>
+    );
+}
+
+function AssistantThinkingMessage() {
+    return (
+        <div
+            className="rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-4"
+            aria-label="Assistant response is being generated"
+        >
+            <div className="flex h-6 items-center gap-2">
+                <span className="sr-only">
+                    Assistant response is being generated.
+                </span>
+                <span className="h-2 w-2 animate-bounce rounded-full bg-[#50d678]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-[#f5bf76] [animation-delay:120ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-[#ff7b39] [animation-delay:240ms]" />
+                <span className="ml-2 h-px flex-1 animate-pulse bg-gradient-to-r from-[#50d678] via-[#f5bf76] to-transparent" />
+            </div>
+        </div>
     );
 }
 
