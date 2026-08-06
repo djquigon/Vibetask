@@ -44,6 +44,7 @@ export function AssistantChat({
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const recognitionRef = useRef<SpeechRecognition | null>(null);
     const isMicRecordingRef = useRef(false);
+    const committedTranscriptRef = useRef('');
 
     useEffect(() => {
         const messagesContainer = messagesContainerRef.current;
@@ -105,6 +106,8 @@ export function AssistantChat({
             return;
         }
 
+        committedTranscriptRef.current = '';
+
         const SpeechRecognitionCtor =
             window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition =
@@ -121,8 +124,21 @@ export function AssistantChat({
         };
 
         recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            setInput(transcript);
+            let interimTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const piece = event.results[i][0]?.transcript ?? '';
+
+                if (event.results[i].isFinal) {
+                    committedTranscriptRef.current += piece;
+                } else {
+                    interimTranscript += piece;
+                }
+            }
+
+            setInput(
+                `${committedTranscriptRef.current}${interimTranscript}`.trim()
+            );
         };
 
         recognitionRef.current = recognition;
