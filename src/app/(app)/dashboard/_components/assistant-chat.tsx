@@ -6,6 +6,7 @@ import type {
     AssistantChatResponse,
     AssistantMode,
 } from '@/features/assistant/types';
+import type { AssistantVoiceOption } from '@/features/assistant/voices';
 
 type ChatMessage = {
     role: 'user' | 'assistant';
@@ -13,16 +14,11 @@ type ChatMessage = {
     revealDurationMs?: number;
 };
 
-type VoiceOption = {
-    id: string;
-    name: string;
-};
-
 type AssistantChatProps = {
     mode: AssistantMode;
     onVoiceChange: (voiceId: string) => void;
     selectedVoiceId: string;
-    voiceOptions: VoiceOption[];
+    voiceOptions: AssistantVoiceOption[];
 };
 
 export function AssistantChat({
