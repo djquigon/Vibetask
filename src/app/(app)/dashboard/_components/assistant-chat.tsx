@@ -56,6 +56,17 @@ export function AssistantChat() {
                 body: JSON.stringify({ message }),
             });
 
+            const voiceResponse = await fetch('/api/assistant/voice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message,
+                    voiceId: '271b3db7aa744ec4b311e00b288715ca',
+                }),
+            });
+
             const data = (await response.json()) as
                 | AssistantChatResponse
                 | AssistantChatError;
@@ -119,13 +130,37 @@ export function AssistantChat() {
                         </p>
                     ) : null}
 
-                    <button
-                        className="w-full rounded-md bg-[#ff7b39] px-3 py-2 text-sm font-bold text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
-                        type="submit"
-                        disabled={isLoading || !input.trim()}
-                    >
-                        {isLoading ? 'Thinking...' : 'Send prompt'}
-                    </button>
+                    <div className="grid grid-cols-[1fr_48px] gap-2">
+                        <button
+                            className="rounded-md bg-[#ff7b39] px-3 py-2 text-sm font-bold text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
+                            type="submit"
+                            disabled={isLoading || !input.trim()}
+                        >
+                            {isLoading ? 'Thinking...' : 'Send prompt'}
+                        </button>
+
+                        <button
+                            className="flex h-10 w-12 items-center justify-center rounded-md border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
+                            type="button"
+                            aria-label="Press to talk"
+                            title="Press to talk"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                className="h-5 w-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <path d="M12 19v3" />
+                            </svg>
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>

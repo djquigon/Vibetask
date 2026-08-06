@@ -38,14 +38,13 @@ export async function POST(request: Request) {
     }
 
     try {
-        const backend = 's2.1-pro-free';
         const audio = await fishAudio.textToSpeech.convert(
             {
                 text,
                 reference_id: voiceId,
                 format: 'mp3',
             },
-            backend as never /* I had to include 'as never' to satisfy the type checker, for some reason the sdk thinks you can't use s2.1-pro-free */
+            's2.1-pro-free' as never /* I had to include 'as never' to satisfy the type checker, for some reason the sdk thinks you can't use s2.1-pro-free */
         );
 
         return new Response(audio, {
