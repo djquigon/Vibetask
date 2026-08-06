@@ -1,6 +1,6 @@
-﻿'use client';
+'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type {
     AssistantChatError,
     AssistantChatResponse,
@@ -40,6 +40,22 @@ export function AssistantChat({
     const [isLoading, setIsLoading] = useState(false);
     const [isVoiceLoading, setIsVoiceLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const messagesContainer = messagesContainerRef.current;
+
+        if (!messagesContainer) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            messagesContainer.scrollTo({
+                top: messagesContainer.scrollHeight,
+                behavior: 'smooth',
+            });
+        });
+    }, [messages]);
 
     async function prepareVoiceResponse(text: string) {
         if (!selectedVoiceId) {
@@ -205,7 +221,10 @@ export function AssistantChat({
             </div>
 
             <div className="flex min-h-0 flex-1 flex-col">
-                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
+                <div
+                    className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"
+                    ref={messagesContainerRef}
+                >
                     {messages.map((message, index) => (
                         <div
                             key={`${message.role}-${index}`}
