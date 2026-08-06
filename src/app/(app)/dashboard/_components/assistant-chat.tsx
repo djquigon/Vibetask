@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import type {
@@ -156,23 +156,50 @@ export function AssistantChat({
 
     return (
         <section className="flex min-h-0 flex-1 flex-col rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
-            <div className="mb-4 flex shrink-0 items-center justify-between border-b border-[#25392f] pb-3">
-                <label className="sr-only" htmlFor="assistant-voice">
-                    Assistant voice
-                </label>
-                <select
-                    className="min-w-0 rounded-md border border-[#f5bf76]/25 bg-[#08110f] px-3 py-2 font-mono text-sm font-black uppercase text-[#ff7b39] outline-none transition focus:border-[#50d678]"
-                    id="assistant-voice"
-                    value={selectedVoiceId}
-                    onChange={(event) => onVoiceChange(event.target.value)}
+            <div className="mb-4 flex shrink-0 items-center justify-between gap-2 border-b border-[#25392f] pb-3">
+                <button
+                    className={`h-10 w-16 shrink-0 rounded-md border px-2 font-mono text-xs font-black uppercase transition ${
+                        mode === 'voice'
+                            ? 'border-[#50d678]/40 bg-[#17351f] text-[#50d678] hover:border-[#50d678]'
+                            : 'border-[#f5bf76]/30 bg-[#241b10] text-[#f5bf76] hover:border-[#f5bf76]'
+                    }`}
+                    type="button"
+                    onClick={() =>
+                        onModeChange(mode === 'voice' ? 'text' : 'voice')
+                    }
+                    aria-label={`Switch to ${
+                        mode === 'voice' ? 'text' : 'voice'
+                    } mode`}
+                    title={`Switch to ${
+                        mode === 'voice' ? 'text' : 'voice'
+                    } mode`}
                 >
-                    {voiceOptions.map((voice) => (
-                        <option key={voice.id} value={voice.id}>
-                            {voice.name}
-                        </option>
-                    ))}
-                </select>
-                <span className="font-mono text-sm text-[#50d678]">
+                    {mode}
+                </button>
+
+                {mode === 'voice' ? (
+                    <>
+                        <label className="sr-only" htmlFor="assistant-voice">
+                            Assistant voice
+                        </label>
+                        <select
+                            className="min-w-0 flex-1 rounded-md border border-[#f5bf76]/25 bg-[#08110f] px-3 py-2 font-mono text-sm font-black uppercase text-[#ff7b39] outline-none transition focus:border-[#50d678]"
+                            id="assistant-voice"
+                            value={selectedVoiceId}
+                            onChange={(event) =>
+                                onVoiceChange(event.target.value)
+                            }
+                        >
+                            {voiceOptions.map((voice) => (
+                                <option key={voice.id} value={voice.id}>
+                                    {voice.name}
+                                </option>
+                            ))}
+                        </select>
+                    </>
+                ) : null}
+
+                <span className="shrink-0 font-mono text-sm text-[#50d678]">
                     {isVoiceLoading ? 'SPEAKING' : 'ONLINE'}
                 </span>
             </div>
@@ -216,31 +243,6 @@ export function AssistantChat({
                         />
 
                         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-                            <div className="grid h-10 w-32 grid-cols-2 rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-1">
-                                <button
-                                    className={`rounded px-2 text-xs font-bold transition ${
-                                        mode === 'text'
-                                            ? 'bg-[#f5bf76] text-[#08110f]'
-                                            : 'text-[#f8e8c0] hover:bg-[#172721]'
-                                    }`}
-                                    type="button"
-                                    onClick={() => onModeChange('text')}
-                                >
-                                    Text
-                                </button>
-                                <button
-                                    className={`rounded px-2 text-xs font-bold transition ${
-                                        mode === 'voice'
-                                            ? 'bg-[#50d678] text-[#08110f]'
-                                            : 'text-[#f8e8c0] hover:bg-[#172721]'
-                                    }`}
-                                    type="button"
-                                    onClick={() => onModeChange('voice')}
-                                >
-                                    Voice
-                                </button>
-                            </div>
-
                             <button
                                 className="flex h-10 w-10 items-center justify-center rounded-md bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
                                 type="submit"
@@ -300,7 +302,6 @@ export function AssistantChat({
                             {errorMessage}
                         </p>
                     ) : null}
-
                 </form>
             </div>
         </section>

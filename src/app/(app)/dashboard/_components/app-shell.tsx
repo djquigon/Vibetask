@@ -11,7 +11,7 @@ import { AssistantChat } from './assistant-chat';
 import { SideNav } from './side-nav';
 
 export function AppShell({ children }: { children: ReactNode }) {
-    const [assistantMode, setAssistantMode] = useState<AssistantMode>('text');
+    const [assistantMode, setAssistantMode] = useState<AssistantMode>('voice');
     const [selectedVoiceId, setSelectedVoiceId] = useState(
         DEFAULT_ASSISTANT_VOICE_ID
     );
