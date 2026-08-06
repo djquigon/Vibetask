@@ -32,8 +32,7 @@ export function AssistantChat({
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             role: 'assistant',
-            content:
-                'Good morning. Want me to build a focused plan from your open tasks, meetings, and available energy?',
+            content: 'Good morning, Logan. How can I help you today?',
         },
     ]);
     const [input, setInput] = useState('');
