@@ -6,11 +6,11 @@ export type AssistantVoiceOption = {
 export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
         id: '271b3db7aa744ec4b311e00b288715ca',
-        name: 'Space Marine - Male',
+        name: 'Space Marine',
     },
     {
         id: '3a97995bc55b4673b02ec87bbedb2424',
-        name: 'Space Marine - Female',
+        name: 'Space Queen',
     },
     {
         id: '90e65eaaf50e4470b8e6d43ee6afd7d5',
