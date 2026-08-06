@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import type {
@@ -261,7 +261,7 @@ export function AssistantChat({
                             onChange={(event) => setInput(event.target.value)}
                         />
 
-                        <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                        <div className="absolute bottom-4 right-3 flex items-center gap-2">
                             <button
                                 className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
                                 type="submit"
