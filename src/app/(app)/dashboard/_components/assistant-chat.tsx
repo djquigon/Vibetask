@@ -10,6 +10,7 @@ import type {
 type ChatMessage = {
     role: 'user' | 'assistant';
     content: string;
+    revealDurationMs?: number;
 };
 
 type AssistantChatProps = {
@@ -30,41 +31,39 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
     const [isVoiceLoading, setIsVoiceLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    async function playVoiceResponse(text: string) {
+    async function prepareVoiceResponse(text: string) {
         if (!selectedVoiceId) {
             throw new Error('No voice selected.');
         }
 
-        setIsVoiceLoading(true);
+        const response = await fetch('/api/assistant/voice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text,
+                voiceId: selectedVoiceId,
+            }),
+        });
 
-        try {
-            const response = await fetch('/api/assistant/voice', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    text,
-                    voiceId: selectedVoiceId,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Unable to generate voice response.');
-            }
-
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-
-            audio.onended = () => {
-                URL.revokeObjectURL(audioUrl);
-            };
-
-            await audio.play();
-        } finally {
-            setIsVoiceLoading(false);
+        if (!response.ok) {
+            throw new Error('Unable to generate voice response.');
         }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        const durationMs = await loadAudioDuration(audio);
+
+        audio.onended = () => {
+            URL.revokeObjectURL(audioUrl);
+        };
+
+        return {
+            audio,
+            durationMs,
+        };
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -111,6 +110,25 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
             const assistantMessage = (data as AssistantChatResponse)
                 .assistantMessage;
 
+            if (mode === 'voice') {
+                setIsVoiceLoading(true);
+
+                const voiceResponse =
+                    await prepareVoiceResponse(assistantMessage);
+
+                setMessages((current) => [
+                    ...current,
+                    {
+                        role: 'assistant',
+                        content: assistantMessage,
+                        revealDurationMs: voiceResponse.durationMs,
+                    },
+                ]);
+
+                await voiceResponse.audio.play();
+                return;
+            }
+
             setMessages((current) => [
                 ...current,
                 {
@@ -118,14 +136,11 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
                     content: assistantMessage,
                 },
             ]);
-
-            if (mode === 'voice') {
-                await playVoiceResponse(assistantMessage);
-            }
         } catch {
             setErrorMessage('The assistant could not respond. Try again.');
         } finally {
             setIsLoading(false);
+            setIsVoiceLoading(false);
         }
     }
 
@@ -152,7 +167,15 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
                             }
                         >
                             <p className="text-sm leading-6 text-[#f8e8c0]">
-                                {message.content}
+                                {message.role === 'assistant' &&
+                                message.revealDurationMs ? (
+                                    <AnimatedText
+                                        durationMs={message.revealDurationMs}
+                                        text={message.content}
+                                    />
+                                ) : (
+                                    message.content
+                                )}
                             </p>
                         </div>
                     ))}
@@ -207,4 +230,52 @@ export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
             </div>
         </section>
     );
+}
+
+function AnimatedText({
+    text,
+    durationMs,
+}: {
+    text: string;
+    durationMs: number;
+}) {
+    const characterFadeMs = 180;
+    const characters = Array.from(text);
+    const totalDelayMs = Math.max(durationMs - characterFadeMs, 0);
+    const delayStepMs =
+        characters.length > 1 ? totalDelayMs / (characters.length - 1) : 0;
+
+    return (
+        <>
+            {characters.map((character, index) => (
+                <span
+                    className="assistant-character-fade"
+                    key={`${character}-${index}`}
+                    style={{
+                        animationDelay: `${index * delayStepMs}ms`,
+                    }}
+                >
+                    {character}
+                </span>
+            ))}
+        </>
+    );
+}
+
+function loadAudioDuration(audio: HTMLAudioElement) {
+    return new Promise<number>((resolve, reject) => {
+        audio.onloadedmetadata = () => {
+            const durationSeconds = Number.isFinite(audio.duration)
+                ? audio.duration
+                : 0;
+
+            resolve(Math.max(durationSeconds * 1000, 1000));
+        };
+
+        audio.onerror = () => {
+            reject(new Error('Unable to load voice response audio.'));
+        };
+
+        audio.load();
+    });
 }

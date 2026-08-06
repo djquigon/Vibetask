@@ -34,3 +34,18 @@
     background: #ff8a3d;
     color: #08110f;
 }
+
+.assistant-character-fade {
+    animation: assistant-character-fade 180ms ease forwards;
+    opacity: 0;
+}
+
+@keyframes assistant-character-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
