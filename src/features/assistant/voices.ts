@@ -6,7 +6,11 @@ export type AssistantVoiceOption = {
 export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
         id: '271b3db7aa744ec4b311e00b288715ca',
-        name: 'Space Marine',
+        name: 'Space Marine - Male',
+    },
+    {
+        id: '3a97995bc55b4673b02ec87bbedb2424',
+        name: 'Space Marine - Female',
     },
     {
         id: '90e65eaaf50e4470b8e6d43ee6afd7d5',
@@ -55,6 +59,54 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
         id: 'd75c270eaee14c8aa1e9e980cc37cf1b',
         name: 'Peter Griffin',
+    },
+    {
+        id: '40af8e6319ef4d81aa4cf22a619553bb',
+        name: 'Cowboy',
+    },
+    {
+        id: 'cafe6bac75eb46caa839886ff445543a',
+        name: 'Imperial Legionnaire',
+    },
+    {
+        id: '459088411d374c36ad71e0d6f05d9b67',
+        name: 'The Dark Emperor',
+    },
+    {
+        id: 'f95771a3e3f442ab87a53ed25c2edeb5',
+        name: 'Presidential Candidate',
+    },
+    {
+        id: '48ba075d2240437aa5433ccee7fecfc3',
+        name: 'Robot - Male - Creepy',
+    },
+    {
+        id: 'af77ffc672ae4a1d97ee250598ddd944',
+        name: 'Robot - Male - Friendly',
+    },
+    {
+        id: '3f4d5082bec54ea89345b141dd254633',
+        name: 'Robot - Male - Evil',
+    },
+    {
+        id: 'abde9e336a2c4125a47c008e8206dddd',
+        name: 'Robot - Female - Playful',
+    },
+    {
+        id: '439895c3270543439da5da1532a5d21b',
+        name: 'Robot - Female - Calm',
+    },
+    {
+        id: '6b8274810fde4572b151d9365e021321',
+        name: 'Robot - Male - 2000',
+    },
+    {
+        id: '9448934a82f7456f875c445f218e62cb',
+        name: 'Robot - Male - 2001',
+    },
+    {
+        id: '6981ed38ce504d3ca6440e3512d1d536',
+        name: 'Robot - Male - Oldschool',
     },
 ];
 
