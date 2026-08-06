@@ -16,6 +16,7 @@ type ChatMessage = {
 
 type AssistantChatProps = {
     mode: AssistantMode;
+    onModeChange: (mode: AssistantMode) => void;
     onVoiceChange: (voiceId: string) => void;
     selectedVoiceId: string;
     voiceOptions: AssistantVoiceOption[];
@@ -23,6 +24,7 @@ type AssistantChatProps = {
 
 export function AssistantChat({
     mode,
+    onModeChange,
     onVoiceChange,
     selectedVoiceId,
     voiceOptions,
@@ -205,12 +207,93 @@ export function AssistantChat({
                     className="mt-4 shrink-0 space-y-3"
                     onSubmit={handleSubmit}
                 >
-                    <textarea
-                        className="min-h-24 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
-                        placeholder="Ask Vibetask to help plan, prioritize, or think through your work."
-                        value={input}
-                        onChange={(event) => setInput(event.target.value)}
-                    />
+                    <div className="relative">
+                        <textarea
+                            className="min-h-28 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 pb-16 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
+                            placeholder="Ask Vibetask to help plan, prioritize, or think through your work."
+                            value={input}
+                            onChange={(event) => setInput(event.target.value)}
+                        />
+
+                        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+                            <div className="grid h-10 w-32 grid-cols-2 rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-1">
+                                <button
+                                    className={`rounded px-2 text-xs font-bold transition ${
+                                        mode === 'text'
+                                            ? 'bg-[#f5bf76] text-[#08110f]'
+                                            : 'text-[#f8e8c0] hover:bg-[#172721]'
+                                    }`}
+                                    type="button"
+                                    onClick={() => onModeChange('text')}
+                                >
+                                    Text
+                                </button>
+                                <button
+                                    className={`rounded px-2 text-xs font-bold transition ${
+                                        mode === 'voice'
+                                            ? 'bg-[#50d678] text-[#08110f]'
+                                            : 'text-[#f8e8c0] hover:bg-[#172721]'
+                                    }`}
+                                    type="button"
+                                    onClick={() => onModeChange('voice')}
+                                >
+                                    Voice
+                                </button>
+                            </div>
+
+                            <button
+                                className="flex h-10 w-10 items-center justify-center rounded-md bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
+                                type="submit"
+                                disabled={isLoading || !input.trim()}
+                                aria-label={
+                                    isLoading
+                                        ? 'Assistant is thinking'
+                                        : 'Send prompt'
+                                }
+                                title={
+                                    isLoading
+                                        ? 'Assistant is thinking'
+                                        : 'Send prompt'
+                                }
+                            >
+                                <svg
+                                    aria-hidden="true"
+                                    className="h-5 w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M12 19V5" />
+                                    <path d="m5 12 7-7 7 7" />
+                                </svg>
+                            </button>
+
+                            <button
+                                className="flex h-10 w-10 items-center justify-center rounded-md border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
+                                type="button"
+                                aria-label="Press to talk"
+                                title="Press to talk"
+                            >
+                                <svg
+                                    aria-hidden="true"
+                                    className="h-5 w-5"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                    <path d="M12 19v3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
 
                     {errorMessage ? (
                         <p className="text-sm font-bold text-[#ff674d]">
@@ -218,37 +301,6 @@ export function AssistantChat({
                         </p>
                     ) : null}
 
-                    <div className="grid grid-cols-[1fr_48px] gap-2">
-                        <button
-                            className="rounded-md bg-[#ff7b39] px-3 py-2 text-sm font-bold text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
-                            type="submit"
-                            disabled={isLoading || !input.trim()}
-                        >
-                            {isLoading ? 'Thinking...' : 'Send prompt'}
-                        </button>
-
-                        <button
-                            className="flex h-10 w-12 items-center justify-center rounded-md border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
-                            type="button"
-                            aria-label="Press to talk"
-                            title="Press to talk"
-                        >
-                            <svg
-                                aria-hidden="true"
-                                className="h-5 w-5"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                                <path d="M12 19v3" />
-                            </svg>
-                        </button>
-                    </div>
                 </form>
             </div>
         </section>

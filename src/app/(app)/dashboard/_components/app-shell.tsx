@@ -9,7 +9,6 @@ import {
 } from '@/features/assistant/voices';
 import { AssistantChat } from './assistant-chat';
 import { SideNav } from './side-nav';
-import { VoiceDock } from './voice-dock';
 
 export function AppShell({ children }: { children: ReactNode }) {
     const [assistantMode, setAssistantMode] = useState<AssistantMode>('text');
@@ -27,13 +26,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <aside className="flex min-h-0 min-w-0 flex-col gap-3">
                     <AssistantChat
                         mode={assistantMode}
+                        onModeChange={setAssistantMode}
                         onVoiceChange={setSelectedVoiceId}
                         selectedVoiceId={selectedVoiceId}
                         voiceOptions={ASSISTANT_VOICE_OPTIONS}
-                    />
-                    <VoiceDock
-                        mode={assistantMode}
-                        onModeChange={setAssistantMode}
                     />
                 </aside>
             </div>
