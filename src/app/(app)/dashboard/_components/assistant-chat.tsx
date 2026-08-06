@@ -1,9 +1,10 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import type {
     AssistantChatError,
     AssistantChatResponse,
+    AssistantMode,
 } from '@/features/assistant/types';
 
 type ChatMessage = {
@@ -11,7 +12,12 @@ type ChatMessage = {
     content: string;
 };
 
-export function AssistantChat() {
+type AssistantChatProps = {
+    mode: AssistantMode;
+    selectedVoiceId: string;
+};
+
+export function AssistantChat({ mode, selectedVoiceId }: AssistantChatProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             role: 'assistant',
@@ -21,7 +27,45 @@ export function AssistantChat() {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isVoiceLoading, setIsVoiceLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    async function playVoiceResponse(text: string) {
+        if (!selectedVoiceId) {
+            throw new Error('No voice selected.');
+        }
+
+        setIsVoiceLoading(true);
+
+        try {
+            const response = await fetch('/api/assistant/voice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text,
+                    voiceId: selectedVoiceId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Unable to generate voice response.');
+            }
+
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+
+            audio.onended = () => {
+                URL.revokeObjectURL(audioUrl);
+            };
+
+            await audio.play();
+        } finally {
+            setIsVoiceLoading(false);
+        }
+    }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -56,17 +100,6 @@ export function AssistantChat() {
                 body: JSON.stringify({ message }),
             });
 
-            const voiceResponse = await fetch('/api/assistant/voice', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message,
-                    voiceId: '271b3db7aa744ec4b311e00b288715ca',
-                }),
-            });
-
             const data = (await response.json()) as
                 | AssistantChatResponse
                 | AssistantChatError;
@@ -75,13 +108,20 @@ export function AssistantChat() {
                 throw new Error(data.message);
             }
 
+            const assistantMessage = (data as AssistantChatResponse)
+                .assistantMessage;
+
             setMessages((current) => [
                 ...current,
                 {
                     role: 'assistant',
-                    content: (data as AssistantChatResponse).assistantMessage,
+                    content: assistantMessage,
                 },
             ]);
+
+            if (mode === 'voice') {
+                await playVoiceResponse(assistantMessage);
+            }
         } catch {
             setErrorMessage('The assistant could not respond. Try again.');
         } finally {
@@ -95,7 +135,9 @@ export function AssistantChat() {
                 <h2 className="font-mono text-lg font-black uppercase text-[#ff7b39]">
                     AI Assistant
                 </h2>
-                <span className="font-mono text-sm text-[#50d678]">ONLINE</span>
+                <span className="font-mono text-sm text-[#50d678]">
+                    {isVoiceLoading ? 'SPEAKING' : 'ONLINE'}
+                </span>
             </div>
 
             <div>

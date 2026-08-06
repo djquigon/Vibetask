@@ -1,11 +1,13 @@
-﻿'use client';
+'use client';
 
-import { useState } from 'react';
 import type { AssistantMode } from '@/features/assistant/types';
 
-export function VoiceDock() {
-    const [mode, setMode] = useState<AssistantMode>('text');
+type VoiceDockProps = {
+    mode: AssistantMode;
+    onModeChange: (mode: AssistantMode) => void;
+};
 
+export function VoiceDock({ mode, onModeChange }: VoiceDockProps) {
     return (
         <section className="rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
             <div className="mb-4 flex items-center justify-between border-b border-[#25392f] pb-3">
@@ -33,7 +35,7 @@ export function VoiceDock() {
                                 : 'text-[#f8e8c0] hover:bg-[#172721]'
                         }`}
                         type="button"
-                        onClick={() => setMode('text')}
+                        onClick={() => onModeChange('text')}
                     >
                         Text
                     </button>
@@ -44,7 +46,7 @@ export function VoiceDock() {
                                 : 'text-[#f8e8c0] hover:bg-[#172721]'
                         }`}
                         type="button"
-                        onClick={() => setMode('voice')}
+                        onClick={() => onModeChange('voice')}
                     >
                         Voice
                     </button>
