@@ -40,7 +40,10 @@ export function AssistantChat({
     const [isLoading, setIsLoading] = useState(false);
     const [isVoiceLoading, setIsVoiceLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isMicRecording, setIsMicRecording] = useState(false);
     const messagesContainerRef = useRef<HTMLDivElement>(null);
+    const recognitionRef = useRef<SpeechRecognition | null>(null);
+    const isMicRecordingRef = useRef(false);
 
     useEffect(() => {
         const messagesContainer = messagesContainerRef.current;
@@ -90,6 +93,40 @@ export function AssistantChat({
             audio,
             durationMs,
         };
+    }
+
+    function handleRecord() {
+        const nextIsMicRecording = !isMicRecordingRef.current;
+        isMicRecordingRef.current = nextIsMicRecording;
+        setIsMicRecording(nextIsMicRecording);
+
+        if (!nextIsMicRecording) {
+            recognitionRef.current?.stop();
+            return;
+        }
+
+        const SpeechRecognitionCtor =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition =
+            recognitionRef.current ?? new SpeechRecognitionCtor();
+
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onend = () => {
+            if (isMicRecordingRef.current) {
+                recognition.start();
+            }
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            setInput(transcript);
+        };
+
+        recognitionRef.current = recognition;
+        recognition.start();
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -293,10 +330,24 @@ export function AssistantChat({
                             </button>
 
                             <button
-                                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
+                                className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
+                                    isMicRecording
+                                        ? 'border-[#50d678] bg-[#17351f] text-[#50d678]'
+                                        : 'border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] hover:border-[#ff7b39]'
+                                }`}
                                 type="button"
-                                aria-label="Press to talk"
-                                title="Press to talk"
+                                aria-label={
+                                    isMicRecording
+                                        ? 'Stop recording'
+                                        : 'Press to talk'
+                                }
+                                title={
+                                    isMicRecording
+                                        ? 'Stop recording'
+                                        : 'Press to talk'
+                                }
+                                aria-pressed={isMicRecording}
+                                onClick={handleRecord}
                             >
                                 <svg
                                     aria-hidden="true"
