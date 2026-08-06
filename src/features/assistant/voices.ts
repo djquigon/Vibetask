@@ -34,7 +34,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: '2d68791e46f34687bd1231e2086ee925',
-        name: 'Elon Musk',
+        name: 'Electric Car Salesman',
     },
     {
         id: '2947ec32c7e1479c8ec5628a1fc035f1',
@@ -46,7 +46,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: '8a5a849eff184046ae6bdb9a1825165c',
-        name: 'Sleepy',
+        name: 'Sleepy Man',
     },
     {
         id: '75e451f629a44984a2b54c26de2f9826',
@@ -54,7 +54,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: '0b2e96151d67433d93891f15efc25dbd',
-        name: 'Trapaholics',
+        name: 'Radio Host',
     },
     {
         id: 'd75c270eaee14c8aa1e9e980cc37cf1b',
