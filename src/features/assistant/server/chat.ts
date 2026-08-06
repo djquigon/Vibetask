@@ -27,6 +27,10 @@ export async function createAssistantChatResponse(
         input: message,
     });
 
+    if (response.output_text.length === 0) {
+        throw new Error('Assistant response is empty.');
+    }
+
     return {
         message: 'Assistant response created.',
         assistantMessage: response.output_text,
