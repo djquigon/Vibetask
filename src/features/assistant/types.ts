@@ -1,4 +1,4 @@
-﻿export type AssistantMode = "text" | "voice";
+export type AssistantMode = "text" | "voice";
 
 export type AssistantActionType =
   | "create_task"
@@ -10,4 +10,18 @@ export type AssistantAction = {
   type: AssistantActionType;
   summary: string;
   requiresConfirmation: boolean;
+};
+
+export type AssistantChatRequest = {
+  message: string;
+};
+
+export type AssistantChatResponse = {
+  message: string;
+  assistantMessage: string;
+  actions: [];
+};
+
+export type AssistantChatError = {
+  message: string;
 };
