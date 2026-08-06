@@ -32,6 +32,32 @@
     scrollbar-width: thin;
 }
 
+select {
+    --select-x-padding: 0.75rem;
+
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m6 9 6 6 6-6' stroke='%23f5bf76' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-position: right var(--select-x-padding) center;
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+    padding-left: var(--select-x-padding);
+    padding-right: calc(var(--select-x-padding) + 1.5rem);
+}
+
+button:not(:disabled),
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+input[type='file'],
+input[type='image'],
+input[type='checkbox'],
+input[type='radio'],
+select,
+a {
+    cursor: pointer;
+}
+
 ::selection {
     background: #ff8a3d;
     color: #08110f;

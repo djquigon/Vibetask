@@ -236,15 +236,15 @@ export function AssistantChat({
                 >
                     <div className="relative">
                         <textarea
-                            className="min-h-28 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 pb-16 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
+                            className="min-h-28 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 pb-14 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
                             placeholder="Ask Vibetask to help plan, prioritize, or think through your work."
                             value={input}
                             onChange={(event) => setInput(event.target.value)}
                         />
 
-                        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+                        <div className="absolute bottom-3 right-3 flex items-center gap-2">
                             <button
-                                className="flex h-10 w-10 items-center justify-center rounded-md bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
                                 type="submit"
                                 disabled={isLoading || !input.trim()}
                                 aria-label={
@@ -260,7 +260,7 @@ export function AssistantChat({
                             >
                                 <svg
                                     aria-hidden="true"
-                                    className="h-5 w-5"
+                                    className="h-4 w-4"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -274,14 +274,14 @@ export function AssistantChat({
                             </button>
 
                             <button
-                                className="flex h-10 w-10 items-center justify-center rounded-md border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
+                                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] transition hover:border-[#ff7b39]"
                                 type="button"
                                 aria-label="Press to talk"
                                 title="Press to talk"
                             >
                                 <svg
                                     aria-hidden="true"
-                                    className="h-5 w-5"
+                                    className="h-4 w-4"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
