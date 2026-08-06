@@ -153,8 +153,8 @@ export function AssistantChat({
     }
 
     return (
-        <section className="rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
-            <div className="mb-4 flex items-center justify-between border-b border-[#25392f] pb-3">
+        <section className="flex min-h-0 flex-1 flex-col rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
+            <div className="mb-4 flex shrink-0 items-center justify-between border-b border-[#25392f] pb-3">
                 <label className="sr-only" htmlFor="assistant-voice">
                     Assistant voice
                 </label>
@@ -175,8 +175,8 @@ export function AssistantChat({
                 </span>
             </div>
 
-            <div>
-                <div className="space-y-4">
+            <div className="flex min-h-0 flex-1 flex-col">
+                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
                     {messages.map((message, index) => (
                         <div
                             key={`${message.role}-${index}`}
@@ -201,7 +201,10 @@ export function AssistantChat({
                     ))}
                 </div>
 
-                <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
+                <form
+                    className="mt-4 shrink-0 space-y-3"
+                    onSubmit={handleSubmit}
+                >
                     <textarea
                         className="min-h-24 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
                         placeholder="Ask Vibetask to help plan, prioritize, or think through your work."

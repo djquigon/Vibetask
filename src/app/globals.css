@@ -28,11 +28,37 @@
 
 * {
     box-sizing: border-box;
+    scrollbar-color: #ff7b39 #08110f;
+    scrollbar-width: thin;
 }
 
 ::selection {
     background: #ff8a3d;
     color: #08110f;
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #08110f;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffb14f, #ff7b39);
+    border: 2px solid #08110f;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #50d678, #ffb14f);
+}
+
+::-webkit-scrollbar-corner {
+    background: #08110f;
 }
 
 .assistant-character-fade {

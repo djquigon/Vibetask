@@ -18,13 +18,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     );
 
     return (
-        <main className="min-h-screen bg-[#07110f] p-3 text-[#f8e8c0]">
-            <div className="grid min-h-[calc(100vh-24px)] gap-3 rounded-lg border border-[#7c4c2d] bg-[#0b1512] p-3 shadow-2xl shadow-black/40 lg:grid-cols-[220px_minmax(0,1fr)_340px]">
+        <main className="h-screen overflow-hidden bg-[#07110f] p-3 text-[#f8e8c0]">
+            <div className="grid h-full min-h-0 gap-3 rounded-lg border border-[#7c4c2d] bg-[#0b1512] p-3 shadow-2xl shadow-black/40 lg:grid-cols-[220px_minmax(0,1fr)_340px]">
                 <SideNav />
-                <section className="min-w-0 rounded-md border border-[#25392f] bg-[#101d19] p-4">
+                <section className="min-h-0 min-w-0 overflow-auto rounded-md border border-[#25392f] bg-[#101d19] p-4">
                     {children}
                 </section>
-                <aside className="flex min-w-0 flex-col gap-3">
+                <aside className="flex min-h-0 min-w-0 flex-col gap-3">
                     <AssistantChat
                         mode={assistantMode}
                         onVoiceChange={setSelectedVoiceId}

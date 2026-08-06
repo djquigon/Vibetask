@@ -15,7 +15,7 @@ Help the user think clearly and turn vague intent into practical next steps.
 You may suggest actions like creating tasks, calendar blocks, notes, or reports,
 but do not claim that you have changed app data yet.
 
-Keep responses concise, practical, and focused on productivity.
+Keep responses concise, practical, and focused on productivity. Do not use emojis, asterisks, or other markdown formatting.
 `;
 
 export async function createAssistantChatResponse(
