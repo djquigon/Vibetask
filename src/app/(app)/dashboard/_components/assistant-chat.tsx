@@ -37,13 +37,20 @@ export function AssistantChat({
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isVoiceLoading, setIsVoiceLoading] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isMicRecording, setIsMicRecording] = useState(false);
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const recognitionRef = useRef<SpeechRecognition | null>(null);
     const isMicRecordingRef = useRef(false);
     const committedTranscriptRef = useRef('');
+    const assistantStatus = isMicRecording
+        ? 'Listening'
+        : isSpeaking
+          ? 'Speaking'
+          : isLoading
+            ? 'Thinking'
+            : 'Online';
 
     useEffect(() => {
         const messagesContainer = messagesContainerRef.current;
@@ -85,9 +92,9 @@ export function AssistantChat({
         const audio = new Audio(audioUrl);
         const durationMs = await loadAudioDuration(audio);
 
-        audio.onended = () => {
-            URL.revokeObjectURL(audioUrl);
-        };
+        audio.addEventListener('ended', () => URL.revokeObjectURL(audioUrl), {
+            once: true,
+        });
 
         return {
             audio,
@@ -162,7 +169,13 @@ export function AssistantChat({
 
         setInput('');
         setErrorMessage('');
+        setIsSpeaking(false);
         setIsLoading(true);
+        if (isMicRecordingRef.current) {
+            isMicRecordingRef.current = false;
+            setIsMicRecording(false);
+            recognitionRef.current?.stop();
+        }
         setMessages((current) => [
             ...current,
             { role: 'user', content: message },
@@ -189,11 +202,11 @@ export function AssistantChat({
                 .assistantMessage;
 
             if (mode === 'voice') {
-                setIsVoiceLoading(true);
-
                 const voiceResponse =
                     await prepareVoiceResponse(assistantMessage);
 
+                setIsLoading(false);
+                setIsSpeaking(true);
                 setMessages((current) => [
                     ...current,
                     {
@@ -202,6 +215,17 @@ export function AssistantChat({
                         revealDurationMs: voiceResponse.durationMs,
                     },
                 ]);
+
+                voiceResponse.audio.addEventListener(
+                    'ended',
+                    () => setIsSpeaking(false),
+                    { once: true }
+                );
+                voiceResponse.audio.addEventListener(
+                    'error',
+                    () => setIsSpeaking(false),
+                    { once: true }
+                );
 
                 await voiceResponse.audio.play();
                 return;
@@ -215,10 +239,10 @@ export function AssistantChat({
                 },
             ]);
         } catch {
+            setIsSpeaking(false);
             setErrorMessage('The assistant could not respond. Try again.');
         } finally {
             setIsLoading(false);
-            setIsVoiceLoading(false);
         }
     }
 
@@ -268,7 +292,7 @@ export function AssistantChat({
                 ) : null}
 
                 <span className="shrink-0 font-mono text-sm text-[#50d678]">
-                    {isVoiceLoading ? 'SPEAKING' : 'ONLINE'}
+                    {assistantStatus}
                 </span>
             </div>
 

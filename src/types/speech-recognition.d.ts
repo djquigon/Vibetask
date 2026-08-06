@@ -34,7 +34,7 @@ interface SpeechRecognitionEvent extends Event {
     results: SpeechRecognitionResultList;
 }
 
-declare var SpeechRecognition: {
+declare const SpeechRecognition: {
     prototype: SpeechRecognition;
     new (): SpeechRecognition;
 };
