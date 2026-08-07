@@ -57,6 +57,14 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
         name: 'Sleepy Man',
     },
     {
+        id: 'acc8237220d8470985ec9be6c4c480a9',
+        name: 'Meegu',
+    },
+    {
+        id: 'e632a33e32b442afb45d52d112d5290f',
+        name: 'Upstanding Citizen',
+    },
+    {
         id: '75e451f629a44984a2b54c26de2f9826',
         name: 'Steve Harvey',
     },
