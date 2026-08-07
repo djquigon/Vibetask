@@ -15,6 +15,7 @@ export function WinampPlayer() {
     const disposedRef = useRef(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [volume, setVolume] = useState(100);
     const [status, setStatus] = useState<PlayerStatus>('idle');
 
     useEffect(() => {
@@ -116,12 +117,14 @@ export function WinampPlayer() {
             unsubscribeStateRef.current = webamp.__onStateChange(() => {
                 if (!disposedRef.current) {
                     setIsPlaying(webamp.getMediaStatus() === 'PLAYING');
+                    setVolume(webamp.store.getState().media.volume);
                 }
             });
 
             await webamp.renderWhenReady(pageRef.current);
 
             if (!disposedRef.current) {
+                setVolume(webamp.store.getState().media.volume);
                 setStatus('ready');
             }
         } catch {
@@ -147,6 +150,11 @@ export function WinampPlayer() {
         } else {
             player.play();
         }
+    }
+
+    function changeVolume(nextVolume: number) {
+        setVolume(nextVolume);
+        playerRef.current?.setVolume(nextVolume);
     }
 
     const controlsDisabled = status !== 'ready';
@@ -221,6 +229,25 @@ export function WinampPlayer() {
                             |▶
                         </button>
                     </div>
+                    <label className="mt-2 flex items-center gap-2 font-mono text-[9px] font-bold uppercase text-[#f5bf76]">
+                        <span>Vol</span>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={volume}
+                            disabled={controlsDisabled}
+                            aria-label="Player volume"
+                            onChange={(event) =>
+                                changeVolume(Number(event.target.value))
+                            }
+                            className="h-1 min-w-0 flex-1 cursor-pointer accent-[#ff7b39] disabled:cursor-not-allowed disabled:opacity-40"
+                        />
+                        <span className="w-6 text-right text-[#50d678]">
+                            {volume}
+                        </span>
+                    </label>
                     <p className="mt-2 font-mono text-[9px] uppercase text-[#50d678]">
                         {status === 'unsupported'
                             ? 'Browser unsupported'
