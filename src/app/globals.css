@@ -58,6 +58,11 @@ a {
     cursor: pointer;
 }
 
+#webamp {
+    filter: sepia(72%) saturate(180%) hue-rotate(335deg) brightness(82%)
+        contrast(118%);
+}
+
 ::selection {
     background: #ff8a3d;
     color: #08110f;

@@ -65,6 +65,10 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
         name: 'Upstanding Citizen',
     },
     {
+        id: '929adc39f2f04ae78090589ffbf79f65',
+        name: 'Taylor Swift',
+    },
+    {
         id: '75e451f629a44984a2b54c26de2f9826',
         name: 'Steve Harvey',
     },
