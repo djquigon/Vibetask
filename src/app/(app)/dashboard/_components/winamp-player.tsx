@@ -167,7 +167,7 @@ export function WinampPlayer() {
                 aria-label="Winamp music player"
                 className="grid place-items-center rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-3"
             >
-                <div className="text-center">
+                <div className="w-full min-w-0 text-center">
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#f5bf76]">
                         Winamp
                     </p>
@@ -175,18 +175,31 @@ export function WinampPlayer() {
                         <button
                             type="button"
                             aria-pressed={isOpen}
+                            aria-label={
+                                isOpen ? 'Hide Winamp' : 'Show Winamp'
+                            }
+                            title={isOpen ? 'Hide Winamp' : 'Show Winamp'}
                             disabled={
                                 status === 'loading' ||
                                 status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="h-7 min-w-0 flex-1 rounded border border-[#ff7b39] bg-[#172721] px-1 font-mono text-[9px] font-black uppercase text-[#ffb14f] transition hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
+                            className="grid size-7 shrink-0 place-items-center rounded border border-[#ff7b39] bg-[#172721] text-[#ffb14f] transition hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {status === 'loading'
-                                ? 'Loading'
-                                : isOpen
-                                  ? 'Hide'
-                                  : 'Show'}
+                            <svg
+                                aria-hidden="true"
+                                viewBox="0 0 24 24"
+                                className="size-4"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+                                <circle cx="12" cy="12" r="2.5" />
+                                {isOpen && <path d="M3 3l18 18" />}
+                            </svg>
                         </button>
                         <button
                             type="button"
@@ -229,7 +242,7 @@ export function WinampPlayer() {
                             |▶
                         </button>
                     </div>
-                    <label className="mt-2 flex items-center gap-2 font-mono text-[9px] font-bold uppercase text-[#f5bf76]">
+                    <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-[#f5bf76]">
                         <span>Vol</span>
                         <input
                             type="range"
