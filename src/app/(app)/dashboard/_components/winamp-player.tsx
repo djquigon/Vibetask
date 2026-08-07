@@ -14,9 +14,11 @@ const WINAMP_WINDOW_WIDTH = 275;
 const WINAMP_WINDOW_HEIGHT = 116;
 const WINAMP_RESIZE_WIDTH = 25;
 const WINAMP_RESIZE_HEIGHT = 29;
+const DOCKED_MILKDROP_SIZE: [number, number] = [0, 2];
 
 export function WinampPlayer() {
     const pageRef = useRef<HTMLDivElement>(null);
+    const milkdropDockRef = useRef<HTMLElement>(null);
     const playerRef = useRef<Webamp | null>(null);
     const unsubscribeCloseRef = useRef<(() => void) | null>(null);
     const unsubscribeStateRef = useRef<(() => void) | null>(null);
@@ -25,6 +27,12 @@ export function WinampPlayer() {
     const popoutResizeCleanupRef = useRef<(() => void) | null>(null);
     const originalWindowPositionsRef = useRef<WindowPositions | null>(null);
     const originalWindowSizesRef = useRef<ResizableWindowSizes | null>(null);
+    const dockedMilkdropLayoutRef = useRef<{
+        position: { x: number; y: number };
+        size: [number, number];
+    } | null>(null);
+    const isOpenRef = useRef(false);
+    const wasPlayingRef = useRef(false);
     const disposedRef = useRef(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isMilkdropPoppedOut, setIsMilkdropPoppedOut] = useState(false);
@@ -39,6 +47,15 @@ export function WinampPlayer() {
         return () => {
             disposedRef.current = true;
             popoutWindowRef.current?.close();
+            const webampElement = webampElementRef.current;
+
+            if (
+                webampElement &&
+                webampElement.parentElement !== document.body
+            ) {
+                document.body.appendChild(webampElement);
+            }
+
             unsubscribeCloseRef.current?.();
             unsubscribeStateRef.current?.();
             playerRef.current?.dispose();
@@ -46,13 +63,158 @@ export function WinampPlayer() {
         };
     }, []);
 
-    function setPlayerVisibility(isVisible: boolean) {
-        const webampElement =
-            webampElementRef.current ?? document.getElementById('webamp');
+    useEffect(() => {
+        isOpenRef.current = isOpen;
+    }, [isOpen]);
 
-        if (webampElement) {
-            webampElement.style.display = isVisible ? '' : 'none';
+    function setPlayerVisibility(isVisible: boolean) {
+        const player = playerRef.current;
+
+        if (!player) {
+            return;
         }
+
+        const popout = popoutWindowRef.current;
+
+        if (popout && !popout.closed) {
+            const popoutWebampElement = popout.document.getElementById('webamp');
+
+            if (popoutWebampElement) {
+                popoutWebampElement.style.display = isVisible ? '' : 'none';
+            }
+
+            return;
+        }
+
+        const showDockedMilkdrop =
+            !isVisible && player.getMediaStatus() === 'PLAYING';
+
+        if (isVisible) {
+            const webampElement = webampElementRef.current;
+
+            if (
+                webampElement &&
+                webampElement.parentElement !== document.body
+            ) {
+                document.body.appendChild(webampElement);
+            }
+
+            restoreDockedMilkdropLayout(player);
+        } else if (showDockedMilkdrop) {
+            layoutDockedMilkdrop(player);
+        }
+
+        const mountedWebampElement = document.getElementById('webamp');
+
+        if (!mountedWebampElement) {
+            return;
+        }
+
+        setWebampWindowVisibility(
+            mountedWebampElement,
+            isVisible,
+            isVisible || showDockedMilkdrop
+        );
+        mountedWebampElement.style.display =
+            isVisible || showDockedMilkdrop ? '' : 'none';
+    }
+
+    function setWebampWindowVisibility(
+        webampElement: HTMLElement,
+        showPlayerWindows: boolean,
+        showMilkdrop: boolean
+    ) {
+        webampElement.style.pointerEvents = showPlayerWindows ? '' : 'none';
+
+        webampElement
+            .querySelectorAll<HTMLElement>(
+                '#main-window, #equalizer-window, #playlist-window'
+            )
+            .forEach((windowElement) => {
+                windowElement.style.display = showPlayerWindows ? '' : 'none';
+            });
+
+        webampElement
+            .querySelector<HTMLElement>('canvas')
+            ?.closest<HTMLElement>('.gen-window')?.style.setProperty(
+                'display',
+                showMilkdrop ? '' : 'none'
+            );
+    }
+
+    function layoutDockedMilkdrop(player: Webamp) {
+        if (isOpenRef.current || player.getMediaStatus() !== 'PLAYING') {
+            return;
+        }
+
+        const milkdropDock = milkdropDockRef.current;
+        const webampElement = webampElementRef.current;
+
+        if (!milkdropDock || !webampElement) {
+            requestAnimationFrame(() => {
+                if (!disposedRef.current) {
+                    layoutDockedMilkdrop(player);
+                }
+            });
+            return;
+        }
+
+        if (!milkdropDock.contains(webampElement)) {
+            milkdropDock.appendChild(webampElement);
+        }
+
+        const milkdropWindow = player.store.getState().windows.genWindows.milkdrop;
+
+        if (!dockedMilkdropLayoutRef.current) {
+            dockedMilkdropLayoutRef.current = {
+                position: { ...milkdropWindow.position },
+                size: [...milkdropWindow.size],
+            };
+        }
+
+        const milkdropWidth =
+            WINAMP_WINDOW_WIDTH +
+            DOCKED_MILKDROP_SIZE[0] * WINAMP_RESIZE_WIDTH;
+
+        player.store.dispatch({
+            type: 'WINDOW_SIZE_CHANGED',
+            windowId: 'milkdrop',
+            size: DOCKED_MILKDROP_SIZE,
+        });
+        player.store.dispatch({
+            type: 'UPDATE_WINDOW_POSITIONS',
+            positions: {
+                milkdrop: {
+                    x: Math.round(
+                        (milkdropDock.clientWidth - milkdropWidth) / 2
+                    ),
+                    y: 0,
+                },
+            },
+            absolute: true,
+        });
+    }
+
+    function restoreDockedMilkdropLayout(player: Webamp) {
+        const savedLayout = dockedMilkdropLayoutRef.current;
+
+        if (!savedLayout) {
+            return;
+        }
+
+        player.store.dispatch({
+            type: 'WINDOW_SIZE_CHANGED',
+            windowId: 'milkdrop',
+            size: savedLayout.size,
+        });
+        player.store.dispatch({
+            type: 'UPDATE_WINDOW_POSITIONS',
+            positions: {
+                milkdrop: savedLayout.position,
+            },
+            absolute: true,
+        });
+        dockedMilkdropLayoutRef.current = null;
     }
 
     function layoutPopoutWindows(popout: Window, player: Webamp) {
@@ -118,11 +280,15 @@ export function WinampPlayer() {
         popoutResizeCleanupRef.current?.();
         popoutResizeCleanupRef.current = null;
 
-        if (webampElement && !document.body.contains(webampElement)) {
+        if (webampElement && webampElement.parentElement !== document.body) {
             document.body.appendChild(webampElement);
         }
 
         if (player) {
+            if (webampElement) {
+                setWebampWindowVisibility(webampElement, true, true);
+            }
+
             for (const windowId of ['main', 'equalizer', 'playlist'] as const) {
                 player.store.dispatch({
                     type: 'SET_WINDOW_VISIBILITY',
@@ -210,6 +376,8 @@ export function WinampPlayer() {
             milkdrop: [...windows.milkdrop.size],
         };
 
+        setWebampWindowVisibility(webampElement, true, true);
+
         for (const windowId of [
             'main',
             'equalizer',
@@ -259,11 +427,13 @@ export function WinampPlayer() {
 
     async function togglePlayer() {
         if (isOpen) {
+            isOpenRef.current = false;
             setIsOpen(false);
             setPlayerVisibility(false);
             return;
         }
 
+        isOpenRef.current = true;
         setIsOpen(true);
 
         if (playerRef.current) {
@@ -330,13 +500,23 @@ export function WinampPlayer() {
 
             playerRef.current = webamp;
             unsubscribeCloseRef.current = webamp.onClose(() => {
+                isOpenRef.current = false;
                 setIsOpen(false);
                 setIsPlaying(false);
+                wasPlayingRef.current = false;
             });
             unsubscribeStateRef.current = webamp.__onStateChange(() => {
                 if (!disposedRef.current) {
-                    setIsPlaying(webamp.getMediaStatus() === 'PLAYING');
+                    const nextIsPlaying =
+                        webamp.getMediaStatus() === 'PLAYING';
+
+                    setIsPlaying(nextIsPlaying);
                     setVolume(webamp.store.getState().media.volume);
+
+                    if (nextIsPlaying !== wasPlayingRef.current) {
+                        wasPlayingRef.current = nextIsPlaying;
+                        setPlayerVisibility(isOpenRef.current);
+                    }
                 }
             });
 
@@ -378,11 +558,20 @@ export function WinampPlayer() {
     }
 
     const controlsDisabled = status !== 'ready';
+    const isDockedMilkdropVisible =
+        !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
         'grid size-6 shrink-0 place-items-center rounded border border-[#f5bf76]/30 bg-[#172721] font-mono text-[9px] font-black text-[#50d678] transition hover:border-[#ff7b39] hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-40';
 
     return (
         <>
+            {isDockedMilkdropVisible && (
+                <section
+                    ref={milkdropDockRef}
+                    aria-label="Milkdrop visualizer"
+                    className="relative h-44 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f]"
+                />
+            )}
             <section
                 aria-label="Winamp music player"
                 className="grid place-items-center rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-3"
