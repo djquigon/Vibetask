@@ -257,7 +257,7 @@ export function WinampPlayer() {
                             }
                             className="h-1 min-w-0 flex-1 cursor-pointer accent-[#ff7b39] disabled:cursor-not-allowed disabled:opacity-40"
                         />
-                        <span className="w-6 text-right text-[#50d678]">
+                        <span className="text-right text-[#50d678]">
                             {volume}
                         </span>
                     </label>
