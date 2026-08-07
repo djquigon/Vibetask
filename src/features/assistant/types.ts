@@ -12,8 +12,14 @@ export type AssistantAction = {
     requiresConfirmation: boolean;
 };
 
+export type AssistantChatMessage = {
+    role: 'user' | 'assistant';
+    content: string;
+};
+
 export type AssistantChatRequest = {
     message: string;
+    history?: AssistantChatMessage[];
 };
 
 export type AssistantChatResponse = {

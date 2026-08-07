@@ -2,7 +2,7 @@ import 'server-only';
 
 import { openai } from '@/lib/openai/server';
 import { serverEnv } from '@/lib/env/server';
-import type { AssistantChatResponse } from '../types';
+import type { AssistantChatMessage, AssistantChatResponse } from '../types';
 
 const VIBETASK_ASSISTANT_INSTRUCTIONS = `
 You are the Vibetask AI assistant.
@@ -23,12 +23,22 @@ Knowing that your responses may be spoken out loud by a voice generator, if the 
 `;
 
 export async function createAssistantChatResponse(
-    message: string
+    message: string,
+    history: AssistantChatMessage[] = []
 ): Promise<AssistantChatResponse> {
     const response = await openai.responses.create({
         model: serverEnv.openAiModel,
         instructions: VIBETASK_ASSISTANT_INSTRUCTIONS,
-        input: message,
+        input: [
+            ...history.map((historyMessage) => ({
+                role: historyMessage.role,
+                content: historyMessage.content,
+            })),
+            {
+                role: 'user',
+                content: message,
+            },
+        ],
     });
 
     if (response.output_text.length === 0) {

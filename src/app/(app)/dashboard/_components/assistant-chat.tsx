@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type {
     AssistantChatError,
+    AssistantChatMessage,
     AssistantChatResponse,
     AssistantMode,
 } from '@/features/assistant/types';
@@ -13,6 +14,8 @@ type ChatMessage = {
     content: string;
     revealDurationMs?: number;
 };
+
+const CHAT_HISTORY_LIMIT = 12;
 
 type AssistantChatProps = {
     mode: AssistantMode;
@@ -167,6 +170,13 @@ export function AssistantChat({
             return;
         }
 
+        const history: AssistantChatMessage[] = messages
+            .map(({ role, content }) => ({
+                role,
+                content,
+            }))
+            .slice(-CHAT_HISTORY_LIMIT);
+
         setInput('');
         setErrorMessage('');
         setIsSpeaking(false);
@@ -187,7 +197,7 @@ export function AssistantChat({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message }),
+                body: JSON.stringify({ message, history }),
             });
 
             const data = (await response.json()) as
