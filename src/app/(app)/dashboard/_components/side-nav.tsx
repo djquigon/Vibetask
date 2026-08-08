@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
 import { WinampPlayer } from './winamp-player';
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
 
 export function SideNav() {
     const pathname = usePathname();
+    const currentUser = useCurrentUser();
 
     return (
         <nav className="flex min-h-0 min-w-0 flex-col rounded-md border border-[#25392f] bg-[#0d1b17] p-3">
@@ -55,7 +57,9 @@ export function SideNav() {
                     <p className="font-mono text-xs uppercase text-[#f5bf76]">
                         Daily streak
                     </p>
-                    <p className="mt-2 text-3xl font-black text-[#ffb14f]">12</p>
+                    <p className="mt-2 text-3xl font-black text-[#ffb14f]">
+                        {currentUser?.dailyLoginStreakCount ?? 0}
+                    </p>
                     <p className="text-xs font-bold text-[#50d678]">
                         days active
                     </p>

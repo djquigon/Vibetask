@@ -15,7 +15,9 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
 
     const { data, error } = await supabase
         .from('profiles')
-        .select('id, display_name, created_at, updated_at')
+        .select(
+            'id, display_name, daily_login_streak_count, created_at, updated_at'
+        )
         .eq('id', claims.sub)
         .maybeSingle();
 
@@ -31,6 +33,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
         id: data.id,
         email: typeof claims.email === 'string' ? claims.email : null,
         displayName: data.display_name,
+        dailyLoginStreakCount: data.daily_login_streak_count ?? 0,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
     };

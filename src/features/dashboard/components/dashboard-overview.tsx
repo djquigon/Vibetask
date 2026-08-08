@@ -1,3 +1,5 @@
+'use client';
+
 const plan = [
     ['09:00 AM', 'Focus Session', 'Build dashboard shell'],
     ['10:30 AM', 'Team Standup', '30 min'],
@@ -6,13 +8,17 @@ const plan = [
     ['04:30 PM', 'Admin', 'Review analytics'],
 ];
 
+import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
+
 export function DashboardOverview() {
+    const currentUser = useCurrentUser();
+
     return (
         <div className="space-y-4">
             <section className="grid gap-3 rounded-md border border-[#f5bf76]/25 bg-[#f7d99b] p-4 text-[#08110f] md:grid-cols-[1fr_160px]">
                 <div>
-                    <h1 className="font-mono text-4xl font-black uppercase">
-                        Good morning, Logan
+                    <h1 className="font-mono text-5xl font-black uppercase">
+                        Good morning, {currentUser?.displayName}
                     </h1>
                     <p className="mt-2 font-mono text-sm">
                         Let us make today ridiculously productive.
@@ -20,7 +26,15 @@ export function DashboardOverview() {
                 </div>
                 <div className="rounded-md border border-[#7c4c2d]/30 p-3 font-mono">
                     <p className="text-xs font-bold uppercase">Current time</p>
-                    <p className="text-3xl font-black">09:42</p>
+                    <p className="text-2xl font-black">
+                        {new Date().toLocaleTimeString('en-GB', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                            timeZone: 'UTC',
+                        })}{' '}
+                        UTC
+                    </p>
                 </div>
             </section>
 

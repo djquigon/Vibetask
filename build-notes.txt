@@ -1,0 +1,19 @@
+- add a diagraming tool?
+- add a drawing tool?
+
+Main Sections should be:
+Dashboard
+Calendar
+    Scheduling project time blocks, and not tasks. For example: if I’m working on a video, I wouldn’t schedule “write script” or “edit scene X”. I would just schedule “video work” in my calendar.
+Tasks
+Projects
+Focus Session (time tracking?)
+Notes
+Analytics
+Settings
+    Theme
+    Voice Options
+Profile Separate?
+
+
+Pivot to finance app?
