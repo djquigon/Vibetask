@@ -310,7 +310,12 @@ export function AssistantChat({
                 </span>
             </div>
 
-            {mode === 'voice' ? <AssistantPortrait voice={selectedVoice} /> : null}
+            {mode === 'voice' ? (
+                <AssistantPortrait
+                    voice={selectedVoice}
+                    isSpeaking={isSpeaking}
+                />
+            ) : null}
 
             <div className="flex min-h-0 flex-1 flex-col">
                 <div
@@ -436,11 +441,17 @@ export function AssistantChat({
 
 function AssistantPortrait({
     voice,
+    isSpeaking,
 }: {
     voice: AssistantVoiceOption | undefined;
+    isSpeaking: boolean;
 }) {
     return (
-        <div className="mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-52">
+        <div
+            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-52 ${
+                isSpeaking ? 'assistant-portrait-speaking' : ''
+            }`}
+        >
             {voice?.characterImage ? (
                 <Image
                     key={voice.id}

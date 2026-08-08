@@ -39,6 +39,11 @@ export type AssistantVoiceOption = {
 
 export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
+        id: 'af77ffc672ae4a1d97ee250598ddd944',
+        name: 'Robot - Male - Friendly',
+        characterImage: robotMaleFriendlyCharacter,
+    },
+    {
         id: '271b3db7aa744ec4b311e00b288715ca',
         name: 'Space Marine',
         characterImage: spaceMarineCharacter,
@@ -157,11 +162,6 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
         id: '48ba075d2240437aa5433ccee7fecfc3',
         name: 'Robot - Male - Creepy',
         characterImage: robotMaleCreepyCharacter,
-    },
-    {
-        id: 'af77ffc672ae4a1d97ee250598ddd944',
-        name: 'Robot - Male - Friendly',
-        characterImage: robotMaleFriendlyCharacter,
     },
     {
         id: '3f4d5082bec54ea89345b141dd254633',
