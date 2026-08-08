@@ -1,5 +1,6 @@
 ﻿'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import type {
     AssistantChatError,
@@ -54,6 +55,9 @@ export function AssistantChat({
           : isLoading
             ? 'Thinking'
             : 'Online';
+    const selectedVoice = voiceOptions.find(
+        (voice) => voice.id === selectedVoiceId
+    );
 
     useEffect(() => {
         const messagesContainer = messagesContainerRef.current;
@@ -306,6 +310,8 @@ export function AssistantChat({
                 </span>
             </div>
 
+            <AssistantPortrait voice={selectedVoice} />
+
             <div className="flex min-h-0 flex-1 flex-col">
                 <div
                     className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"
@@ -425,6 +431,33 @@ export function AssistantChat({
                 </form>
             </div>
         </section>
+    );
+}
+
+function AssistantPortrait({
+    voice,
+}: {
+    voice: AssistantVoiceOption | undefined;
+}) {
+    return (
+        <div className="mb-4 h-52 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-60">
+            {voice?.characterImage ? (
+                <Image
+                    key={voice.id}
+                    src={voice.characterImage}
+                    alt={`${voice.name} assistant portrait`}
+                    className="h-full w-full object-contain object-bottom"
+                    sizes="(min-width: 1024px) 340px, 100vw"
+                    priority
+                />
+            ) : (
+                <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-[#f5bf76]">
+                    {voice
+                        ? `${voice.name} needs a character portrait.`
+                        : 'Select an assistant voice.'}
+                </div>
+            )}
+        </div>
     );
 }
 
