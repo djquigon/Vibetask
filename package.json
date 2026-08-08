@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@fullcalendar/react": "^7.0.2",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.2",
     "@types/dom-speech-recognition": "^0.0.12",
     "fish-audio": "^0.1.0",
     "next": "16.3.0",
