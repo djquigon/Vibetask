@@ -5,10 +5,7 @@ import type { WindowPositions } from 'webamp';
 import { useEffect, useRef, useState } from 'react';
 
 type PlayerStatus = 'idle' | 'loading' | 'ready' | 'unsupported' | 'error';
-type ResizableWindowSizes = Record<
-    'playlist' | 'milkdrop',
-    [number, number]
->;
+type ResizableWindowSizes = Record<'playlist' | 'milkdrop', [number, number]>;
 
 const WINAMP_WINDOW_WIDTH = 275;
 const WINAMP_WINDOW_HEIGHT = 116;
@@ -19,6 +16,9 @@ const DOCKED_MILKDROP_SIZE: [number, number] = [0, 2];
 export function WinampPlayer() {
     const pageRef = useRef<HTMLDivElement>(null);
     const milkdropDockRef = useRef<HTMLElement>(null);
+    const musicUploadInputRef = useRef<HTMLInputElement>(null);
+    const nowPlayingViewportRef = useRef<HTMLDivElement>(null);
+    const nowPlayingTextRef = useRef<HTMLSpanElement>(null);
     const playerRef = useRef<Webamp | null>(null);
     const unsubscribeCloseRef = useRef<(() => void) | null>(null);
     const unsubscribeStateRef = useRef<(() => void) | null>(null);
@@ -37,6 +37,9 @@ export function WinampPlayer() {
     const [isOpen, setIsOpen] = useState(false);
     const [isMilkdropPoppedOut, setIsMilkdropPoppedOut] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [nowPlaying, setNowPlaying] = useState('No track selected');
+    const [isNowPlayingOverflowing, setIsNowPlayingOverflowing] =
+        useState(false);
     const [volume, setVolume] = useState(100);
     const [popoutError, setPopoutError] = useState(false);
     const [status, setStatus] = useState<PlayerStatus>('idle');
@@ -67,6 +70,42 @@ export function WinampPlayer() {
         isOpenRef.current = isOpen;
     }, [isOpen]);
 
+    useEffect(() => {
+        const viewport = nowPlayingViewportRef.current;
+        const text = nowPlayingTextRef.current;
+
+        if (!viewport || !text) {
+            return;
+        }
+
+        let frameId = window.requestAnimationFrame(updateOverflowState);
+        const resizeObserver = new ResizeObserver(() => {
+            window.cancelAnimationFrame(frameId);
+            frameId = window.requestAnimationFrame(updateOverflowState);
+        });
+
+        resizeObserver.observe(viewport);
+        resizeObserver.observe(text);
+
+        return () => {
+            window.cancelAnimationFrame(frameId);
+            resizeObserver.disconnect();
+        };
+
+        function updateOverflowState() {
+            const currentViewport = nowPlayingViewportRef.current;
+            const currentText = nowPlayingTextRef.current;
+
+            if (!currentViewport || !currentText) {
+                return;
+            }
+
+            setIsNowPlayingOverflowing(
+                currentText.scrollWidth > currentViewport.clientWidth + 1
+            );
+        }
+    }, [isNowPlayingOverflowing, nowPlaying]);
+
     function setPlayerVisibility(isVisible: boolean) {
         const player = playerRef.current;
 
@@ -77,7 +116,8 @@ export function WinampPlayer() {
         const popout = popoutWindowRef.current;
 
         if (popout && !popout.closed) {
-            const popoutWebampElement = popout.document.getElementById('webamp');
+            const popoutWebampElement =
+                popout.document.getElementById('webamp');
 
             if (popoutWebampElement) {
                 popoutWebampElement.style.display = isVisible ? '' : 'none';
@@ -136,10 +176,8 @@ export function WinampPlayer() {
 
         webampElement
             .querySelector<HTMLElement>('canvas')
-            ?.closest<HTMLElement>('.gen-window')?.style.setProperty(
-                'display',
-                showMilkdrop ? '' : 'none'
-            );
+            ?.closest<HTMLElement>('.gen-window')
+            ?.style.setProperty('display', showMilkdrop ? '' : 'none');
     }
 
     function layoutDockedMilkdrop(player: Webamp) {
@@ -163,7 +201,8 @@ export function WinampPlayer() {
             milkdropDock.appendChild(webampElement);
         }
 
-        const milkdropWindow = player.store.getState().windows.genWindows.milkdrop;
+        const milkdropWindow =
+            player.store.getState().windows.genWindows.milkdrop;
 
         if (!dockedMilkdropLayoutRef.current) {
             dockedMilkdropLayoutRef.current = {
@@ -173,8 +212,7 @@ export function WinampPlayer() {
         }
 
         const milkdropWidth =
-            WINAMP_WINDOW_WIDTH +
-            DOCKED_MILKDROP_SIZE[0] * WINAMP_RESIZE_WIDTH;
+            WINAMP_WINDOW_WIDTH + DOCKED_MILKDROP_SIZE[0] * WINAMP_RESIZE_WIDTH;
 
         player.store.dispatch({
             type: 'WINDOW_SIZE_CHANGED',
@@ -234,8 +272,7 @@ export function WinampPlayer() {
         );
         const milkdropExtraHeight = playlistExtraHeight + 8;
         const contentWidth =
-            WINAMP_WINDOW_WIDTH * 2 +
-            milkdropExtraWidth * WINAMP_RESIZE_WIDTH;
+            WINAMP_WINDOW_WIDTH * 2 + milkdropExtraWidth * WINAMP_RESIZE_WIDTH;
         const contentHeight =
             WINAMP_WINDOW_HEIGHT * 3 +
             playlistExtraHeight * WINAMP_RESIZE_HEIGHT;
@@ -261,7 +298,8 @@ export function WinampPlayer() {
             absolute: true,
         });
 
-        const outerWidth = contentWidth + (popout.outerWidth - popout.innerWidth);
+        const outerWidth =
+            contentWidth + (popout.outerWidth - popout.innerWidth);
         const outerHeight =
             contentHeight + (popout.outerHeight - popout.innerHeight);
 
@@ -298,10 +336,7 @@ export function WinampPlayer() {
             }
 
             if (originalWindowSizesRef.current) {
-                for (const windowId of [
-                    'playlist',
-                    'milkdrop',
-                ] as const) {
+                for (const windowId of ['playlist', 'milkdrop'] as const) {
                     player.store.dispatch({
                         type: 'WINDOW_SIZE_CHANGED',
                         windowId,
@@ -507,11 +542,11 @@ export function WinampPlayer() {
             });
             unsubscribeStateRef.current = webamp.__onStateChange(() => {
                 if (!disposedRef.current) {
-                    const nextIsPlaying =
-                        webamp.getMediaStatus() === 'PLAYING';
+                    const nextIsPlaying = webamp.getMediaStatus() === 'PLAYING';
 
                     setIsPlaying(nextIsPlaying);
                     setVolume(webamp.store.getState().media.volume);
+                    setNowPlaying(getNowPlayingLabel(webamp));
 
                     if (nextIsPlaying !== wasPlayingRef.current) {
                         wasPlayingRef.current = nextIsPlaying;
@@ -525,6 +560,7 @@ export function WinampPlayer() {
             if (!disposedRef.current) {
                 webampElementRef.current = document.getElementById('webamp');
                 setVolume(webamp.store.getState().media.volume);
+                setNowPlaying(getNowPlayingLabel(webamp));
                 setStatus('ready');
             }
         } catch {
@@ -557,7 +593,65 @@ export function WinampPlayer() {
         playerRef.current?.setVolume(nextVolume);
     }
 
+    function getNowPlayingLabel(player: Webamp) {
+        const playerState = player.store.getState();
+        const trackId = playerState.playlist.currentTrack;
+
+        if (trackId === null) {
+            return 'No track selected';
+        }
+
+        const track = playerState.tracks[trackId];
+
+        if (!track) {
+            return 'Loading track...';
+        }
+
+        const artistAndTitle = [track.artist, track.title]
+            .filter(Boolean)
+            .join(' - ');
+
+        return artistAndTitle || track.defaultName || 'Unknown track';
+    }
+
+    async function addMusicFiles(files: FileList | null) {
+        const selectedFiles = Array.from(files ?? []).filter((file) =>
+            file.type.startsWith('audio/')
+        );
+
+        if (selectedFiles.length === 0) {
+            return;
+        }
+
+        let player = playerRef.current;
+
+        if (!player) {
+            await togglePlayer();
+            player = playerRef.current;
+        } else if (player.getPlayerMediaStatus() === 'CLOSED') {
+            player.reopen();
+        }
+
+        if (!player) {
+            return;
+        }
+
+        player.setTracksToPlay(
+            selectedFiles.map((file) => ({
+                blob: file,
+                defaultName: file.name,
+            }))
+        );
+        setNowPlaying(getNowPlayingLabel(player));
+    }
+
+    function handleMusicUpload(event: React.ChangeEvent<HTMLInputElement>) {
+        void addMusicFiles(event.target.files);
+        event.target.value = '';
+    }
+
     const controlsDisabled = status !== 'ready';
+    const uploadDisabled = status === 'loading' || status === 'unsupported';
     const isDockedMilkdropVisible =
         !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
@@ -580,20 +674,52 @@ export function WinampPlayer() {
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#f5bf76]">
                         Winamp
                     </p>
-                    <div className="mt-2 flex items-center justify-center gap-1">
+                    <div className="mt-2 min-w-0 border border-[#f5bf76]/20 bg-[#0d1b17] px-2 py-1.5 text-left">
+                        <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-[#50d678]">
+                            Now playing
+                        </p>
+                        <div
+                            ref={nowPlayingViewportRef}
+                            className="mt-0.5 overflow-hidden"
+                        >
+                            {isNowPlayingOverflowing ? (
+                                <div className="now-playing-marquee flex w-max whitespace-nowrap font-mono text-[10px] font-bold text-[#f8e8c0]">
+                                    <span
+                                        ref={nowPlayingTextRef}
+                                        title={nowPlaying}
+                                        className="shrink-0 pr-8"
+                                    >
+                                        {nowPlaying}
+                                    </span>
+                                    <span
+                                        aria-hidden="true"
+                                        className="shrink-0 pr-8"
+                                    >
+                                        {nowPlaying}
+                                    </span>
+                                </div>
+                            ) : (
+                                <span
+                                    ref={nowPlayingTextRef}
+                                    title={nowPlaying}
+                                    className="block truncate font-mono text-[10px] font-bold text-[#f8e8c0]"
+                                >
+                                    {nowPlaying}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center justify-center gap-1">
                         <button
                             type="button"
                             aria-pressed={isOpen}
-                            aria-label={
-                                isOpen ? 'Hide Winamp' : 'Show Winamp'
-                            }
+                            aria-label={isOpen ? 'Hide Winamp' : 'Show Winamp'}
                             title={isOpen ? 'Hide Winamp' : 'Show Winamp'}
                             disabled={
-                                status === 'loading' ||
-                                status === 'unsupported'
+                                status === 'loading' || status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="grid size-6 shrink-0 place-items-center rounded border border-[#ff7b39] bg-[#172721] text-[#ffb14f] transition hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
+                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-[#ff7b39] bg-[#172721] text-[#ffb14f] transition hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             <svg
                                 aria-hidden="true"
@@ -625,7 +751,7 @@ export function WinampPlayer() {
                             }
                             disabled={controlsDisabled}
                             onClick={toggleMilkdropPopout}
-                            className={`${controlClassName} ${
+                            className={`order-3 ${controlClassName} ${
                                 isMilkdropPoppedOut
                                     ? 'border-[#ff7b39] text-[#ffb14f]'
                                     : ''
@@ -648,11 +774,42 @@ export function WinampPlayer() {
                         </button>
                         <button
                             type="button"
+                            aria-label="Add music files"
+                            title="Add music files"
+                            disabled={uploadDisabled}
+                            onClick={() => musicUploadInputRef.current?.click()}
+                            className={`order-3 ${controlClassName}`}
+                        >
+                            <svg
+                                aria-hidden="true"
+                                viewBox="0 0 24 24"
+                                className="size-3.5"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M12 3v12" />
+                                <path d="m8 7 4-4 4 4" />
+                                <path d="M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5" />
+                            </svg>
+                        </button>
+                        <input
+                            ref={musicUploadInputRef}
+                            type="file"
+                            accept="audio/*,.aac,.flac,.m4a,.mp3,.ogg,.wav"
+                            multiple
+                            onChange={handleMusicUpload}
+                            className="sr-only"
+                        />
+                        <button
+                            type="button"
                             aria-label="Previous track"
                             title="Previous track"
                             disabled={controlsDisabled}
                             onClick={() => playerRef.current?.previousTrack()}
-                            className={controlClassName}
+                            className={`order-1 ${controlClassName}`}
                         >
                             ◀|
                         </button>
@@ -662,7 +819,7 @@ export function WinampPlayer() {
                             title={isPlaying ? 'Pause' : 'Play'}
                             disabled={controlsDisabled}
                             onClick={togglePlayback}
-                            className={controlClassName}
+                            className={`order-1 ${controlClassName}`}
                         >
                             {isPlaying ? 'Ⅱ' : '▶'}
                         </button>
@@ -672,7 +829,7 @@ export function WinampPlayer() {
                             title="Stop"
                             disabled={controlsDisabled}
                             onClick={() => playerRef.current?.stop()}
-                            className={controlClassName}
+                            className={`order-1 ${controlClassName}`}
                         >
                             ■
                         </button>
@@ -682,10 +839,14 @@ export function WinampPlayer() {
                             title="Next track"
                             disabled={controlsDisabled}
                             onClick={() => playerRef.current?.nextTrack()}
-                            className={controlClassName}
+                            className={`order-1 ${controlClassName}`}
                         >
                             |▶
                         </button>
+                        <span
+                            aria-hidden="true"
+                            className="order-2 basis-full"
+                        />
                     </div>
                     <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-[#f5bf76]">
                         <span>Vol</span>
@@ -710,14 +871,10 @@ export function WinampPlayer() {
                         {popoutError
                             ? 'Allow pop-ups to detach Winamp'
                             : status === 'unsupported'
-                            ? 'Browser unsupported'
-                            : status === 'error'
-                              ? 'Player failed to load'
-                              : isMilkdropPoppedOut
-                                ? 'Winamp popped out'
-                              : isOpen
-                                ? 'Drag windows anywhere'
-                                : 'Player hidden'}
+                              ? 'Browser unsupported'
+                              : status === 'error'
+                                ? 'Player failed to load'
+                                : ''}
                     </p>
                 </div>
             </section>
