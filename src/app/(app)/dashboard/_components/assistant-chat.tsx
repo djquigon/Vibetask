@@ -310,7 +310,7 @@ export function AssistantChat({
                 </span>
             </div>
 
-            <AssistantPortrait voice={selectedVoice} />
+            {mode === 'voice' ? <AssistantPortrait voice={selectedVoice} /> : null}
 
             <div className="flex min-h-0 flex-1 flex-col">
                 <div
@@ -440,7 +440,7 @@ function AssistantPortrait({
     voice: AssistantVoiceOption | undefined;
 }) {
     return (
-        <div className="mb-4 h-52 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-60">
+        <div className="mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-52">
             {voice?.characterImage ? (
                 <Image
                     key={voice.id}
