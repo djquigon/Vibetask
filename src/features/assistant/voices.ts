@@ -30,6 +30,8 @@ import theJokerCharacter from './assets/characters/the-joker.png';
 import upstandingCitizenCharacter from './assets/characters/upstanding-citizen.png';
 import warrenBuffettCharacter from './assets/characters/warren-buffett.png';
 import sleepyManCharacter from './assets/characters/sleepy-man.png';
+import gangsterCharacter from './assets/characters/gangster.png';
+import rapArtistCharacter from './assets/characters/rap-artist.png';
 
 export type AssistantVoiceOption = {
     id: string;
@@ -104,8 +106,13 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
         characterImage: aSpongeCharacter,
     },
     {
-        id: '63d5460e91e2411fa2e6bf95e7456f03',
-        name: 'News Anchor',
+        id: '542fc7aab61e4561bae5ebd536d717c0',
+        name: 'News Anchor - Male',
+        characterImage: upstandingCitizenCharacter,
+    },
+    {
+        id: '7b6a7866c24d4f8ca1940c8ced3929ab',
+        name: 'News Anchor - Female',
         characterImage: newsAnchorCharacter,
     },
     {
@@ -121,11 +128,16 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
         id: 'e632a33e32b442afb45d52d112d5290f',
         name: 'Gangster',
-        characterImage: upstandingCitizenCharacter,
+        characterImage: gangsterCharacter,
     },
     {
         id: '929adc39f2f04ae78090589ffbf79f65',
         name: 'Rap Artist',
+        characterImage: rapArtistCharacter,
+    },
+    {
+        id: 'c023b17b38144a60b3984153247d993f',
+        name: 'American Gal',
         characterImage: taylorSwiftCharacter,
     },
     {

@@ -10,6 +10,7 @@ import type {
     AssistantMode,
 } from '@/features/assistant/types';
 import type { AssistantVoiceOption } from '@/features/assistant/voices';
+import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
 
 type ChatMessage = {
     role: 'user' | 'assistant';
@@ -27,6 +28,14 @@ type AssistantChatProps = {
     voiceOptions: AssistantVoiceOption[];
 };
 
+function buildGreeting(displayName: string | null | undefined) {
+    const name = displayName?.trim();
+
+    return name
+        ? `Good morning, ${name}. How can I help you today?`
+        : 'Good morning. How can I help you today?';
+}
+
 export function AssistantChat({
     mode,
     onModeChange,
@@ -34,10 +43,11 @@ export function AssistantChat({
     selectedVoiceId,
     voiceOptions,
 }: AssistantChatProps) {
+    const currentUser = useCurrentUser();
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             role: 'assistant',
-            content: 'Good morning, Logan. How can I help you today?',
+            content: buildGreeting(currentUser?.displayName),
         },
     ]);
     const [input, setInput] = useState('');
