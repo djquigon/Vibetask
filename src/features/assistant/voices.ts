@@ -25,6 +25,7 @@ import spaceMarineCharacter from './assets/characters/space-marine.png';
 import spaceQueenCharacter from './assets/characters/space-queen.png';
 import steveHarveyCharacter from './assets/characters/steve-harvey.png';
 import taylorSwiftCharacter from './assets/characters/taylor-swift.png';
+import techSupportFemaleCharacter from './assets/characters/tech-support-female.png';
 import theDarkEmperorCharacter from './assets/characters/the-dark-emperor.png';
 import theJokerCharacter from './assets/characters/the-joker.png';
 import upstandingCitizenCharacter from './assets/characters/upstanding-citizen.png';
@@ -83,7 +84,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     {
         id: '0429f2b252464b88b2ab2128f084290c',
         name: 'Tech Support - Female',
-        characterImage: rohitSharmaCharacter,
+        characterImage: techSupportFemaleCharacter,
     },
     {
         id: '2d68791e46f34687bd1231e2086ee925',
