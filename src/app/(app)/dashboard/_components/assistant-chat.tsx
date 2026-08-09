@@ -457,6 +457,29 @@ function AssistantPortrait({
     voice: AssistantVoiceOption | undefined;
     isSpeaking: boolean;
 }) {
+    const [displayedVoice, setDisplayedVoice] = useState(voice);
+    const [isSwitchingVoice, setIsSwitchingVoice] = useState(false);
+
+    useEffect(() => {
+        if (voice?.id === displayedVoice?.id) {
+            return;
+        }
+
+        const fadeTimer = window.setTimeout(() => {
+            setIsSwitchingVoice(true);
+        }, 0);
+
+        const swapTimer = window.setTimeout(() => {
+            setDisplayedVoice(voice);
+            setIsSwitchingVoice(false);
+        }, 180);
+
+        return () => {
+            window.clearTimeout(fadeTimer);
+            window.clearTimeout(swapTimer);
+        };
+    }, [displayedVoice?.id, voice]);
+
     return (
         <div
             className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] bg-cover bg-center sm:h-52 ${
@@ -464,26 +487,34 @@ function AssistantPortrait({
             }`}
             style={{ backgroundImage: `url(${characterBackground.src})` }}
         >
-            {voice?.characterImage ? (
-                <Image
-                    key={voice.id}
-                    src={voice.characterImage}
-                    alt={`${voice.name} assistant portrait`}
-                    className={`h-full w-full object-contain object-bottom ${
-                        isSpeaking
-                            ? 'assistant-portrait-image-speaking'
-                            : 'assistant-portrait-image-idle'
-                    }`}
-                    sizes="(min-width: 1024px) 340px, 100vw"
-                    priority
-                />
-            ) : (
-                <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-[#f5bf76]">
-                    {voice
-                        ? `${voice.name} needs a character portrait.`
-                        : 'Select an assistant voice.'}
-                </div>
-            )}
+            <div
+                className={`h-full w-full ${
+                    isSwitchingVoice
+                        ? 'assistant-portrait-fade-out'
+                        : 'assistant-portrait-fade-in'
+                }`}
+            >
+                {displayedVoice?.characterImage ? (
+                    <Image
+                        key={displayedVoice.id}
+                        src={displayedVoice.characterImage}
+                        alt={`${displayedVoice.name} assistant portrait`}
+                        className={`h-full w-full object-contain object-bottom ${
+                            isSpeaking
+                                ? 'assistant-portrait-image-speaking'
+                                : 'assistant-portrait-image-idle'
+                        }`}
+                        sizes="(min-width: 1024px) 340px, 100vw"
+                        priority
+                    />
+                ) : (
+                    <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-[#f5bf76]">
+                        {displayedVoice
+                            ? `${displayedVoice.name} needs a character portrait.`
+                            : 'Select an assistant voice.'}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
