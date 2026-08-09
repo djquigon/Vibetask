@@ -60,22 +60,27 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: 'fa049bec789c4968864a85e53dd68364',
-        name: 'Warren Buffett',
+        name: 'Stock Market Analyst',
         characterImage: warrenBuffettCharacter,
     },
     {
         id: 'fad5a5a6770e47019f566b8f8c0ff609',
-        name: 'The Joker',
+        name: 'Clown',
         characterImage: theJokerCharacter,
     },
     {
         id: '3ad4d432023c47ee9e6c7805b973630a',
-        name: 'Morgan Freeman',
+        name: 'Audiobook Narrator',
         characterImage: morganFreemanCharacter,
     },
     {
+        id: 'ce9c96291460478ea6851049cb847d73',
+        name: 'Tech Support - Male',
+        characterImage: rohitSharmaCharacter,
+    },
+    {
         id: '0429f2b252464b88b2ab2128f084290c',
-        name: 'Rohit Sharma',
+        name: 'Tech Support - Female',
         characterImage: rohitSharmaCharacter,
     },
     {
@@ -85,7 +90,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: '2947ec32c7e1479c8ec5628a1fc035f1',
-        name: 'Socrates',
+        name: 'Greek Philosopher',
         characterImage: socratesCharacter,
     },
     {
@@ -115,17 +120,17 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: 'e632a33e32b442afb45d52d112d5290f',
-        name: 'Upstanding Citizen',
+        name: 'Gangster',
         characterImage: upstandingCitizenCharacter,
     },
     {
         id: '929adc39f2f04ae78090589ffbf79f65',
-        name: 'Taylor Swift',
+        name: 'Rap Artist',
         characterImage: taylorSwiftCharacter,
     },
     {
         id: '75e451f629a44984a2b54c26de2f9826',
-        name: 'Steve Harvey',
+        name: 'Game Show Host',
         characterImage: steveHarveyCharacter,
     },
     {
@@ -135,7 +140,7 @@ export const ASSISTANT_VOICE_OPTIONS: AssistantVoiceOption[] = [
     },
     {
         id: 'd75c270eaee14c8aa1e9e980cc37cf1b',
-        name: 'Peter Griffin',
+        name: 'A Family Guy',
         characterImage: peterGriffinCharacter,
     },
     {

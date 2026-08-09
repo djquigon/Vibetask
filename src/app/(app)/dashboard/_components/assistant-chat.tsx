@@ -459,7 +459,11 @@ function AssistantPortrait({
                     key={voice.id}
                     src={voice.characterImage}
                     alt={`${voice.name} assistant portrait`}
-                    className="h-full w-full object-contain object-bottom"
+                    className={`h-full w-full object-contain object-bottom ${
+                        isSpeaking
+                            ? 'assistant-portrait-image-speaking'
+                            : 'assistant-portrait-image-idle'
+                    }`}
                     sizes="(min-width: 1024px) 340px, 100vw"
                     priority
                 />

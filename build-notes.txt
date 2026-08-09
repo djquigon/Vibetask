@@ -12,7 +12,8 @@ Notes
 Analytics
 Settings
     Theme
-    Voice Options
+    Available Voice Options
+    Voice tone
 Profile Separate?
 
 

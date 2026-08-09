@@ -102,6 +102,16 @@ a {
     border-color: #50d678;
 }
 
+.assistant-portrait-image-idle {
+    animation: assistant-portrait-idle 4.5s ease-in-out infinite;
+    transform-origin: center bottom;
+}
+
+.assistant-portrait-image-speaking {
+    animation: assistant-portrait-image-speaking 800ms ease-in-out infinite;
+    transform-origin: center bottom;
+}
+
 .now-playing-marquee {
     animation: now-playing-marquee 10s linear infinite;
 }
@@ -131,6 +141,30 @@ a {
     }
 }
 
+@keyframes assistant-portrait-idle {
+    0%,
+    100% {
+        transform: translateY(8px) scale(1);
+    }
+
+    50% {
+        transform: translateY(4px) scale(1.012);
+    }
+}
+
+@keyframes assistant-portrait-image-speaking {
+    0%,
+    100% {
+        filter: brightness(1);
+        transform: translateY(8px) scale(1);
+    }
+
+    50% {
+        filter: brightness(1.08);
+        transform: translateY(2px) scale(1.028);
+    }
+}
+
 @keyframes now-playing-marquee {
     0%,
     12% {
@@ -147,6 +181,11 @@ a {
     .assistant-portrait-speaking {
         animation: none;
         box-shadow: 0 0 16px rgb(80 214 120 / 0.45);
+    }
+
+    .assistant-portrait-image-idle,
+    .assistant-portrait-image-speaking {
+        animation: none;
     }
 
     .now-playing-marquee {
