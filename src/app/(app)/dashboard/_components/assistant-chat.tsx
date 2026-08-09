@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import Image from 'next/image';
+import characterBackground from '@/features/assistant/assets/backgrounds/character-bg.png';
 import { useEffect, useRef, useState } from 'react';
 import type {
     AssistantChatError,
@@ -448,9 +449,10 @@ function AssistantPortrait({
 }) {
     return (
         <div
-            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] sm:h-52 ${
+            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] bg-cover bg-center sm:h-52 ${
                 isSpeaking ? 'assistant-portrait-speaking' : ''
             }`}
+            style={{ backgroundImage: `url(${characterBackground.src})` }}
         >
             {voice?.characterImage ? (
                 <Image
