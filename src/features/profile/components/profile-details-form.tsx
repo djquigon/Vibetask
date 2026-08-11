@@ -34,7 +34,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
             <div className="flex flex-wrap items-center gap-4">
                 <div
                     aria-label="Current profile picture"
-                    className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-[#f5bf76]/25 bg-[#08110f] bg-cover bg-center font-mono text-2xl font-black text-[#ffb14f]"
+                    className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-vt-amber/25 bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
                     role="img"
                     style={
                         profile.avatarUrl
@@ -47,23 +47,23 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
 
                 <div className="min-w-0 flex-1">
                     <label
-                        className="block font-mono text-sm font-black uppercase text-[#f5bf76]"
+                        className="block font-mono text-sm font-black uppercase text-vt-amber"
                         htmlFor="profile-avatar"
                     >
                         Profile picture
                     </label>
                     <input
                         accept="image/jpeg,image/png,image/webp"
-                        className="mt-2 block w-full min-w-0 text-sm text-[#f8e8c0] file:mr-3 file:rounded-md file:border-0 file:bg-[#ff7b39] file:px-3 file:py-2 file:font-mono file:text-xs file:font-black file:uppercase file:text-[#08110f] hover:file:bg-[#ff934f]"
+                        className="mt-2 block w-full min-w-0 text-sm text-vt-text file:mr-3 file:rounded-md file:border-0 file:bg-vt-orange file:px-3 file:py-2 file:font-mono file:text-xs file:font-black file:uppercase file:text-vt-ink hover:file:bg-vt-orange-hover"
                         disabled={isPending}
                         id="profile-avatar"
                         name="avatar"
                         type="file"
                     />
                     {profile.hasAvatar ? (
-                        <label className="mt-3 flex w-fit items-center gap-2 font-mono text-xs text-[#f8e8c0]">
+                        <label className="mt-3 flex w-fit items-center gap-2 font-mono text-xs text-vt-text">
                             <input
-                                className="h-4 w-4 accent-[#ff7b39]"
+                                className="h-4 w-4 accent-vt-orange"
                                 disabled={isPending}
                                 name="removeAvatar"
                                 type="checkbox"
@@ -76,11 +76,11 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
 
             <div className="grid gap-4 md:grid-cols-2">
                 <label className="block min-w-0">
-                    <span className="font-mono text-sm font-black uppercase text-[#f5bf76]">
+                    <span className="font-mono text-sm font-black uppercase text-vt-amber">
                         Display name
                     </span>
                     <input
-                        className="mt-2 h-11 w-full rounded-md border border-[#f5bf76]/25 bg-[#08110f] px-3 text-sm text-[#f8e8c0] outline-none transition placeholder:text-[#796b52] focus:border-[#50d678]"
+                        className="mt-2 h-11 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 text-sm text-vt-text outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                         defaultValue={profile.displayName ?? ''}
                         disabled={isPending}
                         maxLength={80}
@@ -90,11 +90,11 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                 </label>
 
                 <label className="block min-w-0">
-                    <span className="font-mono text-sm font-black uppercase text-[#f5bf76]">
+                    <span className="font-mono text-sm font-black uppercase text-vt-amber">
                         Email
                     </span>
                     <input
-                        className="mt-2 h-11 w-full cursor-default rounded-md border border-[#25392f] bg-[#101d19] px-3 text-sm text-[#a99e80] outline-none"
+                        className="mt-2 h-11 w-full cursor-default rounded-md border border-vt-border bg-vt-surface-raised px-3 text-sm text-vt-text-dim outline-none"
                         readOnly
                         type="email"
                         value={profile.email ?? ''}
@@ -103,11 +103,11 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
             </div>
 
             <label className="block">
-                <span className="font-mono text-sm font-black uppercase text-[#f5bf76]">
+                <span className="font-mono text-sm font-black uppercase text-vt-amber">
                     Assistant context
                 </span>
                 <textarea
-                    className="mt-2 min-h-36 w-full resize-y rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 text-sm leading-6 text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
+                    className="mt-2 min-h-36 w-full resize-y rounded-md border border-vt-amber/25 bg-vt-background p-3 text-sm leading-6 text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
                     defaultValue={profile.assistantContext ?? ''}
                     disabled={isPending}
                     maxLength={2000}
@@ -120,17 +120,17 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                     aria-live="polite"
                     className={`font-mono text-sm ${
                         state.status === 'success'
-                            ? 'text-[#50d678]'
-                            : 'text-[#ff674d]'
+                            ? 'text-vt-green'
+                            : 'text-vt-red'
                     }`}
                 >
                     {state.message}
                 </p>
             ) : null}
 
-            <div className="flex justify-end border-t border-[#25392f] pt-4">
+            <div className="flex justify-end border-t border-vt-border pt-4">
                 <button
-                    className="rounded-md bg-[#ff7b39] px-4 py-2 font-mono text-sm font-black uppercase text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-md bg-vt-orange px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={isPending}
                     type="submit"
                 >

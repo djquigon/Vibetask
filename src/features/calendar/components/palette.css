@@ -1,64 +1,64 @@
 :root {
     /* buttons — warm amber controls on dark panels */
-    --fc-classic-button: #241b10;
-    --fc-classic-button-border: #7c4c2d;
-    --fc-classic-button-strong: #ff7b39;
-    --fc-classic-button-strong-border: #ffb14f;
-    --fc-classic-button-outline: #f5bf7680;
-    --fc-classic-button-foreground: #f8e8c0;
+    --fc-classic-button: var(--vt-amber-surface);
+    --fc-classic-button-border: var(--vt-border-strong);
+    --fc-classic-button-strong: var(--vt-orange);
+    --fc-classic-button-strong-border: var(--vt-gold);
+    --fc-classic-button-outline: color-mix(in srgb, var(--vt-amber) 50%, transparent);
+    --fc-classic-button-foreground: var(--vt-text);
 
     /* primary — terminal green for focus / active chrome */
-    --fc-classic-primary: #50d678;
-    --fc-classic-primary-foreground: #08110f;
+    --fc-classic-primary: var(--vt-green);
+    --fc-classic-primary-foreground: var(--vt-ink);
 
     /* calendar content */
-    --fc-classic-event: #ff7b39;
-    --fc-classic-event-contrast: #08110f;
-    --fc-classic-background-event: #50d678;
+    --fc-classic-event: var(--vt-orange);
+    --fc-classic-event-contrast: var(--vt-ink);
+    --fc-classic-background-event: var(--vt-green);
     --fc-classic-background-event-opacity: 18%;
     --fc-classic-background-event-foreground-opacity: 70%;
-    --fc-classic-highlight: #50d67833;
-    --fc-classic-today: #ffb14f26;
-    --fc-classic-now: #ff674d;
+    --fc-classic-highlight: color-mix(in srgb, var(--vt-green) 20%, transparent);
+    --fc-classic-today: color-mix(in srgb, var(--vt-gold) 15%, transparent);
+    --fc-classic-now: var(--vt-red);
     /* non-colors */
     --fc-classic-small-dot-width: 8px;
     --fc-classic-large-dot-width: 10px;
 
     /* neutral backgrounds — dense console panels */
-    --fc-classic-background: #0d1b17;
-    --fc-classic-faint: #f8e8c00a;
-    --fc-classic-muted: #f8e8c014;
-    --fc-classic-strong: #f8e8c024;
+    --fc-classic-background: var(--vt-surface);
+    --fc-classic-faint: color-mix(in srgb, var(--vt-text) 4%, transparent);
+    --fc-classic-muted: color-mix(in srgb, var(--vt-text) 8%, transparent);
+    --fc-classic-strong: color-mix(in srgb, var(--vt-text) 14%, transparent);
 
     /* neutral foregrounds — warm parchment text */
-    --fc-classic-foreground: #f8e8c0;
-    --fc-classic-faint-foreground: #796b52;
-    --fc-classic-muted-foreground: #f5bf76;
+    --fc-classic-foreground: var(--vt-text);
+    --fc-classic-faint-foreground: var(--vt-text-faint);
+    --fc-classic-muted-foreground: var(--vt-amber);
 
     /* neutral borders — muted green + amber rails */
-    --fc-classic-border: #25392f;
-    --fc-classic-strong-border: #7c4c2d;
+    --fc-classic-border: var(--vt-border);
+    --fc-classic-strong-border: var(--vt-border-strong);
 }
 
 @media not print {
     [data-color-scheme='dark'] {
         /* calendar content */
-        --fc-classic-highlight: #50d67840;
-        --fc-classic-today: #ffb14f33;
+        --fc-classic-highlight: color-mix(in srgb, var(--vt-green) 25%, transparent);
+        --fc-classic-today: color-mix(in srgb, var(--vt-gold) 20%, transparent);
 
         /* neutral backgrounds */
-        --fc-classic-background: #08110f;
-        --fc-classic-faint: #f8e8c00a;
-        --fc-classic-muted: #f8e8c014;
-        --fc-classic-strong: #f8e8c024;
+        --fc-classic-background: var(--vt-background);
+        --fc-classic-faint: color-mix(in srgb, var(--vt-text) 4%, transparent);
+        --fc-classic-muted: color-mix(in srgb, var(--vt-text) 8%, transparent);
+        --fc-classic-strong: color-mix(in srgb, var(--vt-text) 14%, transparent);
 
         /* neutral foregrounds */
-        --fc-classic-foreground: #fff0c8;
-        --fc-classic-faint-foreground: #796b52;
-        --fc-classic-muted-foreground: #f5bf76;
+        --fc-classic-foreground: var(--vt-text-strong);
+        --fc-classic-faint-foreground: var(--vt-text-faint);
+        --fc-classic-muted-foreground: var(--vt-amber);
 
         /* neutral borders */
-        --fc-classic-border: #25392f;
-        --fc-classic-strong-border: #7c4c2d;
+        --fc-classic-border: var(--vt-border);
+        --fc-classic-strong-border: var(--vt-border-strong);
     }
 }

@@ -388,9 +388,15 @@ export function WinampPlayer() {
 
         setPopoutError(false);
         popout.document.title = 'Vibetask Winamp';
+        popout.document.documentElement.dataset.theme =
+            document.documentElement.dataset.theme ?? 'default';
         popout.document.body.style.margin = '0';
         popout.document.body.style.overflow = 'hidden';
-        popout.document.body.style.background = '#08110f';
+        popout.document.body.style.background = getComputedStyle(
+            document.documentElement
+        )
+            .getPropertyValue('--vt-background')
+            .trim();
 
         document
             .querySelectorAll('style, link[rel="stylesheet"]')
@@ -655,7 +661,7 @@ export function WinampPlayer() {
     const isDockedMilkdropVisible =
         !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
-        'grid size-6 shrink-0 place-items-center rounded border border-[#f5bf76]/30 bg-[#172721] font-mono text-[9px] font-black text-[#50d678] transition hover:border-[#ff7b39] hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-40';
+        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-green transition hover:border-vt-orange hover:bg-vt-orange hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
 
     return (
         <>
@@ -663,19 +669,19 @@ export function WinampPlayer() {
                 <section
                     ref={milkdropDockRef}
                     aria-label="Milkdrop visualizer"
-                    className="relative h-44 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f]"
+                    className="relative h-44 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background"
                 />
             )}
             <section
                 aria-label="Winamp music player"
-                className="grid place-items-center rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-3"
+                className="grid place-items-center rounded-md border border-vt-amber/20 bg-vt-background p-3"
             >
                 <div className="w-full min-w-0 text-center">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#f5bf76]">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-vt-amber">
                         Winamp
                     </p>
-                    <div className="mt-2 min-w-0 border border-[#f5bf76]/20 bg-[#0d1b17] px-2 py-1.5 text-left">
-                        <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-[#50d678]">
+                    <div className="mt-2 min-w-0 border border-vt-amber/20 bg-vt-surface px-2 py-1.5 text-left">
+                        <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-vt-green">
                             Now playing
                         </p>
                         <div
@@ -683,7 +689,7 @@ export function WinampPlayer() {
                             className="mt-0.5 overflow-hidden"
                         >
                             {isNowPlayingOverflowing ? (
-                                <div className="now-playing-marquee flex w-max whitespace-nowrap font-mono text-[10px] font-bold text-[#f8e8c0]">
+                                <div className="now-playing-marquee flex w-max whitespace-nowrap font-mono text-[10px] font-bold text-vt-text">
                                     <span
                                         ref={nowPlayingTextRef}
                                         title={nowPlaying}
@@ -702,7 +708,7 @@ export function WinampPlayer() {
                                 <span
                                     ref={nowPlayingTextRef}
                                     title={nowPlaying}
-                                    className="block truncate font-mono text-[10px] font-bold text-[#f8e8c0]"
+                                    className="block truncate font-mono text-[10px] font-bold text-vt-text"
                                 >
                                     {nowPlaying}
                                 </span>
@@ -719,7 +725,7 @@ export function WinampPlayer() {
                                 status === 'loading' || status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-[#ff7b39] bg-[#172721] text-[#ffb14f] transition hover:bg-[#ff7b39] hover:text-[#08110f] disabled:cursor-not-allowed disabled:opacity-60"
+                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-orange bg-vt-green-hover text-vt-gold transition hover:bg-vt-orange hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             <svg
                                 aria-hidden="true"
@@ -753,7 +759,7 @@ export function WinampPlayer() {
                             onClick={toggleMilkdropPopout}
                             className={`order-3 ${controlClassName} ${
                                 isMilkdropPoppedOut
-                                    ? 'border-[#ff7b39] text-[#ffb14f]'
+                                    ? 'border-vt-orange text-vt-gold'
                                     : ''
                             }`}
                         >
@@ -848,7 +854,7 @@ export function WinampPlayer() {
                             className="order-2 basis-full"
                         />
                     </div>
-                    <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-[#f5bf76]">
+                    <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-vt-amber">
                         <span>Vol</span>
                         <input
                             type="range"
@@ -861,13 +867,13 @@ export function WinampPlayer() {
                             onChange={(event) =>
                                 changeVolume(Number(event.target.value))
                             }
-                            className="h-1 min-w-0 flex-1 cursor-pointer accent-[#ff7b39] disabled:cursor-not-allowed disabled:opacity-40"
+                            className="h-1 min-w-0 flex-1 cursor-pointer accent-vt-orange disabled:cursor-not-allowed disabled:opacity-40"
                         />
-                        <span className="text-right text-[#50d678]">
+                        <span className="text-right text-vt-green">
                             {volume}
                         </span>
                     </label>
-                    <p className="mt-2 font-mono text-[9px] uppercase text-[#50d678]">
+                    <p className="mt-2 font-mono text-[9px] uppercase text-vt-green">
                         {popoutError
                             ? 'Allow pop-ups to detach Winamp'
                             : status === 'unsupported'

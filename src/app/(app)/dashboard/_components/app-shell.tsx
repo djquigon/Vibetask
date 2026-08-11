@@ -43,10 +43,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     }, [activeVoiceOptions, selectedVoiceId]);
 
     return (
-        <main className="h-screen overflow-hidden bg-[#07110f] p-3 text-[#f8e8c0]">
-            <div className="grid h-full min-h-0 gap-3 rounded-lg border border-[#7c4c2d] bg-[#0b1512] p-3 shadow-2xl shadow-black/40 lg:grid-cols-[220px_minmax(0,1fr)_340px]">
+        <main className="h-screen overflow-hidden bg-vt-background-deep p-3 text-vt-text">
+            <div className="grid h-full min-h-0 gap-3 rounded-lg border border-vt-border-strong bg-vt-shell p-3 shadow-2xl shadow-black/40 lg:grid-cols-[220px_minmax(0,1fr)_340px]">
                 <SideNav />
-                <section className="min-h-0 min-w-0 overflow-auto rounded-md border border-[#25392f] bg-[#101d19] p-4">
+                <section className="min-h-0 min-w-0 overflow-auto rounded-md border border-vt-border bg-vt-surface-raised p-4">
                     {children}
                 </section>
                 <aside className="flex min-h-0 min-w-0 flex-col gap-3">

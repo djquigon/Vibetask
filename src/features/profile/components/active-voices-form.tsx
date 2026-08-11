@@ -76,12 +76,12 @@ export function ActiveVoicesForm({
 
     return (
         <form action={formAction} className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#25392f] pb-4">
-                <p className="font-mono text-sm text-[#a99e80]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-vt-border pb-4">
+                <p className="font-mono text-sm text-vt-text-dim">
                     {selectedVoiceIds.size} active
                 </p>
                 <button
-                    className="font-mono text-xs font-black uppercase text-[#50d678] transition hover:text-[#f8e8c0] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="font-mono text-xs font-black uppercase text-vt-green transition hover:text-vt-text disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={isPending}
                     onClick={toggleAllVoices}
                     type="button"
@@ -99,14 +99,14 @@ export function ActiveVoicesForm({
                         <label
                             className={`flex min-w-0 items-center gap-3 rounded-md border px-3 py-2 transition ${
                                 isSelected
-                                    ? 'border-[#50d678]/50 bg-[#102a1d] text-[#f8e8c0]'
-                                    : 'border-[#25392f] bg-[#08110f] text-[#a99e80] hover:border-[#f5bf76]/40'
+                                    ? 'border-vt-green/50 bg-vt-green-surface text-vt-text'
+                                    : 'border-vt-border bg-vt-background text-vt-text-dim hover:border-vt-amber/40'
                             }`}
                             key={voice.id}
                         >
                             <input
                                 checked={isSelected}
-                                className="h-4 w-4 shrink-0 accent-[#ff7b39]"
+                                className="h-4 w-4 shrink-0 accent-vt-orange"
                                 name="voiceIds"
                                 onChange={() => toggleVoice(voice.id)}
                                 type="checkbox"
@@ -125,17 +125,17 @@ export function ActiveVoicesForm({
                     aria-live="polite"
                     className={`font-mono text-sm ${
                         state.status === 'success'
-                            ? 'text-[#50d678]'
-                            : 'text-[#ff674d]'
+                            ? 'text-vt-green'
+                            : 'text-vt-red'
                     }`}
                 >
                     {state.message}
                 </p>
             ) : null}
 
-            <div className="flex justify-end border-t border-[#25392f] pt-4">
+            <div className="flex justify-end border-t border-vt-border pt-4">
                 <button
-                    className="rounded-md bg-[#ff7b39] px-4 py-2 font-mono text-sm font-black uppercase text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-md bg-vt-orange px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={isPending || selectedVoiceIds.size === 0}
                     type="submit"
                 >

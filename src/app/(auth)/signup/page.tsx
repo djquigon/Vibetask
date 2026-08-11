@@ -27,7 +27,7 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
             footer={
                 <>
                     Already have an account?{' '}
-                    <Link className="font-bold text-[#ff9a56]" href="/login">
+                    <Link className="font-bold text-vt-orange-hover" href="/login">
                         Log in
                     </Link>
                 </>

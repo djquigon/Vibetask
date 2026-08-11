@@ -1,4 +1,4 @@
-﻿type SectionPlaceholderProps = {
+type SectionPlaceholderProps = {
   title: string;
   description: string;
   items: string[];
@@ -11,14 +11,14 @@ export function SectionPlaceholder({
 }: SectionPlaceholderProps) {
   return (
     <div className="space-y-4">
-      <section className="rounded-md border border-[#f5bf76]/20 bg-[#0d1b17] p-5">
-        <p className="font-mono text-sm font-bold uppercase text-[#50d678]">
+      <section className="rounded-md border border-vt-amber/20 bg-vt-surface p-5">
+        <p className="font-mono text-sm font-bold uppercase text-vt-green">
           Dashboard view
         </p>
-        <h1 className="mt-3 font-mono text-4xl font-black uppercase text-[#fff0c8]">
+        <h1 className="mt-3 font-mono text-4xl font-black uppercase text-vt-text-strong">
           {title}
         </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#d8c79f]">
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-vt-text-muted">
           {description}
         </p>
       </section>
@@ -26,12 +26,12 @@ export function SectionPlaceholder({
         {items.map((item) => (
           <div
             key={item}
-            className="rounded-md border border-[#25392f] bg-[#08110f] p-4"
+            className="rounded-md border border-vt-border bg-vt-background p-4"
           >
-            <p className="font-mono text-sm font-bold uppercase text-[#ff7b39]">
+            <p className="font-mono text-sm font-bold uppercase text-vt-orange">
               {item}
             </p>
-            <p className="mt-3 text-sm text-[#d8c79f]">
+            <p className="mt-3 text-sm text-vt-text-muted">
               Placeholder panel for the first implementation pass.
             </p>
           </div>

@@ -15,7 +15,7 @@ export function DashboardOverview() {
 
     return (
         <div className="space-y-4">
-            <section className="grid gap-3 rounded-md border border-[#f5bf76]/25 bg-[#f7d99b] p-4 text-[#08110f] md:grid-cols-[1fr_160px]">
+            <section className="grid gap-3 rounded-md border border-vt-amber/25 bg-vt-display p-4 text-vt-ink md:grid-cols-[1fr_160px]">
                 <div>
                     <h1 className="font-mono text-5xl font-black uppercase">
                         Good morning, {currentUser?.displayName}
@@ -24,7 +24,7 @@ export function DashboardOverview() {
                         Let us make today ridiculously productive.
                     </p>
                 </div>
-                <div className="rounded-md border border-[#7c4c2d]/30 p-3 font-mono">
+                <div className="rounded-md border border-vt-border-strong/30 p-3 font-mono">
                     <p className="text-xs font-bold uppercase">Current time</p>
                     <p className="text-2xl font-black">
                         {new Date().toLocaleTimeString('en-GB', {
@@ -43,12 +43,12 @@ export function DashboardOverview() {
                     (item) => (
                         <div
                             key={item}
-                            className="rounded-md border border-[#f5bf76]/20 bg-[#0d1b17] p-4"
+                            className="rounded-md border border-vt-amber/20 bg-vt-surface p-4"
                         >
-                            <p className="font-mono text-lg font-black uppercase text-[#ff7b39]">
+                            <p className="font-mono text-lg font-black uppercase text-vt-orange">
                                 {item}
                             </p>
-                            <p className="mt-2 text-sm text-[#d8c79f]">
+                            <p className="mt-2 text-sm text-vt-text-muted">
                                 Start a focused assistant workflow.
                             </p>
                         </div>
@@ -56,25 +56,25 @@ export function DashboardOverview() {
                 )}
             </section>
 
-            <section className="rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
+            <section className="rounded-md border border-vt-border bg-vt-surface p-4">
                 <div className="mb-3 flex items-center justify-between">
-                    <h2 className="font-mono text-xl font-black uppercase text-[#f5bf76]">
+                    <h2 className="font-mono text-xl font-black uppercase text-vt-amber">
                         Today&apos;s plan
                     </h2>
-                    <span className="font-mono text-xs text-[#50d678]">
+                    <span className="font-mono text-xs text-vt-green">
                         Thursday
                     </span>
                 </div>
-                <div className="divide-y divide-[#25392f]">
+                <div className="divide-y divide-vt-border">
                     {plan.map(([time, type, title]) => (
                         <div
                             key={`${time}-${title}`}
                             className="grid grid-cols-[90px_140px_1fr_24px] gap-3 py-3 font-mono text-sm"
                         >
-                            <span className="text-[#f5bf76]">{time}</span>
-                            <span className="text-[#ff7b39]">{type}</span>
-                            <span className="text-[#fff0c8]">{title}</span>
-                            <span className="h-5 w-5 rounded-full border border-[#f5bf76]" />
+                            <span className="text-vt-amber">{time}</span>
+                            <span className="text-vt-orange">{type}</span>
+                            <span className="text-vt-text-strong">{title}</span>
+                            <span className="h-5 w-5 rounded-full border border-vt-amber" />
                         </div>
                     ))}
                 </div>
@@ -111,14 +111,14 @@ function Metric({
     caption: string;
 }) {
     return (
-        <div className="rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
-            <p className="font-mono text-sm font-bold uppercase text-[#f5bf76]">
+        <div className="rounded-md border border-vt-border bg-vt-surface p-4">
+            <p className="font-mono text-sm font-bold uppercase text-vt-amber">
                 {title}
             </p>
-            <p className="mt-4 font-mono text-4xl font-black text-[#ffb14f]">
+            <p className="mt-4 font-mono text-4xl font-black text-vt-gold">
                 {value}
             </p>
-            <p className="mt-1 text-sm text-[#d8c79f]">{caption}</p>
+            <p className="mt-1 text-sm text-vt-text-muted">{caption}</p>
         </div>
     );
 }

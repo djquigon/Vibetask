@@ -2,29 +2,32 @@ import { ASSISTANT_VOICE_OPTIONS } from '@/features/assistant/voices';
 import { ActiveVoicesForm } from '@/features/profile/components/active-voices-form';
 import { ProfileDetailsForm } from '@/features/profile/components/profile-details-form';
 import type { ProfileDetails } from '@/features/profile/types';
+import { ThemePicker } from '@/features/theme/components/theme-picker';
+import type { Theme } from '@/features/theme/types';
 
 type SettingsViewProps = {
     profile: ProfileDetails;
+    theme: Theme;
 };
 
-export function SettingsView({ profile }: SettingsViewProps) {
+export function SettingsView({ profile, theme }: SettingsViewProps) {
     return (
         <div className="mx-auto w-full max-w-3xl">
-            <div className="border-b border-[#25392f] pb-4">
-                <h1 className="font-mono text-2xl font-black uppercase text-[#ffb14f]">
+            <div className="border-b border-vt-border pb-4">
+                <h1 className="font-mono text-2xl font-black uppercase text-vt-gold">
                     Settings
                 </h1>
             </div>
 
-            <section className="mt-5 rounded-md border border-[#25392f] bg-[#0d1b17] p-5">
-                <h2 className="mb-5 font-mono text-lg font-black uppercase text-[#f8e8c0]">
+            <section className="mt-5 rounded-md border border-vt-border bg-vt-surface p-5">
+                <h2 className="mb-5 font-mono text-lg font-black uppercase text-vt-text">
                     Profile details
                 </h2>
                 <ProfileDetailsForm profile={profile} />
             </section>
 
-            <section className="mt-5 rounded-md border border-[#25392f] bg-[#0d1b17] p-5">
-                <h2 className="mb-5 font-mono text-lg font-black uppercase text-[#f8e8c0]">
+            <section className="mt-5 rounded-md border border-vt-border bg-vt-surface p-5">
+                <h2 className="mb-5 font-mono text-lg font-black uppercase text-vt-text">
                     Active voices
                 </h2>
                 <ActiveVoicesForm
@@ -34,6 +37,13 @@ export function SettingsView({ profile }: SettingsViewProps) {
                         name,
                     }))}
                 />
+            </section>
+
+            <section className="mt-5 rounded-md border border-vt-border bg-vt-surface p-5">
+                <h2 className="mb-5 font-mono text-lg font-black uppercase text-vt-text">
+                    Color theme
+                </h2>
+                <ThemePicker initialTheme={theme} />
             </section>
         </div>
     );

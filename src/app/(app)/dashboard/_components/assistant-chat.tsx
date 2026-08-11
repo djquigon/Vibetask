@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Image from 'next/image';
 import characterBackground from '@/features/assistant/assets/backgrounds/character-bg.png';
@@ -272,13 +272,13 @@ export function AssistantChat({
     }
 
     return (
-        <section className="flex min-h-0 flex-1 flex-col rounded-md border border-[#25392f] bg-[#0d1b17] p-4">
-            <div className="mb-4 flex shrink-0 items-center justify-between gap-2 border-b border-[#25392f] pb-3">
+        <section className="flex min-h-0 flex-1 flex-col rounded-md border border-vt-border bg-vt-surface p-4">
+            <div className="mb-4 flex shrink-0 items-center justify-between gap-2 border-b border-vt-border pb-3">
                 <button
                     className={`h-10 w-16 shrink-0 rounded-md border px-2 font-mono text-xs font-black uppercase transition ${
                         mode === 'voice'
-                            ? 'border-[#50d678]/40 bg-[#17351f] text-[#50d678] hover:border-[#50d678]'
-                            : 'border-[#f5bf76]/30 bg-[#241b10] text-[#f5bf76] hover:border-[#f5bf76]'
+                            ? 'border-vt-green/40 bg-vt-green-active text-vt-green hover:border-vt-green'
+                            : 'border-vt-amber/30 bg-vt-amber-surface text-vt-amber hover:border-vt-amber'
                     }`}
                     type="button"
                     onClick={() =>
@@ -300,7 +300,7 @@ export function AssistantChat({
                             Assistant voice
                         </label>
                         <select
-                            className="min-w-0 flex-1 rounded-md border border-[#f5bf76]/25 bg-[#08110f] px-3 py-2 font-mono text-sm font-black uppercase text-[#ff7b39] outline-none transition focus:border-[#50d678]"
+                            className="min-w-0 flex-1 rounded-md border border-vt-amber/25 bg-vt-background px-3 py-2 font-mono text-sm font-black uppercase text-vt-orange outline-none transition focus:border-vt-green"
                             id="assistant-voice"
                             value={selectedVoiceId}
                             onChange={(event) =>
@@ -316,7 +316,7 @@ export function AssistantChat({
                     </>
                 ) : null}
 
-                <span className="shrink-0 font-mono text-sm text-[#50d678]">
+                <span className="shrink-0 font-mono text-sm text-vt-green">
                     {assistantStatus}
                 </span>
             </div>
@@ -338,11 +338,11 @@ export function AssistantChat({
                             key={`${message.role}-${index}`}
                             className={
                                 message.role === 'user'
-                                    ? 'rounded-md border border-[#50d678]/30 bg-[#0f2b1a] p-4'
-                                    : 'rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-4'
+                                    ? 'rounded-md border border-vt-green/30 bg-vt-user-surface p-4'
+                                    : 'rounded-md border border-vt-amber/20 bg-vt-background p-4'
                             }
                         >
-                            <p className="text-sm leading-6 text-[#f8e8c0]">
+                            <p className="text-sm leading-6 text-vt-text">
                                 {message.role === 'assistant' &&
                                 message.revealDurationMs ? (
                                     <AnimatedText
@@ -364,7 +364,7 @@ export function AssistantChat({
                 >
                     <div className="relative">
                         <textarea
-                            className="min-h-28 w-full resize-none rounded-md border border-[#f5bf76]/25 bg-[#08110f] p-3 pb-14 text-sm text-[#f8e8c0] outline-none placeholder:text-[#796b52] focus:border-[#50d678]"
+                            className="min-h-28 w-full resize-none rounded-md border border-vt-amber/25 bg-vt-background p-3 pb-14 text-sm text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
                             placeholder="Ask Vibetask to help plan, prioritize, or think through your work."
                             value={input}
                             onChange={(event) => setInput(event.target.value)}
@@ -372,7 +372,7 @@ export function AssistantChat({
 
                         <div className="absolute bottom-4 right-3 flex items-center gap-2">
                             <button
-                                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ff7b39] text-[#08110f] transition hover:bg-[#ff934f] disabled:cursor-not-allowed disabled:opacity-60"
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-vt-orange text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
                                 type="submit"
                                 disabled={isLoading || !input.trim()}
                                 aria-label={
@@ -404,8 +404,8 @@ export function AssistantChat({
                             <button
                                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
                                     isMicRecording
-                                        ? 'border-[#50d678] bg-[#17351f] text-[#50d678]'
-                                        : 'border-[#ff7b39]/50 bg-[#24130d] text-[#ffb14f] hover:border-[#ff7b39]'
+                                        ? 'border-vt-green bg-vt-green-active text-vt-green'
+                                        : 'border-vt-orange/50 bg-vt-orange-surface text-vt-gold hover:border-vt-orange'
                                 }`}
                                 type="button"
                                 aria-label={
@@ -440,7 +440,7 @@ export function AssistantChat({
                     </div>
 
                     {errorMessage ? (
-                        <p className="text-sm font-bold text-[#ff674d]">
+                        <p className="text-sm font-bold text-vt-red">
                             {errorMessage}
                         </p>
                     ) : null}
@@ -482,7 +482,7 @@ function AssistantPortrait({
 
     return (
         <div
-            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-[#f5bf76]/20 bg-[#08110f] bg-cover bg-center sm:h-52 ${
+            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background bg-cover bg-center sm:h-52 ${
                 isSpeaking ? 'assistant-portrait-speaking' : ''
             }`}
             style={{ backgroundImage: `url(${characterBackground.src})` }}
@@ -508,7 +508,7 @@ function AssistantPortrait({
                         priority
                     />
                 ) : (
-                    <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-[#f5bf76]">
+                    <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-vt-amber">
                         {displayedVoice
                             ? `${displayedVoice.name} needs a character portrait.`
                             : 'Select an assistant voice.'}
@@ -552,17 +552,17 @@ function AnimatedText({
 function AssistantThinkingMessage() {
     return (
         <div
-            className="rounded-md border border-[#f5bf76]/20 bg-[#08110f] p-4"
+            className="rounded-md border border-vt-amber/20 bg-vt-background p-4"
             aria-label="Assistant response is being generated"
         >
             <div className="flex h-6 items-center gap-2">
                 <span className="sr-only">
                     Assistant response is being generated.
                 </span>
-                <span className="h-2 w-2 animate-bounce rounded-full bg-[#50d678]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-[#f5bf76] [animation-delay:120ms]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-[#ff7b39] [animation-delay:240ms]" />
-                <span className="ml-2 h-px flex-1 animate-pulse bg-gradient-to-r from-[#50d678] via-[#f5bf76] to-transparent" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-vt-green" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-vt-amber [animation-delay:120ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-vt-orange [animation-delay:240ms]" />
+                <span className="ml-2 h-px flex-1 animate-pulse bg-gradient-to-r from-vt-green via-vt-amber to-transparent" />
             </div>
         </div>
     );
