@@ -38,7 +38,7 @@ export function ThemePicker({ initialTheme }: ThemePickerProps) {
     }
 
     return (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {THEME_OPTIONS.map((theme) => {
                 const isSelected = selectedTheme === theme.id;
 
