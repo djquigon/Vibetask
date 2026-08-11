@@ -1,5 +1,14 @@
-﻿import { SettingsView } from "@/features/dashboard/components/settings-view";
+import { redirect } from 'next/navigation';
 
-export default function SettingsPage() {
-  return <SettingsView />;
+import { SettingsView } from '@/features/dashboard/components/settings-view';
+import { getCurrentUserProfileDetails } from '@/features/profile/server/queries';
+
+export default async function SettingsPage() {
+    const profile = await getCurrentUserProfileDetails();
+
+    if (!profile) {
+        redirect('/login');
+    }
+
+    return <SettingsView profile={profile} />;
 }
