@@ -26,11 +26,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             next={next}
             footer={
                 <>
-                    <Link className="font-bold text-vt-orange-hover" href="/reset-password">
+                    <Link className="font-bold text-vt-primary-hover" href="/reset-password">
                         Forgot your password?
                     </Link>{' '}
                     | New to Vibetask?{' '}
-                    <Link className="font-bold text-vt-orange-hover" href="/signup">
+                    <Link className="font-bold text-vt-primary-hover" href="/signup">
                         Create an account
                     </Link>
                 </>

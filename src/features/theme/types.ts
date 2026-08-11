@@ -12,14 +12,24 @@ export const THEME_OPTIONS = [
         swatches: ['#091516', '#46d6d2', '#92e85b', '#ff6f4a'],
     },
     {
+        id: 'ember',
+        name: 'Ember',
+        swatches: ['#1d1013', '#ed5e93', '#77d5a3', '#f0bb5f'],
+    },
+    {
+        id: 'carbon',
+        name: 'Carbon',
+        swatches: ['#111413', '#d6cf54', '#a1d46a', '#55c7bd'],
+    },
+    {
         id: 'sunrise',
         name: 'Sunrise',
-        swatches: ['#fff9ed', '#cf5a2b', '#267b4d', '#f9e1a2'],
+        swatches: ['#fff9ed', '#39aaa5', '#267b4d', '#f9e1a2'],
     },
     {
         id: 'studio',
         name: 'Studio',
-        swatches: ['#f4fbf9', '#cf5d44', '#2e8a53', '#62c7c3'],
+        swatches: ['#f4fbf9', '#eb81b0', '#2e8a53', '#62c7c3'],
     },
 ] as const;
 

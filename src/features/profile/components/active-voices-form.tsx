@@ -106,7 +106,7 @@ export function ActiveVoicesForm({
                         >
                             <input
                                 checked={isSelected}
-                                className="h-4 w-4 shrink-0 accent-vt-orange"
+                                className="h-4 w-4 shrink-0 accent-vt-primary"
                                 name="voiceIds"
                                 onChange={() => toggleVoice(voice.id)}
                                 type="checkbox"
@@ -135,7 +135,7 @@ export function ActiveVoicesForm({
 
             <div className="flex justify-end border-t border-vt-border pt-4">
                 <button
-                    className="rounded-md bg-vt-orange px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-md bg-vt-primary px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={isPending || selectedVoiceIds.size === 0}
                     type="submit"
                 >

@@ -661,7 +661,7 @@ export function WinampPlayer() {
     const isDockedMilkdropVisible =
         !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
-        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-green transition hover:border-vt-orange hover:bg-vt-orange hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
+        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-green transition hover:border-vt-primary hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
 
     return (
         <>
@@ -725,7 +725,7 @@ export function WinampPlayer() {
                                 status === 'loading' || status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-orange bg-vt-green-hover text-vt-gold transition hover:bg-vt-orange hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
+                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-primary bg-vt-green-hover text-vt-gold transition hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             <svg
                                 aria-hidden="true"
@@ -759,7 +759,7 @@ export function WinampPlayer() {
                             onClick={toggleMilkdropPopout}
                             className={`order-3 ${controlClassName} ${
                                 isMilkdropPoppedOut
-                                    ? 'border-vt-orange text-vt-gold'
+                                    ? 'border-vt-primary text-vt-gold'
                                     : ''
                             }`}
                         >
@@ -867,7 +867,7 @@ export function WinampPlayer() {
                             onChange={(event) =>
                                 changeVolume(Number(event.target.value))
                             }
-                            className="h-1 min-w-0 flex-1 cursor-pointer accent-vt-orange disabled:cursor-not-allowed disabled:opacity-40"
+                            className="h-1 min-w-0 flex-1 cursor-pointer accent-vt-primary disabled:cursor-not-allowed disabled:opacity-40"
                         />
                         <span className="text-right text-vt-green">
                             {volume}

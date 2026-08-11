@@ -24,7 +24,7 @@ export function Hero() {
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                     <Link
                         href={currentUser ? '/dashboard' : '/signup'}
-                        className="max-w-full truncate rounded-md bg-vt-orange px-5 py-3 text-center font-bold text-vt-ink transition hover:bg-vt-orange-hover"
+                        className="max-w-full truncate rounded-md bg-vt-primary px-5 py-3 text-center font-bold text-vt-ink transition hover:bg-vt-primary-hover"
                     >
                         {currentUser ? 'View Dashboard' : 'Create account'}
                     </Link>
@@ -41,7 +41,7 @@ export function Hero() {
             <div className="rounded-lg border border-vt-amber/25 bg-vt-surface-alt p-4 shadow-2xl shadow-black/30">
                 <div className="rounded-md border border-vt-border bg-vt-surface-raised p-4">
                     <div className="mb-4 flex items-center justify-between border-b border-vt-border-highlight pb-3 font-mono text-sm">
-                        <span className="text-vt-orange">
+                        <span className="text-vt-primary">
                             TODAY&apos;S PLAN
                         </span>
                         <span className="text-vt-green">VOICE READY</span>

@@ -28,7 +28,7 @@ export function SectionPlaceholder({
             key={item}
             className="rounded-md border border-vt-border bg-vt-background p-4"
           >
-            <p className="font-mono text-sm font-bold uppercase text-vt-orange">
+            <p className="font-mono text-sm font-bold uppercase text-vt-primary">
               {item}
             </p>
             <p className="mt-3 text-sm text-vt-text-muted">

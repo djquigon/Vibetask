@@ -300,7 +300,7 @@ export function AssistantChat({
                             Assistant voice
                         </label>
                         <select
-                            className="min-w-0 flex-1 rounded-md border border-vt-amber/25 bg-vt-background px-3 py-2 font-mono text-sm font-black uppercase text-vt-orange outline-none transition focus:border-vt-green"
+                            className="min-w-0 flex-1 rounded-md border border-vt-amber/25 bg-vt-background px-3 py-2 font-mono text-sm font-black uppercase text-vt-primary outline-none transition focus:border-vt-green"
                             id="assistant-voice"
                             value={selectedVoiceId}
                             onChange={(event) =>
@@ -372,7 +372,7 @@ export function AssistantChat({
 
                         <div className="absolute bottom-4 right-3 flex items-center gap-2">
                             <button
-                                className="flex h-8 w-8 items-center justify-center rounded-full bg-vt-orange text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-vt-primary text-vt-ink transition hover:bg-vt-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
                                 type="submit"
                                 disabled={isLoading || !input.trim()}
                                 aria-label={
@@ -405,7 +405,7 @@ export function AssistantChat({
                                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
                                     isMicRecording
                                         ? 'border-vt-green bg-vt-green-active text-vt-green'
-                                        : 'border-vt-orange/50 bg-vt-orange-surface text-vt-gold hover:border-vt-orange'
+                                        : 'border-vt-primary/50 bg-vt-primary-surface text-vt-gold hover:border-vt-primary'
                                 }`}
                                 type="button"
                                 aria-label={
@@ -561,7 +561,7 @@ function AssistantThinkingMessage() {
                 </span>
                 <span className="h-2 w-2 animate-bounce rounded-full bg-vt-green" />
                 <span className="h-2 w-2 animate-bounce rounded-full bg-vt-amber [animation-delay:120ms]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-vt-orange [animation-delay:240ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-vt-primary [animation-delay:240ms]" />
                 <span className="ml-2 h-px flex-1 animate-pulse bg-gradient-to-r from-vt-green via-vt-amber to-transparent" />
             </div>
         </div>

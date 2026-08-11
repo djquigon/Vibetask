@@ -54,7 +54,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                     </label>
                     <input
                         accept="image/jpeg,image/png,image/webp"
-                        className="mt-2 block w-full min-w-0 text-sm text-vt-text file:mr-3 file:rounded-md file:border-0 file:bg-vt-orange file:px-3 file:py-2 file:font-mono file:text-xs file:font-black file:uppercase file:text-vt-ink hover:file:bg-vt-orange-hover"
+                        className="mt-2 block w-full min-w-0 text-sm text-vt-text file:mr-3 file:rounded-md file:border-0 file:bg-vt-primary file:px-3 file:py-2 file:font-mono file:text-xs file:font-black file:uppercase file:text-vt-ink hover:file:bg-vt-primary-hover"
                         disabled={isPending}
                         id="profile-avatar"
                         name="avatar"
@@ -63,7 +63,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                     {profile.hasAvatar ? (
                         <label className="mt-3 flex w-fit items-center gap-2 font-mono text-xs text-vt-text">
                             <input
-                                className="h-4 w-4 accent-vt-orange"
+                                className="h-4 w-4 accent-vt-primary"
                                 disabled={isPending}
                                 name="removeAvatar"
                                 type="checkbox"
@@ -130,7 +130,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
 
             <div className="flex justify-end border-t border-vt-border pt-4">
                 <button
-                    className="rounded-md bg-vt-orange px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-orange-hover disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-md bg-vt-primary px-4 py-2 font-mono text-sm font-black uppercase text-vt-ink transition hover:bg-vt-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={isPending}
                     type="submit"
                 >

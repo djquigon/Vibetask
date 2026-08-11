@@ -12,7 +12,7 @@ export function MarketingHeader() {
         <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5">
             <Link
                 href="/"
-                className="font-mono text-2xl font-black uppercase tracking-wide text-vt-orange"
+                className="font-mono text-2xl font-black uppercase tracking-wide text-vt-primary"
             >
                 Vibetask
             </Link>
@@ -20,7 +20,7 @@ export function MarketingHeader() {
                 {currentUser ? (
                     <Link
                         href="/dashboard"
-                        className="inline-flex max-w-48 items-center rounded-md bg-vt-orange px-4 py-2 text-vt-ink transition hover:bg-vt-orange-hover"
+                        className="inline-flex max-w-48 items-center rounded-md bg-vt-primary px-4 py-2 text-vt-ink transition hover:bg-vt-primary-hover"
                     >
                         <span className="truncate">{accountLabel}</span>
                     </Link>
@@ -34,7 +34,7 @@ export function MarketingHeader() {
                         </Link>
                         <Link
                             href="/signup"
-                            className="rounded-md bg-vt-orange px-4 py-2 text-vt-ink transition hover:bg-vt-orange-hover"
+                            className="rounded-md bg-vt-primary px-4 py-2 text-vt-ink transition hover:bg-vt-primary-hover"
                         >
                             Sign up
                         </Link>

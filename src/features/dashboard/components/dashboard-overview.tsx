@@ -45,7 +45,7 @@ export function DashboardOverview() {
                             key={item}
                             className="rounded-md border border-vt-amber/20 bg-vt-surface p-4"
                         >
-                            <p className="font-mono text-lg font-black uppercase text-vt-orange">
+                            <p className="font-mono text-lg font-black uppercase text-vt-primary">
                                 {item}
                             </p>
                             <p className="mt-2 text-sm text-vt-text-muted">
@@ -72,7 +72,7 @@ export function DashboardOverview() {
                             className="grid grid-cols-[90px_140px_1fr_24px] gap-3 py-3 font-mono text-sm"
                         >
                             <span className="text-vt-amber">{time}</span>
-                            <span className="text-vt-orange">{type}</span>
+                            <span className="text-vt-primary">{type}</span>
                             <span className="text-vt-text-strong">{title}</span>
                             <span className="h-5 w-5 rounded-full border border-vt-amber" />
                         </div>

@@ -27,7 +27,7 @@ export function SideNav() {
         <nav className="flex min-h-0 min-w-0 flex-col rounded-md border border-vt-border bg-vt-surface p-3">
             <Link
                 href="/"
-                className="mb-5 font-mono text-3xl font-black uppercase text-vt-orange"
+                className="mb-5 font-mono text-3xl font-black uppercase text-vt-primary"
             >
                 Vibetask
             </Link>
@@ -44,7 +44,7 @@ export function SideNav() {
                             href={href}
                             className={`block rounded-md px-3 py-2 font-mono text-sm font-bold transition ${
                                 isActive
-                                    ? 'bg-vt-orange text-vt-ink'
+                                    ? 'bg-vt-primary text-vt-ink'
                                     : 'text-vt-text hover:bg-vt-green-hover'
                             }`}
                         >

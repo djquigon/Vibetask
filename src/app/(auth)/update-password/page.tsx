@@ -23,7 +23,7 @@ export default async function UpdatePasswordPage({
             action={updatePassword}
             error={error}
             footer={
-                <Link className="font-bold text-vt-orange-hover" href="/login">
+                <Link className="font-bold text-vt-primary-hover" href="/login">
                     Back to login
                 </Link>
             }

@@ -25,7 +25,7 @@ export default async function ResetPasswordPage({
             error={error}
             message={message}
             footer={
-                <Link className="font-bold text-vt-orange-hover" href="/login">
+                <Link className="font-bold text-vt-primary-hover" href="/login">
                     Back to login
                 </Link>
             }

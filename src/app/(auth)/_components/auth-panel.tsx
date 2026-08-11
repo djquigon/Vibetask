@@ -35,7 +35,7 @@ export function AuthPanel({
             <section className="w-full max-w-md rounded-lg border border-vt-amber/25 bg-vt-surface p-6 shadow-2xl shadow-black/30">
                 <Link
                     href="/"
-                    className="font-mono text-2xl font-black uppercase text-vt-orange"
+                    className="font-mono text-2xl font-black uppercase text-vt-primary"
                 >
                     Vibetask
                 </Link>
@@ -125,7 +125,7 @@ export function AuthPanel({
                         </label>
                     ) : null}
                     <button
-                        className="w-full rounded-md bg-vt-orange px-4 py-3 font-bold text-vt-ink transition hover:bg-vt-orange-hover"
+                        className="w-full rounded-md bg-vt-primary px-4 py-3 font-bold text-vt-ink transition hover:bg-vt-primary-hover"
                         type="submit"
                     >
                         {primaryAction}
