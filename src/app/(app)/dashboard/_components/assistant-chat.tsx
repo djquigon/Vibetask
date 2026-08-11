@@ -482,7 +482,7 @@ function AssistantPortrait({
 
     return (
         <div
-            className={`mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background bg-cover bg-center sm:h-52 ${
+            className={`assistant-portrait mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background bg-cover bg-center sm:h-52 ${
                 isSpeaking ? 'assistant-portrait-speaking' : ''
             }`}
             style={{ backgroundImage: `url(${characterBackground.src})` }}

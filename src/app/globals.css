@@ -36,6 +36,9 @@
     --vt-red-text: #ffd1d8;
     --vt-green-text: #c9f8d5;
     --vt-selection: #ff8a3d;
+    --vt-portrait-hue: 0deg;
+    --vt-portrait-saturation: 1;
+    --vt-portrait-brightness: 1;
     --background: var(--vt-background);
     --foreground: var(--vt-text);
 }
@@ -75,6 +78,9 @@
     --vt-red-text: #ffd9dd;
     --vt-green-text: #d9ffd0;
     --vt-selection: #46d6d2;
+    --vt-portrait-hue: 160deg;
+    --vt-portrait-saturation: 1.1;
+    --vt-portrait-brightness: 1.02;
 }
 
 :root[data-theme='ember'] {
@@ -113,6 +119,9 @@
     --vt-red-text: #ffc5c7;
     --vt-green-text: #bff4d4;
     --vt-selection: #e28b5a;
+    --vt-portrait-hue: 320deg;
+    --vt-portrait-saturation: 1.1;
+    --vt-portrait-brightness: 0.95;
 }
 
 :root[data-theme='carbon'] {
@@ -151,6 +160,9 @@
     --vt-red-text: #ffc9d0;
     --vt-green-text: #cff5b1;
     --vt-selection: #55c7bd;
+    --vt-portrait-hue: 50deg;
+    --vt-portrait-saturation: 0.9;
+    --vt-portrait-brightness: 0.94;
 }
 
 :root[data-theme='sunrise'] {
@@ -189,6 +201,9 @@
     --vt-red-text: #8c243a;
     --vt-green-text: #1f6840;
     --vt-selection: #edb657;
+    --vt-portrait-hue: 155deg;
+    --vt-portrait-saturation: 0.75;
+    --vt-portrait-brightness: 1.08;
 }
 
 :root[data-theme='studio'] {
@@ -227,6 +242,9 @@
     --vt-red-text: #8e263d;
     --vt-green-text: #1f7144;
     --vt-selection: #62c7c3;
+    --vt-portrait-hue: 275deg;
+    --vt-portrait-saturation: 0.85;
+    --vt-portrait-brightness: 1.06;
 }
 
 @theme inline {
@@ -361,6 +379,14 @@ a {
 .assistant-portrait-speaking {
     animation: assistant-portrait-speaking 1.1s ease-in-out infinite;
     border-color: var(--vt-green);
+}
+
+.assistant-portrait {
+    filter: hue-rotate(var(--vt-portrait-hue))
+        saturate(var(--vt-portrait-saturation))
+        brightness(var(--vt-portrait-brightness));
+    transition: filter 240ms ease;
+    will-change: filter;
 }
 
 .assistant-portrait-fade-in {
