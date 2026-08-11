@@ -405,7 +405,7 @@ export function AssistantChat({
                                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
                                     isMicRecording
                                         ? 'border-vt-green bg-vt-green-active text-vt-green'
-                                        : 'border-vt-primary/50 bg-vt-primary-surface text-vt-gold hover:border-vt-primary'
+                                        : 'border-vt-primary/50 bg-vt-primary-surface text-vt-icon hover:border-vt-primary'
                                 }`}
                                 type="button"
                                 aria-label={

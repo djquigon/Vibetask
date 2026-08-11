@@ -22,6 +22,11 @@ export const THEME_OPTIONS = [
         swatches: ['#111413', '#d6cf54', '#a1d46a', '#55c7bd'],
     },
     {
+        id: 'neon',
+        name: 'Neon',
+        swatches: ['#101116', '#f562ce', '#47dfd5', '#f2df64'],
+    },
+    {
         id: 'sunrise',
         name: 'Sunrise',
         swatches: ['#fff9ed', '#39aaa5', '#267b4d', '#f9e1a2'],
@@ -30,6 +35,16 @@ export const THEME_OPTIONS = [
         id: 'studio',
         name: 'Studio',
         swatches: ['#f4fbf9', '#eb81b0', '#2e8a53', '#62c7c3'],
+    },
+    {
+        id: 'orchard',
+        name: 'Orchard',
+        swatches: ['#f7fbf1', '#5faa50', '#278b68', '#c59b37'],
+    },
+    {
+        id: 'glacier',
+        name: 'Glacier',
+        swatches: ['#f5faff', '#7d9df0', '#218d82', '#c79939'],
     },
 ] as const;
 

@@ -10,7 +10,7 @@ import './palette.css';
 // usually 11px font / 12px line-height
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]';
 
-const buttonIconClass = 'size-5';
+const buttonIconClass = 'size-5 text-vt-icon';
 
 // outline
 const outlineWidthClass = 'outline-2';
@@ -422,7 +422,7 @@ export function CalendarView({
             popoverClass="bg-(--fc-classic-background) text-(--fc-classic-foreground) border border-(--fc-classic-border) shadow-md min-w-55"
             popoverCloseClass={`group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
             popoverCloseContent={() =>
-                x('size-5 text-sm not-group-hover:opacity-65')
+                x('size-5 text-vt-icon text-sm not-group-hover:opacity-65')
             }
             /* Lane
       ------------------------------------------------------------------------------------------- */

@@ -661,7 +661,7 @@ export function WinampPlayer() {
     const isDockedMilkdropVisible =
         !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
-        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-green transition hover:border-vt-primary hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
+        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-icon transition hover:border-vt-primary hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
 
     return (
         <>
@@ -725,7 +725,7 @@ export function WinampPlayer() {
                                 status === 'loading' || status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-primary bg-vt-green-hover text-vt-gold transition hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
+                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-primary bg-vt-green-hover text-vt-icon transition hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             <svg
                                 aria-hidden="true"
@@ -759,7 +759,7 @@ export function WinampPlayer() {
                             onClick={toggleMilkdropPopout}
                             className={`order-3 ${controlClassName} ${
                                 isMilkdropPoppedOut
-                                    ? 'border-vt-primary text-vt-gold'
+                                    ? 'border-vt-primary text-vt-icon'
                                     : ''
                             }`}
                         >
