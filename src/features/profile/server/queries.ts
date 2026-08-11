@@ -16,7 +16,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
     const { data, error } = await supabase
         .from('profiles')
         .select(
-            'id, display_name, avatar_path, daily_login_streak_count, created_at, updated_at'
+            'id, display_name, avatar_path, assistant_active_voice_ids, daily_login_streak_count, created_at, updated_at'
         )
         .eq('id', claims.sub)
         .maybeSingle();
@@ -48,6 +48,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
         email: typeof claims.email === 'string' ? claims.email : null,
         displayName: data.display_name,
         avatarUrl,
+        activeVoiceIds: data.assistant_active_voice_ids,
         dailyLoginStreakCount: data.daily_login_streak_count ?? 0,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
@@ -65,7 +66,9 @@ export async function getCurrentUserProfileDetails(): Promise<ProfileDetails | n
 
     const { data, error } = await supabase
         .from('profiles')
-        .select('display_name, avatar_path, assistant_context')
+        .select(
+            'display_name, avatar_path, assistant_context, assistant_active_voice_ids'
+        )
         .eq('id', claims.sub)
         .maybeSingle();
 
@@ -97,6 +100,7 @@ export async function getCurrentUserProfileDetails(): Promise<ProfileDetails | n
         avatarUrl,
         hasAvatar: Boolean(data.avatar_path),
         assistantContext: data.assistant_context,
+        activeVoiceIds: data.assistant_active_voice_ids,
     };
 }
 

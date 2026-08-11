@@ -2,9 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { ASSISTANT_VOICE_OPTIONS } from '@/features/assistant/voices';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
-import type { ProfileDetailsActionState } from '../types';
+import type {
+    ActiveVoicesActionState,
+    ProfileDetailsActionState,
+} from '../types';
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
 const MAX_ASSISTANT_CONTEXT_CHARACTERS = 2000;
@@ -14,6 +18,9 @@ const ALLOWED_AVATAR_TYPES = new Set([
     'image/png',
     'image/webp',
 ]);
+const ASSISTANT_VOICE_IDS = new Set(
+    ASSISTANT_VOICE_OPTIONS.map((voice) => voice.id)
+);
 
 export async function updateProfileDetails(
     _previousState: ProfileDetailsActionState,
@@ -120,7 +127,55 @@ export async function updateProfileDetails(
     };
 }
 
+export async function updateActiveAssistantVoices(
+    _previousState: ActiveVoicesActionState,
+    formData: FormData
+): Promise<ActiveVoicesActionState> {
+    const requestedVoiceIds = formData
+        .getAll('voiceIds')
+        .filter((voiceId): voiceId is string => typeof voiceId === 'string');
+    const activeVoiceIds = [...new Set(requestedVoiceIds)];
+
+    if (activeVoiceIds.length === 0) {
+        return activeVoicesErrorState('Choose at least one active voice.');
+    }
+
+    if (activeVoiceIds.some((voiceId) => !ASSISTANT_VOICE_IDS.has(voiceId))) {
+        return activeVoicesErrorState('One or more selected voices are unavailable.');
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+    const claims = claimsData?.claims;
+
+    if (claimsError || !claims?.sub) {
+        return activeVoicesErrorState('Your session has expired. Please sign in again.');
+    }
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ assistant_active_voice_ids: activeVoiceIds })
+        .eq('id', claims.sub);
+
+    if (error) {
+        console.error('Unable to update active assistant voices.', error);
+        return activeVoicesErrorState('Unable to save active voices. Please try again.');
+    }
+
+    revalidatePath('/dashboard');
+    revalidatePath('/dashboard/settings');
+
+    return {
+        message: 'Active voices saved.',
+        status: 'success',
+    };
+}
+
 function errorState(message: string): ProfileDetailsActionState {
+    return { message, status: 'error' };
+}
+
+function activeVoicesErrorState(message: string): ActiveVoicesActionState {
     return { message, status: 'error' };
 }
 

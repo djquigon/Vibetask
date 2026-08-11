@@ -1,3 +1,5 @@
+import { ASSISTANT_VOICE_OPTIONS } from '@/features/assistant/voices';
+import { ActiveVoicesForm } from '@/features/profile/components/active-voices-form';
 import { ProfileDetailsForm } from '@/features/profile/components/profile-details-form';
 import type { ProfileDetails } from '@/features/profile/types';
 
@@ -19,6 +21,19 @@ export function SettingsView({ profile }: SettingsViewProps) {
                     Profile details
                 </h2>
                 <ProfileDetailsForm profile={profile} />
+            </section>
+
+            <section className="mt-5 rounded-md border border-[#25392f] bg-[#0d1b17] p-5">
+                <h2 className="mb-5 font-mono text-lg font-black uppercase text-[#f8e8c0]">
+                    Active voices
+                </h2>
+                <ActiveVoicesForm
+                    activeVoiceIds={profile.activeVoiceIds}
+                    voiceOptions={ASSISTANT_VOICE_OPTIONS.map(({ id, name }) => ({
+                        id,
+                        name,
+                    }))}
+                />
             </section>
         </div>
     );

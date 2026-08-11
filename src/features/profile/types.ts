@@ -3,6 +3,7 @@ export type CurrentUserProfile = {
     email: string | null;
     displayName: string | null;
     avatarUrl: string | null;
+    activeVoiceIds: string[] | null;
     dailyLoginStreakCount: number;
     createdAt: string;
     updatedAt: string;
@@ -14,9 +15,15 @@ export type ProfileDetails = {
     avatarUrl: string | null;
     hasAvatar: boolean;
     assistantContext: string | null;
+    activeVoiceIds: string[] | null;
 };
 
 export type ProfileDetailsActionState = {
+    message: string;
+    status: 'error' | 'idle' | 'success';
+};
+
+export type ActiveVoicesActionState = {
     message: string;
     status: 'error' | 'idle' | 'success';
 };
