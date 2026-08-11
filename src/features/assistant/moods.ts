@@ -46,7 +46,7 @@ export const ASSISTANT_MOOD_OPTIONS = [
         name: 'Angry',
         openAiInstructions:
             'Use controlled, forceful urgency. Be firm about priorities and blockers without insulting, threatening, or personally attacking the user.',
-        fishAudioCue: '[angry but controlled, low and commanding]',
+        fishAudioCue: '[angry and commanding]',
     },
     {
         id: 'excited',
@@ -60,7 +60,9 @@ export const ASSISTANT_MOOD_OPTIONS = [
 export type AssistantMood = (typeof ASSISTANT_MOOD_OPTIONS)[number]['id'];
 export type AssistantMoodOption = (typeof ASSISTANT_MOOD_OPTIONS)[number];
 
-export function isAssistantMood(value: string | null | undefined): value is AssistantMood {
+export function isAssistantMood(
+    value: string | null | undefined
+): value is AssistantMood {
     return ASSISTANT_MOOD_OPTIONS.some((mood) => mood.id === value);
 }
 
