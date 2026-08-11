@@ -1,5 +1,6 @@
 import { ASSISTANT_VOICE_OPTIONS } from '@/features/assistant/voices';
 import { ActiveVoicesForm } from '@/features/profile/components/active-voices-form';
+import { AssistantMoodForm } from '@/features/profile/components/assistant-mood-form';
 import { ProfileDetailsForm } from '@/features/profile/components/profile-details-form';
 import type { ProfileDetails } from '@/features/profile/types';
 import { ThemePicker } from '@/features/theme/components/theme-picker';
@@ -44,6 +45,13 @@ export function SettingsView({ profile, theme }: SettingsViewProps) {
                     Color theme
                 </h2>
                 <ThemePicker initialTheme={theme} />
+            </section>
+
+            <section className="mt-5 rounded-md border border-vt-border bg-vt-surface p-5">
+                <h2 className="mb-5 font-mono text-lg font-black uppercase text-vt-text">
+                    Assistant mood
+                </h2>
+                <AssistantMoodForm assistantMood={profile.assistantMood} />
             </section>
         </div>
     );

@@ -2,10 +2,12 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { isAssistantMood } from '@/features/assistant/moods';
 import { ASSISTANT_VOICE_OPTIONS } from '@/features/assistant/voices';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 import type {
+    AssistantMoodActionState,
     ActiveVoicesActionState,
     ProfileDetailsActionState,
 } from '../types';
@@ -171,11 +173,52 @@ export async function updateActiveAssistantVoices(
     };
 }
 
+export async function updateAssistantMood(
+    _previousState: AssistantMoodActionState,
+    formData: FormData
+): Promise<AssistantMoodActionState> {
+    const assistantMood = readTrimmedText(formData, 'assistantMood');
+
+    if (!isAssistantMood(assistantMood)) {
+        return assistantMoodErrorState('Choose an available assistant mood.');
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+    const claims = claimsData?.claims;
+
+    if (claimsError || !claims?.sub) {
+        return assistantMoodErrorState('Your session has expired. Please sign in again.');
+    }
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ assistant_mood: assistantMood })
+        .eq('id', claims.sub);
+
+    if (error) {
+        console.error('Unable to update assistant mood.', error);
+        return assistantMoodErrorState('Unable to save assistant mood. Please try again.');
+    }
+
+    revalidatePath('/dashboard');
+    revalidatePath('/dashboard/settings');
+
+    return {
+        message: 'Assistant mood saved.',
+        status: 'success',
+    };
+}
+
 function errorState(message: string): ProfileDetailsActionState {
     return { message, status: 'error' };
 }
 
 function activeVoicesErrorState(message: string): ActiveVoicesActionState {
+    return { message, status: 'error' };
+}
+
+function assistantMoodErrorState(message: string): AssistantMoodActionState {
     return { message, status: 'error' };
 }
 

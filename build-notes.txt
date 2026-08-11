@@ -14,6 +14,7 @@ Settings
     Theme
     Available Voice Options
     Voice tone
+        go back and add abillity to put laughs and such in the middle of text blocks
 Profile Separate?
 
 

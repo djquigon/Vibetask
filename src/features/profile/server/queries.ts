@@ -1,5 +1,9 @@
 import 'server-only';
 
+import {
+    getAssistantMoodOption,
+    type AssistantMood,
+} from '@/features/assistant/moods';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 import type { CurrentUserProfile, ProfileDetails } from '../types';
@@ -16,7 +20,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
     const { data, error } = await supabase
         .from('profiles')
         .select(
-            'id, display_name, avatar_path, assistant_active_voice_ids, daily_login_streak_count, created_at, updated_at'
+            'id, display_name, avatar_path, assistant_active_voice_ids, assistant_mood, daily_login_streak_count, created_at, updated_at'
         )
         .eq('id', claims.sub)
         .maybeSingle();
@@ -49,6 +53,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
         displayName: data.display_name,
         avatarUrl,
         activeVoiceIds: data.assistant_active_voice_ids,
+        assistantMood: getAssistantMoodOption(data.assistant_mood).id,
         dailyLoginStreakCount: data.daily_login_streak_count ?? 0,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
@@ -67,7 +72,7 @@ export async function getCurrentUserProfileDetails(): Promise<ProfileDetails | n
     const { data, error } = await supabase
         .from('profiles')
         .select(
-            'display_name, avatar_path, assistant_context, assistant_active_voice_ids'
+            'display_name, avatar_path, assistant_context, assistant_active_voice_ids, assistant_mood'
         )
         .eq('id', claims.sub)
         .maybeSingle();
@@ -101,21 +106,28 @@ export async function getCurrentUserProfileDetails(): Promise<ProfileDetails | n
         hasAvatar: Boolean(data.avatar_path),
         assistantContext: data.assistant_context,
         activeVoiceIds: data.assistant_active_voice_ids,
+        assistantMood: getAssistantMoodOption(data.assistant_mood).id,
     };
 }
 
-export async function getCurrentUserAssistantContext(): Promise<string | null> {
+export async function getCurrentUserAssistantPreferences(): Promise<{
+    assistantContext: string | null;
+    assistantMood: AssistantMood;
+}> {
     const supabase = await createServerSupabaseClient();
     const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
     const claims = claimsData?.claims;
 
     if (claimsError || !claims?.sub) {
-        return null;
+        return {
+            assistantContext: null,
+            assistantMood: 'balanced',
+        };
     }
 
     const { data, error } = await supabase
         .from('profiles')
-        .select('assistant_context')
+        .select('assistant_context, assistant_mood')
         .eq('id', claims.sub)
         .maybeSingle();
 
@@ -123,5 +135,8 @@ export async function getCurrentUserAssistantContext(): Promise<string | null> {
         throw new Error('Unable to load assistant context.');
     }
 
-    return data?.assistant_context ?? null;
+    return {
+        assistantContext: data?.assistant_context ?? null,
+        assistantMood: getAssistantMoodOption(data?.assistant_mood).id,
+    };
 }

@@ -1,6 +1,8 @@
 ﻿import { NextResponse } from 'next/server';
 
 import { fishAudio } from '@/lib/fish/server';
+import { getAssistantMoodOption } from '@/features/assistant/moods';
+import { getCurrentUserAssistantPreferences } from '@/features/profile/server/queries';
 
 import type {
     AssistantVoiceError,
@@ -38,9 +40,11 @@ export async function POST(request: Request) {
     }
 
     try {
+        const { assistantMood } = await getCurrentUserAssistantPreferences();
+        const mood = getAssistantMoodOption(assistantMood);
         const audio = await fishAudio.textToSpeech.convert(
             {
-                text,
+                text: `${mood.fishAudioCue} ${text}`,
                 reference_id: voiceId,
                 format: 'mp3',
             },
