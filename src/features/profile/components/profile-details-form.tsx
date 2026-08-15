@@ -34,7 +34,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
             <div className="flex flex-wrap items-center gap-4">
                 <div
                     aria-label="Current profile picture"
-                    className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-vt-amber/25 bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
+                    className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
                     role="img"
                     style={
                         profile.avatarUrl
@@ -80,7 +80,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                         Display name
                     </span>
                     <input
-                        className="mt-2 h-11 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 text-sm text-vt-text outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
+                        className="mt-2 h-11 w-full rounded-md border border-vt-border bg-vt-background px-3 text-sm text-vt-text outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                         defaultValue={profile.displayName ?? ''}
                         disabled={isPending}
                         maxLength={80}
@@ -107,7 +107,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                     Assistant context
                 </span>
                 <textarea
-                    className="mt-2 min-h-36 w-full resize-y rounded-md border border-vt-amber/25 bg-vt-background p-3 text-sm leading-6 text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
+                    className="mt-2 min-h-36 w-full resize-y rounded-md border border-vt-border bg-vt-background p-3 text-sm leading-6 text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
                     defaultValue={profile.assistantContext ?? ''}
                     disabled={isPending}
                     maxLength={2000}

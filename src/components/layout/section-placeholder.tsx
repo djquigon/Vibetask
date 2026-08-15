@@ -11,7 +11,7 @@ export function SectionPlaceholder({
 }: SectionPlaceholderProps) {
   return (
     <div className="space-y-4">
-      <section className="rounded-md border border-vt-amber/20 bg-vt-surface p-5">
+      <section className="rounded-md border border-vt-border bg-vt-surface p-5">
         <p className="font-mono text-sm font-bold uppercase text-vt-green">
           Dashboard view
         </p>

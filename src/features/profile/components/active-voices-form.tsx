@@ -100,7 +100,7 @@ export function ActiveVoicesForm({
                             className={`flex min-w-0 items-center gap-3 rounded-md border px-3 py-2 transition ${
                                 isSelected
                                     ? 'border-vt-green/50 bg-vt-green-surface text-vt-text'
-                                    : 'border-vt-border bg-vt-background text-vt-text-dim hover:border-vt-amber/40'
+                                    : 'border-vt-border bg-vt-background text-vt-text-dim hover:border-vt-border-strong'
                             }`}
                             key={voice.id}
                         >

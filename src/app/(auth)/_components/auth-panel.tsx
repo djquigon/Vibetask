@@ -32,7 +32,7 @@ export function AuthPanel({
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-vt-background-deep px-6 py-12 text-vt-text">
-            <section className="w-full max-w-md rounded-lg border border-vt-amber/25 bg-vt-surface p-6 shadow-2xl shadow-black/30">
+            <section className="w-full max-w-md rounded-lg border border-vt-border-strong bg-vt-surface p-6 shadow-2xl shadow-black/30">
                 <Link
                     href="/"
                     className="font-mono text-2xl font-black uppercase text-vt-primary"
@@ -70,7 +70,7 @@ export function AuthPanel({
                             </span>
                             <input
                                 autoComplete="name"
-                                className="mt-2 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
+                                className="mt-2 w-full rounded-md border border-vt-border bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                                 name="name"
                                 placeholder="How should we address you?"
                                 type="text"
@@ -84,7 +84,7 @@ export function AuthPanel({
                             </span>
                             <input
                                 autoComplete="email"
-                                className="mt-2 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
+                                className="mt-2 w-full rounded-md border border-vt-border bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                                 name="email"
                                 placeholder="you@example.com"
                                 required
@@ -101,7 +101,7 @@ export function AuthPanel({
                                 autoComplete={
                                     isNewPassword ? 'new-password' : 'current-password'
                                 }
-                                className="mt-2 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
+                                className="mt-2 w-full rounded-md border border-vt-border bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                                 name="password"
                                 placeholder="Password"
                                 required
@@ -116,7 +116,7 @@ export function AuthPanel({
                             </span>
                             <input
                                 autoComplete="new-password"
-                                className="mt-2 w-full rounded-md border border-vt-amber/25 bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
+                                className="mt-2 w-full rounded-md border border-vt-border bg-vt-background px-3 py-3 text-vt-text-strong outline-none transition placeholder:text-vt-text-faint focus:border-vt-green"
                                 name="passwordConfirmation"
                                 placeholder="Repeat your new password"
                                 required

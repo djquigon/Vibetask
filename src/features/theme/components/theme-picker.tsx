@@ -48,7 +48,7 @@ export function ThemePicker({ initialTheme }: ThemePickerProps) {
                         className={`rounded-md border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-vt-green disabled:cursor-not-allowed disabled:opacity-60 ${
                             isSelected
                                 ? 'border-vt-green bg-vt-green-surface'
-                                : 'border-vt-border bg-vt-background hover:border-vt-amber/50'
+                                : 'border-vt-border bg-vt-background hover:border-vt-border-strong'
                         }`}
                         disabled={isPending}
                         key={theme.id}

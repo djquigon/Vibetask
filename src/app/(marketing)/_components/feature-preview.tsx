@@ -11,7 +11,7 @@ const features = [
 
 export function FeaturePreview() {
   return (
-    <section className="border-t border-vt-amber/15 bg-vt-background-quiet px-6 py-16">
+    <section className="border-t border-vt-border-muted bg-vt-background-quiet px-6 py-16">
       <div className="mx-auto max-w-7xl">
         <h2 className="max-w-2xl text-3xl font-black text-vt-text-strong">
           Built for the daily loop: capture, plan, focus, review.
@@ -20,7 +20,7 @@ export function FeaturePreview() {
           {features.map((feature) => (
             <div
               key={feature}
-              className="rounded-md border border-vt-amber/20 bg-vt-surface p-4 font-mono text-sm font-bold text-vt-text"
+              className="rounded-md border border-vt-border bg-vt-surface p-4 font-mono text-sm font-bold text-vt-text"
             >
               {feature}
             </div>

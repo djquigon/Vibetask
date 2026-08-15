@@ -31,14 +31,14 @@ export function Hero() {
                     {!currentUser ? (
                         <Link
                             href="/dashboard"
-                            className="rounded-md border border-vt-amber/35 px-5 py-3 text-center font-bold text-vt-text transition hover:border-vt-amber/70"
+                            className="rounded-md border border-vt-border px-5 py-3 text-center font-bold text-vt-text transition hover:border-vt-border-strong"
                         >
                             View dashboard
                         </Link>
                     ) : null}
                 </div>
             </div>
-            <div className="rounded-lg border border-vt-amber/25 bg-vt-surface-alt p-4 shadow-2xl shadow-black/30">
+            <div className="rounded-lg border border-vt-border-strong bg-vt-surface-alt p-4 shadow-2xl shadow-black/30">
                 <div className="rounded-md border border-vt-border bg-vt-surface-raised p-4">
                     <div className="mb-4 flex items-center justify-between border-b border-vt-border-highlight pb-3 font-mono text-sm">
                         <span className="text-vt-primary">

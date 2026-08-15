@@ -278,7 +278,7 @@ export function AssistantChat({
                     className={`h-10 w-16 shrink-0 rounded-md border px-2 font-mono text-xs font-black uppercase transition ${
                         mode === 'voice'
                             ? 'border-vt-green/40 bg-vt-green-active text-vt-green hover:border-vt-green'
-                            : 'border-vt-amber/30 bg-vt-amber-surface text-vt-amber hover:border-vt-amber'
+                            : 'border-vt-border-strong bg-vt-amber-surface text-vt-amber hover:border-vt-border-highlight'
                     }`}
                     type="button"
                     onClick={() =>
@@ -300,7 +300,7 @@ export function AssistantChat({
                             Assistant voice
                         </label>
                         <select
-                            className="min-w-0 flex-1 rounded-md border border-vt-amber/25 bg-vt-background px-3 py-2 font-mono text-sm font-black uppercase text-vt-primary outline-none transition focus:border-vt-green"
+                            className="min-w-0 flex-1 rounded-md border border-vt-border bg-vt-background px-3 py-2 font-mono text-sm font-black uppercase text-vt-primary outline-none transition focus:border-vt-green"
                             id="assistant-voice"
                             value={selectedVoiceId}
                             onChange={(event) =>
@@ -339,7 +339,7 @@ export function AssistantChat({
                             className={
                                 message.role === 'user'
                                     ? 'rounded-md border border-vt-green/30 bg-vt-user-surface p-4'
-                                    : 'rounded-md border border-vt-amber/20 bg-vt-background p-4'
+                                    : 'rounded-md border border-vt-border bg-vt-background p-4'
                             }
                         >
                             <p className="text-sm leading-6 text-vt-text">
@@ -364,7 +364,7 @@ export function AssistantChat({
                 >
                     <div className="relative">
                         <textarea
-                            className="min-h-28 w-full resize-none rounded-md border border-vt-amber/25 bg-vt-background p-3 pb-14 text-sm text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
+                            className="min-h-28 w-full resize-none rounded-md border border-vt-border bg-vt-background p-3 pb-14 text-sm text-vt-text outline-none placeholder:text-vt-text-faint focus:border-vt-green"
                             placeholder="Ask Vibetask to help plan, prioritize, or think through your work."
                             value={input}
                             onChange={(event) => setInput(event.target.value)}
@@ -405,7 +405,7 @@ export function AssistantChat({
                                 className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
                                     isMicRecording
                                         ? 'border-vt-green bg-vt-green-active text-vt-green'
-                                        : 'border-vt-primary/50 bg-vt-primary-surface text-vt-icon hover:border-vt-primary'
+                                        : 'border-vt-border-strong/50 bg-vt-primary-surface text-vt-icon hover:border-vt-border-strong'
                                 }`}
                                 type="button"
                                 aria-label={
@@ -482,7 +482,7 @@ function AssistantPortrait({
 
     return (
         <div
-            className={`assistant-portrait mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background bg-cover bg-center sm:h-52 ${
+            className={`assistant-portrait mb-4 h-48 shrink-0 overflow-hidden rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center sm:h-52 ${
                 isSpeaking ? 'assistant-portrait-speaking' : ''
             }`}
             style={{ backgroundImage: `url(${characterBackground.src})` }}
@@ -552,7 +552,7 @@ function AnimatedText({
 function AssistantThinkingMessage() {
     return (
         <div
-            className="rounded-md border border-vt-amber/20 bg-vt-background p-4"
+            className="rounded-md border border-vt-border bg-vt-background p-4"
             aria-label="Assistant response is being generated"
         >
             <div className="flex h-6 items-center gap-2">

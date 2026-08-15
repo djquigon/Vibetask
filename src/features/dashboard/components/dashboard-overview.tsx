@@ -15,7 +15,7 @@ export function DashboardOverview() {
 
     return (
         <div className="space-y-4">
-            <section className="grid gap-3 rounded-md border border-vt-amber/25 bg-vt-display p-4 text-vt-ink md:grid-cols-[1fr_160px]">
+            <section className="grid gap-3 rounded-md border border-vt-border-strong bg-vt-display p-4 text-vt-ink md:grid-cols-[1fr_160px]">
                 <div>
                     <h1 className="font-mono text-5xl font-black uppercase">
                         Good morning, {currentUser?.displayName}
@@ -43,7 +43,7 @@ export function DashboardOverview() {
                     (item) => (
                         <div
                             key={item}
-                            className="rounded-md border border-vt-amber/20 bg-vt-surface p-4"
+                            className="rounded-md border border-vt-border bg-vt-surface p-4"
                         >
                             <p className="font-mono text-lg font-black uppercase text-vt-primary">
                                 {item}
@@ -74,7 +74,7 @@ export function DashboardOverview() {
                             <span className="text-vt-amber">{time}</span>
                             <span className="text-vt-primary">{type}</span>
                             <span className="text-vt-text-strong">{title}</span>
-                            <span className="h-5 w-5 rounded-full border border-vt-amber" />
+                            <span className="h-5 w-5 rounded-full border border-vt-border-strong" />
                         </div>
                     ))}
                 </div>

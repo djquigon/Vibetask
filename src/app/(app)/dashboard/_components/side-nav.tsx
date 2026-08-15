@@ -57,7 +57,7 @@ export function SideNav() {
                 <WinampPlayer />
                 <Link
                     aria-label="Open profile settings"
-                    className="group shrink-0 rounded-md border border-vt-amber/20 bg-vt-background p-3 transition hover:border-vt-green/60 hover:bg-vt-green-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-vt-green"
+                    className="group shrink-0 rounded-md border border-vt-border bg-vt-background p-3 transition hover:border-vt-green/60 hover:bg-vt-green-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-vt-green"
                     href="/dashboard/settings"
                 >
                     <div className="flex min-w-0 items-center gap-3">
@@ -85,7 +85,7 @@ export function SideNav() {
                         </div>
                     </div>
                 </Link>
-                <div className="shrink-0 rounded-md border border-vt-amber/20 bg-vt-background p-3">
+                <div className="shrink-0 rounded-md border border-vt-border bg-vt-background p-3">
                     <p className="font-mono text-xs uppercase text-vt-amber">
                         Daily streak
                     </p>

@@ -661,7 +661,7 @@ export function WinampPlayer() {
     const isDockedMilkdropVisible =
         !isOpen && isPlaying && !isMilkdropPoppedOut;
     const controlClassName =
-        'grid size-6 shrink-0 place-items-center rounded border border-vt-amber/30 bg-vt-green-hover font-mono text-[9px] font-black text-vt-icon transition hover:border-vt-primary hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
+        'grid size-6 shrink-0 place-items-center rounded border border-vt-border-muted bg-vt-green-hover font-mono text-[9px] font-black text-vt-icon transition hover:border-vt-border-strong hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-40';
 
     return (
         <>
@@ -669,18 +669,18 @@ export function WinampPlayer() {
                 <section
                     ref={milkdropDockRef}
                     aria-label="Milkdrop visualizer"
-                    className="relative h-44 shrink-0 overflow-hidden rounded-md border border-vt-amber/20 bg-vt-background"
+                    className="relative h-44 shrink-0 overflow-hidden rounded-md border border-vt-border bg-vt-background"
                 />
             )}
             <section
                 aria-label="Winamp music player"
-                className="grid place-items-center rounded-md border border-vt-amber/20 bg-vt-background p-3"
+                className="grid place-items-center rounded-md border border-vt-border bg-vt-background p-3"
             >
                 <div className="w-full min-w-0 text-center">
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-vt-amber">
                         Winamp
                     </p>
-                    <div className="mt-2 min-w-0 border border-vt-amber/20 bg-vt-surface px-2 py-1.5 text-left">
+                    <div className="mt-2 min-w-0 border border-vt-border bg-vt-surface px-2 py-1.5 text-left">
                         <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-vt-green">
                             Now playing
                         </p>
@@ -725,7 +725,7 @@ export function WinampPlayer() {
                                 status === 'loading' || status === 'unsupported'
                             }
                             onClick={() => void togglePlayer()}
-                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-primary bg-vt-green-hover text-vt-icon transition hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
+                            className="order-3 grid size-6 shrink-0 place-items-center rounded border border-vt-border-strong bg-vt-green-hover text-vt-icon transition hover:bg-vt-primary hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             <svg
                                 aria-hidden="true"
@@ -759,7 +759,7 @@ export function WinampPlayer() {
                             onClick={toggleMilkdropPopout}
                             className={`order-3 ${controlClassName} ${
                                 isMilkdropPoppedOut
-                                    ? 'border-vt-primary text-vt-icon'
+                                    ? 'border-vt-border-strong text-vt-icon'
                                     : ''
                             }`}
                         >
