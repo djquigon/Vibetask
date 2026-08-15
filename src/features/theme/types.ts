@@ -27,6 +27,31 @@ export const THEME_OPTIONS = [
         swatches: ['#101116', '#f562ce', '#47dfd5', '#f2df64'],
     },
     {
+        id: 'midnight',
+        name: 'Midnight',
+        swatches: ['#0a1222', '#6f9dff', '#57d7b7', '#ffc766'],
+    },
+    {
+        id: 'crimson',
+        name: 'Crimson',
+        swatches: ['#201014', '#e85b63', '#64d6b3', '#f4bd5c'],
+    },
+    {
+        id: 'radio',
+        name: 'Radio',
+        swatches: ['#0c1b20', '#5cc8f0', '#a0de64', '#f5cc62'],
+    },
+    {
+        id: 'matrix',
+        name: 'Matrix',
+        swatches: ['#111a12', '#81d66a', '#73ddc0', '#d1bf67'],
+    },
+    {
+        id: 'monochrome',
+        name: 'Monochrome',
+        swatches: ['#101010', '#f0f0f0', '#a8a8a8', '#555555'],
+    },
+    {
         id: 'sunrise',
         name: 'Sunrise',
         swatches: ['#fff9ed', '#39aaa5', '#267b4d', '#f9e1a2'],
@@ -45,6 +70,16 @@ export const THEME_OPTIONS = [
         id: 'glacier',
         name: 'Glacier',
         swatches: ['#f5faff', '#7d9df0', '#218d82', '#c79939'],
+    },
+    {
+        id: 'cloud',
+        name: 'Cloud',
+        swatches: ['#f7fbfd', '#4d80a0', '#2f856f', '#bc8a26'],
+    },
+    {
+        id: 'rose',
+        name: 'Rose',
+        swatches: ['#fff8fa', '#ce4f7c', '#248877', '#be8b29'],
     },
 ] as const;
 
