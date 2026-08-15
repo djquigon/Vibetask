@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { updateProfileDetails } from '../server/actions';
@@ -21,10 +21,13 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
         updateProfileDetails,
         initialProfileDetailsActionState
     );
+    const [removeAvatar, setRemoveAvatar] = useState(false);
     const initial = profile.displayName?.trim().charAt(0).toUpperCase() ?? '?';
+    const showAvatar = Boolean(profile.avatarUrl) && !removeAvatar;
 
     useEffect(() => {
         if (state.status === 'success') {
+            setRemoveAvatar(false);
             router.refresh();
         }
     }, [router, state.status]);
@@ -32,17 +35,33 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
     return (
         <form action={formAction} className="space-y-6">
             <div className="flex flex-wrap items-center gap-4">
-                <div
-                    aria-label="Current profile picture"
-                    className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
-                    role="img"
-                    style={
-                        profile.avatarUrl
-                            ? { backgroundImage: `url(${profile.avatarUrl})` }
-                            : undefined
-                    }
-                >
-                    {profile.avatarUrl ? null : initial}
+                <div className="relative h-20 w-20 shrink-0">
+                    <div
+                        aria-label="Current profile picture"
+                        className="flex h-full w-full items-center justify-center rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
+                        role="img"
+                        style={
+                            showAvatar
+                                ? { backgroundImage: `url(${profile.avatarUrl})` }
+                                : undefined
+                        }
+                    >
+                        {showAvatar ? null : initial}
+                    </div>
+                    {profile.hasAvatar && !removeAvatar ? (
+                        <button
+                            aria-label="Remove current picture"
+                            className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border border-vt-border-strong bg-vt-surface-raised font-mono text-sm font-black leading-none text-vt-text transition hover:border-vt-red hover:bg-vt-red hover:text-vt-ink disabled:cursor-not-allowed disabled:opacity-60"
+                            disabled={isPending}
+                            onClick={() => setRemoveAvatar(true)}
+                            type="button"
+                        >
+                            ×
+                        </button>
+                    ) : null}
+                    {removeAvatar ? (
+                        <input name="removeAvatar" type="hidden" value="on" />
+                    ) : null}
                 </div>
 
                 <div className="min-w-0 flex-1">
@@ -60,17 +79,6 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                         name="avatar"
                         type="file"
                     />
-                    {profile.hasAvatar ? (
-                        <label className="mt-3 flex w-fit items-center gap-2 font-mono text-xs text-vt-text">
-                            <input
-                                className="h-4 w-4 accent-vt-primary"
-                                disabled={isPending}
-                                name="removeAvatar"
-                                type="checkbox"
-                            />
-                            Remove current picture
-                        </label>
-                    ) : null}
                 </div>
             </div>
 
