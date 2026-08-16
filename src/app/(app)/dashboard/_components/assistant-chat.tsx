@@ -278,7 +278,7 @@ export function AssistantChat({
                     className={`h-10 w-16 shrink-0 rounded-md border px-2 font-mono text-xs font-black uppercase transition ${
                         mode === 'voice'
                             ? 'border-vt-green/40 bg-vt-green-active text-vt-green hover:border-vt-green'
-                            : 'border-vt-border-strong bg-vt-amber-surface text-vt-amber hover:border-vt-border-highlight'
+                            : 'border-vt-border-strong bg-vt-primary-surface text-vt-primary hover:border-vt-border-highlight'
                     }`}
                     type="button"
                     onClick={() =>
@@ -508,7 +508,7 @@ function AssistantPortrait({
                         priority
                     />
                 ) : (
-                    <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-vt-amber">
+                    <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-vt-primary">
                         {displayedVoice
                             ? `${displayedVoice.name} needs a character portrait.`
                             : 'Select an assistant voice.'}

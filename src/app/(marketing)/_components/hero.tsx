@@ -56,7 +56,7 @@ export function Hero() {
                             key={`${time}-${title}`}
                             className="grid grid-cols-[64px_96px_1fr] gap-3 border-b border-vt-border-muted py-3 font-mono text-sm last:border-0"
                         >
-                            <span className="text-vt-amber">{time}</span>
+                            <span className="text-vt-primary">{time}</span>
                             <span className="text-vt-green">{type}</span>
                             <span className="text-vt-text-strong">{title}</span>
                         </div>

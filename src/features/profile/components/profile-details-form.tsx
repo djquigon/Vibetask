@@ -38,7 +38,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                 <div className="relative h-20 w-20 shrink-0">
                     <div
                         aria-label="Current profile picture"
-                        className="flex h-full w-full items-center justify-center rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-gold"
+                        className="flex h-full w-full items-center justify-center rounded-md border border-vt-border-strong bg-vt-background bg-cover bg-center font-mono text-2xl font-black text-vt-primary"
                         role="img"
                         style={
                             showAvatar
@@ -66,7 +66,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
 
                 <div className="min-w-0 flex-1">
                     <label
-                        className="block font-mono text-sm font-black uppercase text-vt-amber"
+                        className="block font-mono text-sm font-black uppercase text-vt-primary"
                         htmlFor="profile-avatar"
                     >
                         Profile picture
@@ -84,7 +84,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
 
             <div className="grid gap-4 md:grid-cols-2">
                 <label className="block min-w-0">
-                    <span className="font-mono text-sm font-black uppercase text-vt-amber">
+                    <span className="font-mono text-sm font-black uppercase text-vt-primary">
                         Display name
                     </span>
                     <input
@@ -98,7 +98,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
                 </label>
 
                 <label className="block min-w-0">
-                    <span className="font-mono text-sm font-black uppercase text-vt-amber">
+                    <span className="font-mono text-sm font-black uppercase text-vt-primary">
                         Email
                     </span>
                     <input
@@ -111,7 +111,7 @@ export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
             </div>
 
             <label className="block">
-                <span className="font-mono text-sm font-black uppercase text-vt-amber">
+                <span className="font-mono text-sm font-black uppercase text-vt-primary">
                     Assistant context
                 </span>
                 <textarea

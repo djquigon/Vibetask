@@ -58,7 +58,7 @@ export function DashboardOverview() {
 
             <section className="rounded-md border border-vt-border bg-vt-surface p-4">
                 <div className="mb-3 flex items-center justify-between">
-                    <h2 className="font-mono text-xl font-black uppercase text-vt-amber">
+                    <h2 className="font-mono text-xl font-black uppercase text-vt-primary">
                         Today&apos;s plan
                     </h2>
                     <span className="font-mono text-xs text-vt-green">
@@ -71,7 +71,7 @@ export function DashboardOverview() {
                             key={`${time}-${title}`}
                             className="grid grid-cols-[90px_140px_1fr_24px] gap-3 py-3 font-mono text-sm"
                         >
-                            <span className="text-vt-amber">{time}</span>
+                            <span className="text-vt-primary">{time}</span>
                             <span className="text-vt-primary">{type}</span>
                             <span className="text-vt-text-strong">{title}</span>
                             <span className="h-5 w-5 rounded-full border border-vt-border-strong" />
@@ -112,10 +112,10 @@ function Metric({
 }) {
     return (
         <div className="rounded-md border border-vt-border bg-vt-surface p-4">
-            <p className="font-mono text-sm font-bold uppercase text-vt-amber">
+            <p className="font-mono text-sm font-bold uppercase text-vt-primary">
                 {title}
             </p>
-            <p className="mt-4 font-mono text-4xl font-black text-vt-gold">
+            <p className="mt-4 font-mono text-4xl font-black text-vt-primary">
                 {value}
             </p>
             <p className="mt-1 text-sm text-vt-text-muted">{caption}</p>

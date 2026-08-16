@@ -14,13 +14,13 @@ type SettingsViewProps = {
 export function SettingsView({ profile, theme }: SettingsViewProps) {
     return (
         <div className="mx-auto w-full">
-            <div className="border-b border-vt-border pb-4">
-                <h1 className="font-mono text-2xl font-black uppercase text-vt-gold">
+            <div className="sticky top-0 z-10 -mx-4 -mt-4 mb-5 border-b border-vt-border bg-vt-surface-raised px-4 pt-4 pb-4">
+                <h1 className="font-mono text-2xl font-black uppercase text-vt-primary">
                     Settings
                 </h1>
             </div>
 
-            <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+            <div className="grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
                 <section className="rounded-md border border-vt-border bg-vt-surface p-5">
                     <h2 className="mb-5 font-mono text-lg font-black uppercase text-vt-text">
                         Profile details

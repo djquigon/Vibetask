@@ -23,7 +23,7 @@ export function AssistantMoodForm({ assistantMood }: AssistantMoodFormProps) {
 
     return (
         <form action={formAction} className="flex flex-wrap items-end gap-3">
-            <label className="min-w-48 flex-1 font-mono text-sm font-black uppercase text-vt-amber">
+            <label className="min-w-48 flex-1 font-mono text-sm font-black uppercase text-vt-primary">
                 <span>Mood</span>
                 <select
                     className="mt-2 h-11 w-full rounded-md border border-vt-border bg-vt-background px-3 text-sm text-vt-text outline-none transition focus:border-vt-green"

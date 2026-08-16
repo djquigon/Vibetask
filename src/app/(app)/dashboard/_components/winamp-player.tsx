@@ -677,7 +677,7 @@ export function WinampPlayer() {
                 className="grid place-items-center rounded-md border border-vt-border bg-vt-background p-3"
             >
                 <div className="w-full min-w-0 text-center">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-vt-amber">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-vt-primary">
                         Winamp
                     </p>
                     <div className="mt-2 min-w-0 border border-vt-border bg-vt-surface px-2 py-1.5 text-left">
@@ -854,7 +854,7 @@ export function WinampPlayer() {
                             className="order-2 basis-full"
                         />
                     </div>
-                    <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-vt-amber">
+                    <label className="mt-2 flex w-full min-w-0 items-center gap-2 font-mono text-[9px] font-bold uppercase text-vt-primary">
                         <span>Vol</span>
                         <input
                             type="range"

@@ -65,7 +65,7 @@ export function AuthPanel({
                     {next ? <input name="next" type="hidden" value={next} /> : null}
                     {mode === 'signup' ? (
                         <label className="block">
-                            <span className="text-sm font-bold text-vt-amber">
+                            <span className="text-sm font-bold text-vt-primary">
                                 Display name
                             </span>
                             <input
@@ -79,7 +79,7 @@ export function AuthPanel({
                     ) : null}
                     {needsEmail ? (
                         <label className="block">
-                            <span className="text-sm font-bold text-vt-amber">
+                            <span className="text-sm font-bold text-vt-primary">
                                 Email
                             </span>
                             <input
@@ -94,7 +94,7 @@ export function AuthPanel({
                     ) : null}
                     {needsPassword ? (
                         <label className="block">
-                            <span className="text-sm font-bold text-vt-amber">
+                            <span className="text-sm font-bold text-vt-primary">
                                 {isNewPassword ? 'New password' : 'Password'}
                             </span>
                             <input
@@ -111,7 +111,7 @@ export function AuthPanel({
                     ) : null}
                     {mode === 'update-password' ? (
                         <label className="block">
-                            <span className="text-sm font-bold text-vt-amber">
+                            <span className="text-sm font-bold text-vt-primary">
                                 Confirm new password
                             </span>
                             <input

@@ -76,7 +76,7 @@ export function SideNav() {
                             {currentUser?.avatarUrl ? null : avatarInitial}
                         </div>
                         <div className="min-w-0">
-                            <p className="truncate font-mono text-sm font-black uppercase text-vt-text group-hover:text-vt-gold">
+                            <p className="truncate font-mono text-sm font-black uppercase text-vt-text group-hover:text-vt-primary">
                                 {displayName}
                             </p>
                             <p className="truncate font-mono text-xs text-vt-text-dim">
@@ -86,10 +86,10 @@ export function SideNav() {
                     </div>
                 </Link>
                 <div className="shrink-0 rounded-md border border-vt-border bg-vt-background p-3">
-                    <p className="font-mono text-xs uppercase text-vt-amber">
+                    <p className="font-mono text-xs uppercase text-vt-primary">
                         Daily streak
                     </p>
-                    <p className="mt-2 text-3xl font-black text-vt-gold">
+                    <p className="mt-2 text-3xl font-black text-vt-primary">
                         {currentUser?.dailyLoginStreakCount ?? 0}
                     </p>
                     <p className="text-xs font-bold text-vt-green">
