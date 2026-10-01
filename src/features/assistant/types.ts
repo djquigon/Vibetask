@@ -2,15 +2,20 @@ export type AssistantMode = 'text' | 'voice';
 
 export type AssistantActionType =
     | 'create_task'
+    | 'create_project'
     | 'create_calendar_event'
     | 'create_note'
     | 'generate_report';
 
-export type AssistantAction = {
-    type: AssistantActionType;
+type AssistantActionBase = {
+    id: string;
     summary: string;
-    requiresConfirmation: boolean;
+    requiresConfirmation: true;
 };
+export type AssistantAction = AssistantActionBase & (
+    | { type: 'create_task'; draft: import('@/features/tasks/types').TaskDraft; projects?: import('@/features/projects/types').ProjectOption[] }
+    | { type: 'create_project'; draft: import('@/features/projects/types').ProjectDraft }
+);
 
 export type AssistantChatMessage = {
     role: 'user' | 'assistant';
@@ -25,7 +30,7 @@ export type AssistantChatRequest = {
 export type AssistantChatResponse = {
     message: string;
     assistantMessage: string;
-    actions: [];
+    actions: AssistantAction[];
 };
 
 export type AssistantChatError = {

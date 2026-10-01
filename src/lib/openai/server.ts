@@ -12,4 +12,6 @@ if (!serverEnv.openAiApiKey) {
 
 export const openai = new OpenAI({
     apiKey: serverEnv.openAiApiKey,
+    timeout: 30000,
+    maxRetries: 0,
 });

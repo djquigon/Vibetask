@@ -109,6 +109,26 @@ export async function login(formData: FormData) {
     redirect(next);
 }
 
+export async function signInWithGoogle(formData: FormData) {
+    const next = getSafeDashboardPath(formData.get('next'));
+    const supabase = await createServerSupabaseClient();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: getCallbackUrl(next) },
+    });
+    if (error || !data.url) {
+        redirectToAuthPage('/login', { error: 'Google sign-in is unavailable. Try email sign-in.', next });
+    }
+    redirect(data.url);
+}
+
+export async function signOut() {
+    const supabase = await createServerSupabaseClient();
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
+    if (error) throw new Error('Unable to sign out. Please try again.');
+    redirect('/login');
+}
+
 export async function signUp(formData: FormData) {
     const email = getEmail(formData);
     const password = getPassword(formData);

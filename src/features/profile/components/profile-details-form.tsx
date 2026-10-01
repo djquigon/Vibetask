@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { updateProfileDetails } from '../server/actions';
@@ -17,20 +17,20 @@ const initialProfileDetailsActionState: ProfileDetailsActionState = {
 
 export function ProfileDetailsForm({ profile }: ProfileDetailsFormProps) {
     const router = useRouter();
+    const [removeAvatar, setRemoveAvatar] = useState(false);
     const [state, formAction, isPending] = useActionState(
-        updateProfileDetails,
+        async (previous: ProfileDetailsActionState, data: FormData) => {
+            const result = await updateProfileDetails(previous, data);
+            if (result.status === 'success') {
+                setRemoveAvatar(false);
+                router.refresh();
+            }
+            return result;
+        },
         initialProfileDetailsActionState
     );
-    const [removeAvatar, setRemoveAvatar] = useState(false);
     const initial = profile.displayName?.trim().charAt(0).toUpperCase() ?? '?';
     const showAvatar = Boolean(profile.avatarUrl) && !removeAvatar;
-
-    useEffect(() => {
-        if (state.status === 'success') {
-            setRemoveAvatar(false);
-            router.refresh();
-        }
-    }, [router, state.status]);
 
     return (
         <form action={formAction} className="space-y-6">

@@ -1,124 +1,64 @@
 'use client';
-
-const plan = [
-    ['09:00 AM', 'Focus Session', 'Build dashboard shell'],
-    ['10:30 AM', 'Team Standup', '30 min'],
-    ['11:30 AM', 'Deep Work', 'Design system updates'],
-    ['02:00 PM', 'Project', 'Fish Audio app'],
-    ['04:30 PM', 'Admin', 'Review analytics'],
-];
-
+import Link from 'next/link';
 import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
+import type { Task } from '@/features/tasks/types';
+import { TaskForm } from '@/features/tasks/components/task-form';
+import type { Project } from '@/features/projects/types';
+import { projectProgress } from '@/features/projects/progress';
 
-export function DashboardOverview() {
+export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects: Project[] }) {
     const currentUser = useCurrentUser();
-
+    const done = tasks.filter((task) => task.status === 'done').length;
+    const active = tasks.filter((task) => task.status !== 'done').sort((a, b) =>
+        (a.dueDate ?? '9999').localeCompare(b.dueDate ?? '9999') ||
+        ({ high: 0, normal: 1, low: 2 }[a.priority] - { high: 0, normal: 1, low: 2 }[b.priority]));
     return (
         <div className="space-y-4">
-            <section className="grid gap-3 rounded-md border border-vt-border-strong bg-vt-display p-4 text-vt-ink md:grid-cols-[1fr_160px]">
-                <div>
-                    <h1 className="font-mono text-5xl font-black uppercase">
-                        Good morning, {currentUser?.displayName}
-                    </h1>
-                    <p className="mt-2 font-mono text-sm">
-                        Let us make today ridiculously productive.
-                    </p>
-                </div>
-                <div className="rounded-md border border-vt-border-strong/30 p-3 font-mono">
-                    <p className="text-xs font-bold uppercase">Current time</p>
-                    <p className="text-2xl font-black">
-                        {new Date().toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                            timeZone: 'UTC',
-                        })}{' '}
-                        UTC
-                    </p>
-                </div>
+            <section className="rounded border border-vt-border-strong bg-vt-display p-4 text-vt-ink">
+                <h1 className="break-words font-mono text-3xl font-black uppercase">Welcome, {currentUser?.displayName || 'Vibetask user'}</h1>
+                <p className="mt-2 font-mono text-sm">Your tasks, your next steps.</p>
             </section>
-
-            <section className="grid gap-3 md:grid-cols-4">
-                {['Capture', 'Plan my day', 'Prioritize', 'Brain dump'].map(
-                    (item) => (
-                        <div
-                            key={item}
-                            className="rounded-md border border-vt-border bg-vt-surface p-4"
-                        >
-                            <p className="font-mono text-lg font-black uppercase text-vt-primary">
-                                {item}
-                            </p>
-                            <p className="mt-2 text-sm text-vt-text-muted">
-                                Start a focused assistant workflow.
-                            </p>
-                        </div>
-                    )
+            <section className="grid gap-3 sm:grid-cols-3">
+                {[['Open tasks', active.length], ['Completed', done], ['Completion', tasks.length ? Math.round(done / tasks.length * 100) + '%' : '0%']].map(([title, value]) => (
+                    <div key={title} className="rounded border border-vt-border bg-vt-surface p-4">
+                        <p className="font-mono text-sm uppercase text-vt-primary">{title}</p>
+                        <p className="mt-3 font-mono text-4xl font-black text-vt-primary">{value}</p>
+                    </div>
+                ))}
+            </section>
+            <section className="rounded border border-vt-border bg-vt-surface p-4">
+                <h2 className="mb-3 font-mono text-lg font-bold uppercase text-vt-primary">Quick capture</h2>
+                <TaskForm projects={projects} />
+            </section>
+            <section className="rounded border border-vt-border bg-vt-surface p-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                    <h2 className="font-mono text-lg font-bold uppercase text-vt-primary">Active projects</h2>
+                    <Link href="/dashboard/projects" className="text-sm text-vt-green">View all projects</Link>
+                </div>
+                {projects.filter((project) => project.status === 'active').length === 0 ? <p className="text-sm text-vt-text-muted">Create a project to connect your tasks and calendar.</p> : <ul className="divide-y divide-vt-border">
+                    {projects.filter((project) => project.status === 'active').slice(0, 4).map((project) => {
+                        const progress = projectProgress(project.id, tasks);
+                        return <li key={project.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm">
+                            <Link href={'/dashboard/projects/' + project.id} className="break-words font-bold">{project.name}</Link>
+                            <span className="font-mono text-vt-primary">{progress.completed}/{progress.total} complete · {progress.percent}%</span>
+                        </li>;
+                    })}
+                </ul>}
+            </section>
+            <section className="rounded border border-vt-border bg-vt-surface p-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                    <h2 className="font-mono text-lg font-bold uppercase text-vt-primary">Next tasks</h2>
+                    <Link href="/dashboard/tasks" className="text-sm text-vt-green">View all tasks</Link>
+                </div>
+                {active.length === 0 ? <p className="text-sm text-vt-text-muted">No open tasks. Add a task above to start your plan.</p> : (
+                    <ul className="divide-y divide-vt-border">
+                        {active.slice(0, 6).map((task) => <li key={task.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm">
+                            <Link href="/dashboard/tasks" className="break-words font-bold">{task.title}</Link>
+                            <span className="font-mono text-vt-primary">{task.priority} · {task.dueDate ?? 'No due date'}</span>
+                        </li>)}
+                    </ul>
                 )}
             </section>
-
-            <section className="rounded-md border border-vt-border bg-vt-surface p-4">
-                <div className="mb-3 flex items-center justify-between">
-                    <h2 className="font-mono text-xl font-black uppercase text-vt-primary">
-                        Today&apos;s plan
-                    </h2>
-                    <span className="font-mono text-xs text-vt-green">
-                        Thursday
-                    </span>
-                </div>
-                <div className="divide-y divide-vt-border">
-                    {plan.map(([time, type, title]) => (
-                        <div
-                            key={`${time}-${title}`}
-                            className="grid grid-cols-[90px_140px_1fr_24px] gap-3 py-3 font-mono text-sm"
-                        >
-                            <span className="text-vt-primary">{time}</span>
-                            <span className="text-vt-primary">{type}</span>
-                            <span className="text-vt-text-strong">{title}</span>
-                            <span className="h-5 w-5 rounded-full border border-vt-border-strong" />
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            <section className="grid gap-3 md:grid-cols-3">
-                <Metric
-                    title="Tasks overview"
-                    value="24"
-                    caption="total tasks"
-                />
-                <Metric
-                    title="Focus session"
-                    value="25:00"
-                    caption="deep work"
-                />
-                <Metric
-                    title="Today's progress"
-                    value="75%"
-                    caption="6 of 8 tasks"
-                />
-            </section>
-        </div>
-    );
-}
-
-function Metric({
-    title,
-    value,
-    caption,
-}: {
-    title: string;
-    value: string;
-    caption: string;
-}) {
-    return (
-        <div className="rounded-md border border-vt-border bg-vt-surface p-4">
-            <p className="font-mono text-sm font-bold uppercase text-vt-primary">
-                {title}
-            </p>
-            <p className="mt-4 font-mono text-4xl font-black text-vt-primary">
-                {value}
-            </p>
-            <p className="mt-1 text-sm text-vt-text-muted">{caption}</p>
         </div>
     );
 }

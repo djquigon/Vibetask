@@ -39,6 +39,30 @@ Official reference starting points:
 
 All persisted user data for these areas must be scoped to the authenticated account. Avoid global data access patterns unless the data is intentionally public or system-level.
 
+## Connected Product Model
+
+All areas must operate on shared account-owned records and relationships. Tasks can belong to projects; project progress derives from those tasks. Calendar views display task deadlines and project dates from the original records, with links back to their editing views. Editing or completing a task must update every affected view. Do not create disconnected copies of tasks or projects for calendar, analytics, notes, focus sessions, or assistant actions. New areas should extend these relationships and use the same persistence paths as the UI.
+
+## Approved Product Workflows
+
+These requirements describe the intended product. They are not evidence that a feature is implemented; consult Current State Notes and inspect the code before making that claim.
+
+### Daily planning
+
+The primary experience when opening Vibetask is building a daily plan from tasks, projects, and available time. Prioritize this workflow in the dashboard and future feature work. Planning should use existing account-owned records and maintain their relationships rather than creating separate planning copies.
+
+### Calendar planning
+
+Users schedule work manually and can ask the assistant to propose a plan for review. Assistant-proposed schedules must show the intended changes before the user applies them. Do not silently schedule or rearrange work. Keep task/project deadlines distinct from scheduled work blocks so changing when work happens does not implicitly change its deadline. Scheduled blocks should link to their source task or project where applicable.
+
+### Assistant permissions
+
+Users configure assistant permissions for each action type through their user settings. By default, every assistant action that changes data requires confirmation. Conversational responses and read-only summaries do not change data.
+
+Apply permissions on the server when executing an action, including actions initiated through voice mode. A model response, client-side flag, or draft must not grant permission. Missing settings or a newly introduced action type must default to requiring confirmation. Confirmation should clearly show the proposed action and affected records; confirmed actions use the same validated, account-scoped persistence paths as the manual UI.
+
+The permission controls, full daily planning workflow, and scheduled work blocks are planned requirements. Do not loosen the existing confirmation behavior before permission settings and server enforcement are implemented.
+
 ## AI Assistant Rules
 
 - Treat the assistant as an operator of existing product capabilities, not a separate data store.
@@ -86,4 +110,6 @@ Never commit real secrets. Keep service-role access out of client components and
 
 ## Current State Notes
 
-This repository is at the initial documentation/scaffolding stage. Do not assume app source files, package manifests, database schemas, or migrations exist until you inspect the workspace.
+The repository has a Next.js app with Supabase authentication, profile settings, private avatars, themes, login streaks, and account-scoped tasks and projects. Tasks optionally belong to projects; project progress derives from linked tasks. Calendar displays task deadlines and active project timelines from the same records, and the dashboard displays saved tasks and project progress. AI chat proposes editable task/project drafts that require user confirmation through shared persistence paths. AI endpoints require authentication and database-backed quotas. Notes, focus, habits, and analytics remain placeholders; calendar time blocks are not implemented yet.
+
+Apply all Supabase migrations in filename order before deploying. Run `npm test`, `npm run lint`, and `npm run build` for verification. Tests use PGlite to exercise migration SQL and Row Level Security without live credentials.

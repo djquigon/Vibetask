@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
 import { WinampPlayer } from './winamp-player';
+import { signOut } from '@/app/(auth)/actions';
 
 const navItems = [
     ['Dashboard', '/dashboard'],
@@ -55,6 +56,9 @@ export function SideNav() {
             </div>
             <div className="mt-auto flex flex-col gap-3 pt-3">
                 <WinampPlayer />
+                <form action={signOut}>
+                    <button type="submit" className="w-full rounded-md border border-vt-border px-3 py-2 font-mono text-sm text-vt-primary">Sign out</button>
+                </form>
                 <Link
                     aria-label="Open profile settings"
                     className="group shrink-0 rounded-md border border-vt-border bg-vt-background p-3 transition hover:border-vt-green/60 hover:bg-vt-green-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-vt-green"

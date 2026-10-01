@@ -119,10 +119,7 @@ export async function getCurrentUserAssistantPreferences(): Promise<{
     const claims = claimsData?.claims;
 
     if (claimsError || !claims?.sub) {
-        return {
-            assistantContext: null,
-            assistantMood: 'balanced',
-        };
+        throw new Error('Authentication required for assistant preferences.');
     }
 
     const { data, error } = await supabase

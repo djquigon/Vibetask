@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { signInWithGoogle } from '../actions';
 
 type AuthPanelMode = 'login' | 'signup' | 'reset-password' | 'update-password';
 
@@ -131,6 +132,14 @@ export function AuthPanel({
                         {primaryAction}
                     </button>
                 </form>
+                {mode === 'login' || mode === 'signup' ? (
+                    <form action={signInWithGoogle} className="mt-3">
+                        {next ? <input name="next" type="hidden" value={next} /> : null}
+                        <button type="submit" className="w-full rounded-md border border-vt-border-strong px-4 py-3 font-bold text-vt-primary">
+                            Continue with Google
+                        </button>
+                    </form>
+                ) : null}
                 <p className="mt-6 text-center text-sm text-vt-text-muted">
                     {footer}
                 </p>

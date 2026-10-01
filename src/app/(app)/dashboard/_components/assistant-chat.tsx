@@ -11,11 +11,15 @@ import type {
 } from '@/features/assistant/types';
 import type { AssistantVoiceOption } from '@/features/assistant/voices';
 import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
+import { TaskForm } from '@/features/tasks/components/task-form';
+import { ProjectForm } from '@/features/projects/components/project-form';
+import type { AssistantAction } from '@/features/assistant/types';
 
 type ChatMessage = {
     role: 'user' | 'assistant';
     content: string;
     revealDurationMs?: number;
+    actions?: AssistantAction[];
 };
 
 const CHAT_HISTORY_LIMIT = 12;
@@ -59,6 +63,24 @@ export function AssistantChat({
     const recognitionRef = useRef<SpeechRecognition | null>(null);
     const isMicRecordingRef = useRef(false);
     const committedTranscriptRef = useRef('');
+    const playbackRef = useRef<{ audio: HTMLAudioElement; dispose: () => void } | null>(null);
+    const mountedRef = useRef(true);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+            isMicRecordingRef.current = false;
+            const recognition = recognitionRef.current;
+            if (recognition) {
+                recognition.onend = null;
+                recognition.onerror = null;
+                recognition.onresult = null;
+                recognition.abort();
+            }
+            playbackRef.current?.dispose();
+        };
+    }, []);
     const assistantStatus = isMicRecording
         ? 'Listening'
         : isSpeaking
@@ -108,24 +130,25 @@ export function AssistantChat({
         const audioBlob = await response.blob();
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
-        const durationMs = await loadAudioDuration(audio);
-
-        audio.addEventListener('ended', () => URL.revokeObjectURL(audioUrl), {
-            once: true,
-        });
-
-        return {
-            audio,
-            durationMs,
+        const dispose = () => {
+            audio.pause();
+            audio.removeAttribute('src');
+            URL.revokeObjectURL(audioUrl);
         };
+        if (!mountedRef.current) { dispose(); throw new Error('Chat closed.'); }
+        playbackRef.current = { audio, dispose };
+        try {
+            const durationMs = await loadAudioDuration(audio);
+            audio.addEventListener('ended', dispose, { once: true });
+            audio.addEventListener('error', dispose, { once: true });
+            return { audio, durationMs };
+        } catch (error) { dispose(); throw error; }
     }
 
     function handleRecord() {
-        const nextIsMicRecording = !isMicRecordingRef.current;
-        isMicRecordingRef.current = nextIsMicRecording;
-        setIsMicRecording(nextIsMicRecording);
-
-        if (!nextIsMicRecording) {
+        if (isMicRecordingRef.current) {
+            isMicRecordingRef.current = false;
+            setIsMicRecording(false);
             recognitionRef.current?.stop();
             return;
         }
@@ -134,17 +157,26 @@ export function AssistantChat({
 
         const SpeechRecognitionCtor =
             window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition =
-            recognitionRef.current ?? new SpeechRecognitionCtor();
+        if (!SpeechRecognitionCtor) {
+            setErrorMessage('Speech input is unavailable in this browser. You can type your prompt.');
+            return;
+        }
+        const recognition = new SpeechRecognitionCtor();
 
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'en-US';
 
         recognition.onend = () => {
-            if (isMicRecordingRef.current) {
-                recognition.start();
-            }
+            isMicRecordingRef.current = false;
+            setIsMicRecording(false);
+        };
+        recognition.onerror = (event) => {
+            isMicRecordingRef.current = false;
+            setIsMicRecording(false);
+            setErrorMessage(event.error === 'not-allowed' || event.error === 'service-not-allowed'
+                ? 'Microphone access was denied. Allow microphone access or type your prompt.'
+                : 'Speech input stopped. Try recording again or type your prompt.');
         };
 
         recognition.onresult = (event) => {
@@ -166,7 +198,16 @@ export function AssistantChat({
         };
 
         recognitionRef.current = recognition;
-        recognition.start();
+        try {
+            recognition.start();
+            isMicRecordingRef.current = true;
+            setIsMicRecording(true);
+            setErrorMessage('');
+        } catch {
+            isMicRecordingRef.current = false;
+            setIsMicRecording(false);
+            setErrorMessage('Unable to start speech input. You can type your prompt.');
+        }
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -188,12 +229,13 @@ export function AssistantChat({
         const history: AssistantChatMessage[] = messages
             .map(({ role, content }) => ({
                 role,
-                content,
+                content: content.slice(0, 4000),
             }))
             .slice(-CHAT_HISTORY_LIMIT);
 
         setInput('');
         setErrorMessage('');
+        playbackRef.current?.dispose();
         setIsSpeaking(false);
         setIsLoading(true);
         if (isMicRecordingRef.current) {
@@ -226,20 +268,15 @@ export function AssistantChat({
             const assistantMessage = (data as AssistantChatResponse)
                 .assistantMessage;
 
+            setMessages((current) => [...current, { role: 'assistant', content: assistantMessage, actions: (data as AssistantChatResponse).actions }]);
+
             if (mode === 'voice') {
+                try {
                 const voiceResponse =
                     await prepareVoiceResponse(assistantMessage);
 
-                setIsLoading(false);
+                if (!mountedRef.current) { voiceResponse.audio.pause(); return; }
                 setIsSpeaking(true);
-                setMessages((current) => [
-                    ...current,
-                    {
-                        role: 'assistant',
-                        content: assistantMessage,
-                        revealDurationMs: voiceResponse.durationMs,
-                    },
-                ]);
 
                 voiceResponse.audio.addEventListener(
                     'ended',
@@ -248,21 +285,21 @@ export function AssistantChat({
                 );
                 voiceResponse.audio.addEventListener(
                     'error',
-                    () => setIsSpeaking(false),
+                    () => {
+                        setIsSpeaking(false);
+                        setErrorMessage('Voice playback stopped. The assistant response is shown above.');
+                    },
                     { once: true }
                 );
 
                 await voiceResponse.audio.play();
+                } catch {
+                    playbackRef.current?.dispose();
+                    setIsSpeaking(false);
+                    setErrorMessage('Voice playback is unavailable. The assistant response is shown above.');
+                }
                 return;
             }
-
-            setMessages((current) => [
-                ...current,
-                {
-                    role: 'assistant',
-                    content: assistantMessage,
-                },
-            ]);
         } catch {
             setIsSpeaking(false);
             setErrorMessage('The assistant could not respond. Try again.');
@@ -353,6 +390,7 @@ export function AssistantChat({
                                     message.content
                                 )}
                             </p>
+                            {message.actions?.map((action) => <TaskProposal key={action.id} action={action} />)}
                         </div>
                     ))}
                     {isLoading ? <AssistantThinkingMessage /> : null}
@@ -448,6 +486,19 @@ export function AssistantChat({
             </div>
         </section>
     );
+}
+
+function TaskProposal({ action }: { action: AssistantAction }) {
+    const [status, setStatus] = useState<'draft' | 'saved' | 'dismissed'>('draft');
+    const label = action.type === 'create_project' ? 'Project' : 'Task';
+    if (status !== 'draft') return <p className="mt-3 text-sm text-vt-green">{status === 'saved' ? `${label} saved to your account.` : `${label} draft dismissed.`}</p>;
+    return <div className="mt-3 rounded border border-vt-border-strong p-3">
+        <p className="mb-3 font-mono text-sm text-vt-primary">Review {label.toLowerCase()} draft</p>
+        {action.type === 'create_project'
+            ? <ProjectForm id={action.id} draft={action.draft} onSaved={() => setStatus('saved')} />
+            : <TaskForm id={action.id} draft={action.draft} projects={action.projects} onSaved={() => setStatus('saved')} />}
+        <button type="button" className="mt-3 text-sm text-vt-text-muted" onClick={() => setStatus('dismissed')}>Dismiss draft</button>
+    </div>;
 }
 
 function AssistantPortrait({
@@ -570,7 +621,15 @@ function AssistantThinkingMessage() {
 
 function loadAudioDuration(audio: HTMLAudioElement) {
     return new Promise<number>((resolve, reject) => {
+        const timeout = window.setTimeout(() => {
+            audio.onloadedmetadata = null;
+            audio.onerror = null;
+            reject(new Error('Voice audio loading timed out.'));
+        }, 15000);
         audio.onloadedmetadata = () => {
+            window.clearTimeout(timeout);
+            audio.onloadedmetadata = null;
+            audio.onerror = null;
             const durationSeconds = Number.isFinite(audio.duration)
                 ? audio.duration
                 : 0;
@@ -579,6 +638,9 @@ function loadAudioDuration(audio: HTMLAudioElement) {
         };
 
         audio.onerror = () => {
+            window.clearTimeout(timeout);
+            audio.onloadedmetadata = null;
+            audio.onerror = null;
             reject(new Error('Unable to load voice response audio.'));
         };
 
