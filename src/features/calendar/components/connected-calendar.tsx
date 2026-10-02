@@ -10,8 +10,9 @@ import type { Project } from '@/features/projects/types';
 import type { Task } from '@/features/tasks/types';
 import { connectedCalendarEvents } from '../events';
 import { CalendarView } from './calendar-view';
+import type { DailyPlan } from '@/features/planning/types';
 
-export function ConnectedCalendar({ projects, tasks }: { projects: Project[]; tasks: Task[] }) {
+export function ConnectedCalendar({ projects, tasks, plans = [] }: { projects: Project[]; tasks: Task[]; plans?: DailyPlan[] }) {
     const router = useRouter();
     const [showCompleted, setShowCompleted] = useState(false);
     return <div className="space-y-4">
@@ -22,13 +23,13 @@ export function ConnectedCalendar({ projects, tasks }: { projects: Project[]; ta
                 <Link href="/dashboard/tasks" className="text-vt-green">Set a task deadline</Link>
             </div>
         </div>
-        <p className="text-sm text-vt-text-muted">Amber shows project timelines. Green shows task deadlines. Open an entry to edit its source; changes appear everywhere.</p>
+        <p className="text-sm text-vt-text-muted">Amber shows project timelines. Green shows deadlines. Blue shows planned work blocks. Times use your device timezone. Open an entry to edit its source.</p>
         <label className="block text-sm"><input type="checkbox" checked={showCompleted} onChange={(event) => setShowCompleted(event.target.checked)} className="mr-2" />Show completed task deadlines</label>
         <CalendarView
             plugins={[dayGridPlugin, timeGridPlugin, listPlugin, multiMonthPlugin]}
             availableViews={['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']}
             initialView="dayGridMonth"
-            events={connectedCalendarEvents(projects, tasks, showCompleted)}
+            events={connectedCalendarEvents(projects, tasks, showCompleted, plans)}
             editable={false}
             eventClick={(info) => { info.jsEvent.preventDefault(); router.push(info.event.url); }}
         />

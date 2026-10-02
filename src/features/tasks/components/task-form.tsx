@@ -6,8 +6,8 @@ import type { ProjectOption } from '@/features/projects/types';
 
 const initial: TaskActionState = { status: 'idle', message: '' };
 
-export function TaskForm({ draft, id, editing = false, onSaved, projects = [], defaultProjectId = null }: {
-    draft?: TaskDraft; id?: string; editing?: boolean; onSaved?: () => void; projects?: ProjectOption[]; defaultProjectId?: string | null;
+export function TaskForm({ draft, id, editing = false, onSaved, projects = [], defaultProjectId = null, estimateDerived = false, inheritedProject = false }: {
+    draft?: TaskDraft; id?: string; editing?: boolean; onSaved?: () => void; projects?: ProjectOption[]; defaultProjectId?: string | null; estimateDerived?: boolean; inheritedProject?: boolean;
 }) {
     const formRef = useRef<HTMLFormElement>(null);
     const idRef = useRef(id ?? '');
@@ -32,7 +32,8 @@ export function TaskForm({ draft, id, editing = false, onSaved, projects = [], d
                 </label>
                 <div className="flex flex-wrap gap-3">
                     <label className="text-sm text-vt-primary">Project
-                        <select name="projectId" defaultValue={draft?.projectId ?? defaultProjectId ?? ''} className="ml-2 rounded border border-vt-border bg-vt-background p-2 text-vt-text">
+                        {inheritedProject ? <input type="hidden" name="projectId" value={draft?.projectId ?? ''} /> : null}
+                        <select disabled={inheritedProject} name={inheritedProject ? undefined : 'projectId'} defaultValue={draft?.projectId ?? defaultProjectId ?? ''} className="ml-2 rounded border border-vt-border bg-vt-background p-2 text-vt-text">
                             <option value="">No project</option>
                             {projects.filter((project) => project.status === 'active' || project.id === (draft?.projectId ?? defaultProjectId)).map((project) => <option key={project.id} value={project.id}>{project.name}{project.status === 'archived' ? ' (archived)' : ''}</option>)}
                         </select>
@@ -44,6 +45,10 @@ export function TaskForm({ draft, id, editing = false, onSaved, projects = [], d
                     </label>
                     <label className="text-sm text-vt-primary">Due date
                         <input name="dueDate" type="date" defaultValue={draft?.dueDate ?? ''} className="ml-2 rounded border border-vt-border bg-vt-background p-2 text-vt-text" />
+                    </label>
+                    <label className="text-sm text-vt-primary">Estimate (minutes)
+                        <input disabled={estimateDerived} name="estimatedMinutes" type="number" min={1} max={estimateDerived ? 1008000 : 10080} step={1} defaultValue={draft?.estimatedMinutes ?? ''} placeholder="Unestimated" className="ml-2 w-32 rounded border border-vt-border bg-vt-background p-2 text-vt-text" />
+                        {estimateDerived ? <span className="ml-2 text-xs">Derived from subtasks</span> : null}
                     </label>
                 </div>
                 <button type="submit" className="rounded bg-vt-primary px-4 py-2 font-bold text-vt-ink disabled:opacity-60">{pending ? 'Saving…' : editing ? 'Save changes' : draft ? 'Confirm and create task' : 'Add task'}</button>

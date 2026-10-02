@@ -21,12 +21,12 @@ export function ProjectDetail({ project, projects, tasks }: { project: Project; 
                 <button type="button" disabled={pending} className="rounded border border-vt-border px-3 py-2 text-sm text-vt-primary" onClick={() => start(async () => {
                     const result = await changeProjectStatus(project.id, project.status === 'active' ? 'archived' : 'active');
                     setMessage(result.message);
-                })}>{pending ? 'Saving…' : project.status === 'active' ? 'Archive project' : 'Restore project'}</button>
+                })}>{pending ? 'Saving…' : project.status === 'active' ? 'Archive project and unfinished tasks' : 'Restore project'}</button>
             </div>
             <p className="mt-3 whitespace-pre-wrap break-words text-sm text-vt-text-muted">{project.description}</p>
             <p className="mt-3 font-mono text-sm text-vt-primary">{progress.completed} / {progress.total} tasks complete · {progress.percent}%</p>
             <progress value={progress.completed} max={Math.max(progress.total, 1)} aria-label="Project progress" className="mt-2 h-2 w-full accent-vt-green" />
-            {project.status === 'archived' ? <p className="mt-3 text-sm text-vt-text-muted">Archived projects are hidden from the dashboard and calendar. Their tasks stay available.</p> : null}
+            {project.status === 'archived' ? <p className="mt-3 text-sm text-vt-text-muted">This project and its unfinished tasks are archived. Records and completion history are preserved. Restore the project first, then restore tasks using Show archived tasks.</p> : null}
             {message ? <p role="status" className="mt-3 text-sm">{message}</p> : null}
         </header>
         <details className="rounded border border-vt-border bg-vt-surface p-4">

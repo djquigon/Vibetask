@@ -8,8 +8,9 @@ import { projectProgress } from '@/features/projects/progress';
 
 export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects: Project[] }) {
     const currentUser = useCurrentUser();
-    const done = tasks.filter((task) => task.status === 'done').length;
-    const active = tasks.filter((task) => task.status !== 'done').sort((a, b) =>
+    const topLevel = tasks.filter((task) => !task.parentId && !task.archivedAt);
+    const done = topLevel.filter((task) => task.status === 'done').length;
+    const active = topLevel.filter((task) => task.status !== 'done').sort((a, b) =>
         (a.dueDate ?? '9999').localeCompare(b.dueDate ?? '9999') ||
         ({ high: 0, normal: 1, low: 2 }[a.priority] - { high: 0, normal: 1, low: 2 }[b.priority]));
     return (
@@ -19,7 +20,7 @@ export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects
                 <p className="mt-2 font-mono text-sm">Your tasks, your next steps.</p>
             </section>
             <section className="grid gap-3 sm:grid-cols-3">
-                {[['Open tasks', active.length], ['Completed', done], ['Completion', tasks.length ? Math.round(done / tasks.length * 100) + '%' : '0%']].map(([title, value]) => (
+                {[['Open tasks', active.length], ['Completed', done], ['Completion', topLevel.length ? Math.round(done / topLevel.length * 100) + '%' : '0%']].map(([title, value]) => (
                     <div key={title} className="rounded border border-vt-border bg-vt-surface p-4">
                         <p className="font-mono text-sm uppercase text-vt-primary">{title}</p>
                         <p className="mt-3 font-mono text-4xl font-black text-vt-primary">{value}</p>

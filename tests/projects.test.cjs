@@ -96,6 +96,9 @@ test('assistant proposes connected tasks and projects but never persists them', 
         '@/features/projects/server/queries': { listProjects: async () => [project] },
         '@/features/projects/validation': validation,
         '@/features/tasks/validation': taskValidation,
+        '@/features/planning/server/queries': { loadPlanningData: async () => ({ timezone: 'UTC', today: '2026-10-01', plans: [] }) },
+        '@/features/planning/logic': load('src/features/planning/logic.ts'),
+        '@/features/planning/validation': load('src/features/planning/validation.ts', { '@/features/tasks/validation': taskValidation }),
     });
     output = [{ type: 'function_call', name: 'propose_project', arguments: JSON.stringify(project) }];
     const projectResult = await chat.createAssistantChatResponse('Create a video project');

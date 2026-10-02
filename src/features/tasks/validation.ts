@@ -8,7 +8,7 @@ export function taskId(value: unknown): string {
 }
 
 export function taskStatus(value: unknown): TaskStatus {
-    if (value !== 'todo' && value !== 'in_progress' && value !== 'done') throw new Error('Invalid task status.');
+    if (value !== 'todo' && value !== 'in_progress' && value !== 'ready_for_review' && value !== 'done') throw new Error('Invalid task status.');
     return value;
 }
 
@@ -31,5 +31,7 @@ export function parseTaskDraft(value: unknown): TaskDraft {
     if (projectId !== null && (typeof projectId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(projectId))) {
         throw new Error('Choose a valid project.');
     }
-    return { title: item.title.trim(), description: item.description.trim(), priority: item.priority as TaskPriority, dueDate: dueDate as string | null, projectId: projectId as string | null };
+    const estimatedMinutes = item.estimatedMinutes == null || item.estimatedMinutes === '' ? null : Number(item.estimatedMinutes);
+    if (estimatedMinutes !== null && (!Number.isInteger(estimatedMinutes) || estimatedMinutes < 1 || estimatedMinutes > 10080)) throw new Error('Estimate must be 1 to 10080 minutes.');
+    return { title: item.title.trim(), description: item.description.trim(), priority: item.priority as TaskPriority, dueDate: dueDate as string | null, projectId: projectId as string | null, estimatedMinutes };
 }

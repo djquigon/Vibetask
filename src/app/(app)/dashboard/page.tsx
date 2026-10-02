@@ -2,9 +2,12 @@ import { DashboardOverview } from '@/features/dashboard/components/dashboard-ove
 import { loadTasksForPage } from '@/features/tasks/server/queries';
 import { TaskLoadNotice } from '@/features/tasks/components/task-load-notice';
 import { listProjects } from '@/features/projects/server/queries';
+import { loadPlanningData } from '@/features/planning/server/queries';
+import { DailyPlanner } from '@/features/planning/components/daily-planner';
 
 export default async function DashboardPage() {
     const result = await loadTasksForPage();
     if (result.status === 'unavailable') return <TaskLoadNotice setupRequired={result.setupRequired} />;
-    return <DashboardOverview tasks={result.tasks} projects={await listProjects()} />;
+    const [projects, planning] = await Promise.all([listProjects(), loadPlanningData()]);
+    return <div className="space-y-4"><DailyPlanner data={planning} tasks={result.tasks} projects={projects} /><DashboardOverview tasks={result.tasks} projects={projects} /></div>;
 }

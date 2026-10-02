@@ -8,6 +8,7 @@ import { signOut } from '@/app/(auth)/actions';
 
 const navItems = [
     ['Dashboard', '/dashboard'],
+    ['Daily plan', '/dashboard/planning'],
     ['Tasks', '/dashboard/tasks'],
     ['Projects', '/dashboard/projects'],
     ['Calendar', '/dashboard/calendar'],

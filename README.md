@@ -29,11 +29,15 @@ Voice text is limited to 4,000 characters, and only the bundled voices are accep
 
 ## Implementation status
 
-Authentication, profiles, private avatars, settings, themes, login streaks, and AI text/voice chat are implemented. Tasks support capture, editing, priority, due dates, statuses, completion, and confirmed deletion. Tasks can belong to a project, move between projects, or stand alone. Projects support creation, editing, start/due dates, and archiving; archiving preserves their tasks. Project progress and dashboard metrics derive from saved tasks.
+Authentication, profiles, private avatars, settings, themes, login streaks, and AI text/voice chat are implemented. Tasks support estimates, subtasks, priority, due dates, completion review, archive/restore, and separate confirmed deletion. Completing all subtasks marks their parent ready for review; reopening a subtask reopens its parent. Subtasks inherit project membership. Projects support dates and archiving of unfinished tasks, preserving records and completion history. Project progress counts top-level tasks rather than counting parents and children twice.
 
-The assistant receives an account-scoped snapshot of up to 50 recent tasks, task counts, and active projects with progress. It can propose one editable task or project draft per response, including task/project associations. Confirming uses the same validated persistence paths as manual capture; dismissing saves nothing. Stable IDs prevent duplicate saves on retries. It cannot update/delete existing records yet.
+The dashboard and Daily plan view support a fresh daily time budget, estimates, visibly unbudgeted work, ordered tasks, reviewed suggestions, and optional scheduled blocks. Overlaps warn without blocking saves. Estimates count against the budget; scheduled minutes are shown separately. Unfinished work stays in its original plan and is offered for review later. Past plans preserve historical results rather than reflecting later task edits. Revision checks prevent stale edits from overwriting newer plans.
 
-Calendar views display active project timelines and task deadlines directly from their source records, with links back to their editing views. Changes refresh all affected views; there is no separate calendar copy to synchronize. Scheduled time blocks are not implemented yet. Notes, focus sessions, habits, and analytics remain placeholders and should extend this shared data model.
+Choose a timezone in Daily plan before planning your day; the initial default is UTC. Existing plans retain their saved timezone. Work blocks use that timezone, while calendar times display in your device timezone. The planner loads the 90 most recent saved plans; older history remains stored.
+
+The assistant receives account-scoped task, project, and planning context. It proposes editable tasks, projects, daily plans with optional scheduling, and actionable task splits. Nothing is saved until confirmed through the same validated persistence paths as manual actions. Stable task/subtask IDs make creation retries idempotent; plans use revision checks.
+
+Calendar displays project timelines, task deadlines, and daily-plan work blocks linked to their source records. Notes, focus sessions, habits, milestones, analytics, XP progression, and the command palette remain future work.
 
 Apply migrations before deploying the updated endpoints. No hosted database changes happen automatically during the build.
 

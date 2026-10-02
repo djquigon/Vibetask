@@ -13,6 +13,8 @@ import type { AssistantVoiceOption } from '@/features/assistant/voices';
 import { useCurrentUser } from '@/features/profile/hooks/use-current-user';
 import { TaskForm } from '@/features/tasks/components/task-form';
 import { ProjectForm } from '@/features/projects/components/project-form';
+import { DailyPlanner } from '@/features/planning/components/daily-planner';
+import { SplitTaskForm } from '@/features/planning/components/split-task-form';
 import type { AssistantAction } from '@/features/assistant/types';
 
 type ChatMessage = {
@@ -490,12 +492,14 @@ export function AssistantChat({
 
 function TaskProposal({ action }: { action: AssistantAction }) {
     const [status, setStatus] = useState<'draft' | 'saved' | 'dismissed'>('draft');
-    const label = action.type === 'create_project' ? 'Project' : 'Task';
+    const label = action.type === 'create_project' ? 'Project' : action.type === 'plan_day' ? 'Daily plan' : action.type === 'split_task' ? 'Subtasks' : 'Task';
     if (status !== 'draft') return <p className="mt-3 text-sm text-vt-green">{status === 'saved' ? `${label} saved to your account.` : `${label} draft dismissed.`}</p>;
     return <div className="mt-3 rounded border border-vt-border-strong p-3">
         <p className="mb-3 font-mono text-sm text-vt-primary">Review {label.toLowerCase()} draft</p>
         {action.type === 'create_project'
             ? <ProjectForm id={action.id} draft={action.draft} onSaved={() => setStatus('saved')} />
+            : action.type === 'plan_day' ? <DailyPlanner data={action.data} tasks={action.tasks} projects={action.projects} onSaved={() => setStatus('saved')} />
+            : action.type === 'split_task' ? <SplitTaskForm parentId={action.parentId} drafts={action.children} onSaved={() => setStatus('saved')} />
             : <TaskForm id={action.id} draft={action.draft} projects={action.projects} onSaved={() => setStatus('saved')} />}
         <button type="button" className="mt-3 text-sm text-vt-text-muted" onClick={() => setStatus('dismissed')}>Dismiss draft</button>
     </div>;

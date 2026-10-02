@@ -29,7 +29,7 @@ export async function listTasks(): Promise<Task[]> {
     const { data: auth, error: authError } = await supabase.auth.getUser();
     if (authError || !auth.user) throw new Error('Please sign in to view tasks.');
     const { data, error } = await supabase.from('tasks')
-        .select('id, user_id, title, description, status, priority, due_date, project_id, created_at, updated_at')
+        .select('id, user_id, title, description, status, priority, due_date, project_id, estimated_minutes, parent_id, archived_at, created_at, updated_at')
         .eq('user_id', auth.user.id).order('created_at', { ascending: false });
     if (error) {
         console.error('Task query failed.', { code: error.code, message: error.message });
@@ -39,6 +39,7 @@ export async function listTasks(): Promise<Task[]> {
         id: row.id, userId: row.user_id, title: row.title, description: row.description,
         status: row.status, priority: row.priority, dueDate: row.due_date,
         projectId: row.project_id,
+        estimatedMinutes: row.estimated_minutes, parentId: row.parent_id, archivedAt: row.archived_at,
         createdAt: row.created_at, updatedAt: row.updated_at,
     }));
 }

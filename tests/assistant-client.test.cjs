@@ -24,6 +24,8 @@ function harness(windowValue) {
         '@/features/profile/hooks/use-current-user': { useCurrentUser: () => ({ displayName: 'User' }) },
         '@/features/tasks/components/task-form': { TaskForm: () => null },
         '@/features/projects/components/project-form': { ProjectForm: () => null },
+        '@/features/planning/components/daily-planner': { DailyPlanner: () => null },
+        '@/features/planning/components/split-task-form': { SplitTaskForm: () => null },
     });
     const previousWindow = global.window;
     global.window = windowValue;

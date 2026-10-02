@@ -37,6 +37,8 @@ for (const page of ['src/app/(app)/dashboard/page.tsx', 'src/app/(app)/dashboard
             '@/features/dashboard/components/dashboard-overview': { DashboardOverview: () => null },
             '@/features/tasks/components/tasks-view': { TasksView: () => null },
             '@/features/projects/server/queries': { listProjects: async () => [] },
+            '@/features/planning/server/queries': { loadPlanningData: async () => ({ timezone: 'UTC', today: '2026-10-01', plans: [] }) },
+            '@/features/planning/components/daily-planner': { DailyPlanner: () => null },
         };
         const result = await load(page, dependencies).default();
         assert.equal(result.type, notice);
@@ -75,6 +77,9 @@ test('assistant handles task storage readiness ' + storageReady + ' without perf
         '@/features/tasks/validation': validation,
         '@/features/projects/server/queries': { listProjects: async () => [] },
         '@/features/projects/validation': load('src/features/projects/validation.ts'),
+        '@/features/planning/server/queries': { loadPlanningData: async () => ({ timezone: 'UTC', today: '2026-10-01', plans: [] }) },
+        '@/features/planning/logic': load('src/features/planning/logic.ts'),
+        '@/features/planning/validation': load('src/features/planning/validation.ts', { '@/features/tasks/validation': validation }),
     });
     const result = await chat.createAssistantChatResponse('Create a task to write a proposal');
     if (!storageReady) {

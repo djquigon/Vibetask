@@ -1,10 +1,10 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { editTask, removeTask, saveTask, setTaskStatus, setTaskProject } from './mutations';
+import { editTask, removeTask, saveTask, setTaskStatus, setTaskProject, setTaskArchived } from './mutations';
 import type { TaskActionState } from '../types';
 
 function draft(data: FormData) {
-    return { title: data.get('title'), description: data.get('description') ?? '', priority: data.get('priority'), dueDate: data.get('dueDate') || null, projectId: data.get('projectId') || null };
+    return { title: data.get('title'), description: data.get('description') ?? '', priority: data.get('priority'), dueDate: data.get('dueDate') || null, projectId: data.get('projectId') || null, estimatedMinutes: data.get('estimatedMinutes') };
 }
 function refresh() { revalidatePath('/dashboard', 'layout'); }
 
@@ -39,4 +39,9 @@ export async function deleteTask(id: string): Promise<TaskActionState> {
 export async function linkTaskToProject(id: string, projectId: string | null): Promise<TaskActionState> {
     try { await setTaskProject(id, projectId); refresh(); return { status: 'success', message: 'Task linked to project.' }; }
     catch (error) { return { status: 'error', message: error instanceof Error ? error.message : 'Unable to link task.' }; }
+}
+
+export async function archiveTask(id: string, archived: boolean): Promise<TaskActionState> {
+    try { await setTaskArchived(id, archived); refresh(); return { status: 'success', message: archived ? 'Task archived.' : 'Task restored.' }; }
+    catch (error) { return { status: 'error', message: error instanceof Error ? error.message : 'Unable to archive task.' }; }
 }
