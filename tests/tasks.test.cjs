@@ -37,6 +37,7 @@ for (const page of ['src/app/(app)/dashboard/page.tsx', 'src/app/(app)/dashboard
             '@/features/dashboard/components/dashboard-overview': { DashboardOverview: () => null },
             '@/features/tasks/components/tasks-view': { TasksView: () => null },
             '@/features/projects/server/queries': { listProjects: async () => [] },
+            '@/features/focus/server/queries': { loadFocusSessions: async () => ({ status: 'ready', sessions: [] }) },
         };
         const result = await load(page, dependencies).default();
         assert.equal(result.type, notice);

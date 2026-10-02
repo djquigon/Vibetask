@@ -15,7 +15,7 @@ Server-only keys must never use a NEXT_PUBLIC prefix. The publishable Supabase k
 
 ## Checks
 
-- `npm test`: request validation, authenticated provider access, quota failure behavior, migrations, account isolation, task/project persistence, connected calendar events, and assistant confirmations.
+- `npm test`: request validation, authenticated provider access, quota failure behavior, migrations, account isolation, task/project persistence, focus transitions and actual time, connected calendar events, and assistant confirmations.
 - `npm run lint`
 - `npm run build`
 
@@ -33,7 +33,13 @@ Authentication, profiles, private avatars, settings, themes, login streaks, and 
 
 The assistant receives an account-scoped snapshot of up to 50 recent tasks, task counts, and active projects with progress. It can propose one editable task or project draft per response, including task/project associations. Confirming uses the same validated persistence paths as manual capture; dismissing saves nothing. Stable IDs prevent duplicate saves on retries. It cannot update/delete existing records yet.
 
-Calendar views display active project timelines and task deadlines directly from their source records, with links back to their editing views. Changes refresh all affected views; there is no separate calendar copy to synchronize. Scheduled time blocks are not implemented yet. Notes, focus sessions, habits, and analytics remain placeholders and should extend this shared data model.
+Calendar views display active project timelines and task deadlines directly from their source records, with links back to their editing views. Changes refresh all affected views; there is no separate calendar copy to synchronize. Scheduled time blocks are not implemented yet. Notes, habits, and analytics remain placeholders and should extend this shared data model.
+
+Focus sessions start from the dashboard or any saved task. Work and break timers support durations of 1–180 minutes, with 25/5 minute Pomodoro defaults. One running or paused session is allowed per account. Timers survive reloads and navigation; open focus controls refresh account state every 15 seconds and when the window regains focus. Database row locking and version checks reject stale changes from another tab.
+
+Finish saves actual elapsed seconds, excluding paused time and capped at the chosen target. At zero, the timer stops accruing time and waits for Finish or Discard. Completing a focus session never completes its task or changes a deadline. Breaks and discarded sessions remain in history but do not count toward actual work. Task and project totals on the dashboard and editing views derive from completed work sessions; moving a task moves its time with it. Deleting a task preserves session history and account totals, with its source link removed. Session labels remain as history snapshots; source tasks remain the editable records.
+
+Focus storage is read-only through the Data API. Authenticated RPCs enforce ownership, session transitions, server timestamps, and idempotent starts/finishes; clients cannot write elapsed totals directly. Apply `20261001230406_focus_sessions.sql` after the earlier migrations before using focus. This checkout's daily workflow consists of capture and prioritized next tasks; a persistent daily plan, task estimates, and calendar work blocks are still future work. The assistant cannot start or change focus sessions.
 
 Apply migrations before deploying the updated endpoints. No hosted database changes happen automatically during the build.
 

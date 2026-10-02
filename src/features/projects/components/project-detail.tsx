@@ -8,8 +8,10 @@ import { changeProjectStatus } from '../server/actions';
 import { ProjectForm } from './project-form';
 import { TasksView } from '@/features/tasks/components/tasks-view';
 import { ProjectTaskLinker } from './project-task-linker';
+import type { FocusLoadResult } from '@/features/focus/types';
+import { actualSeconds, formatTime } from '@/features/focus/time';
 
-export function ProjectDetail({ project, projects, tasks }: { project: Project; projects: Project[]; tasks: Task[] }) {
+export function ProjectDetail({ project, projects, tasks, focus }: { project: Project; projects: Project[]; tasks: Task[]; focus: FocusLoadResult }) {
     const progress = projectProgress(project.id, tasks);
     const [pending, start] = useTransition();
     const [message, setMessage] = useState('');
@@ -25,6 +27,7 @@ export function ProjectDetail({ project, projects, tasks }: { project: Project; 
             </div>
             <p className="mt-3 whitespace-pre-wrap break-words text-sm text-vt-text-muted">{project.description}</p>
             <p className="mt-3 font-mono text-sm text-vt-primary">{progress.completed} / {progress.total} tasks complete · {progress.percent}%</p>
+            {focus.status === 'ready' ? <p className="mt-2 font-mono text-sm text-vt-green">Actual work {formatTime(actualSeconds(focus.sessions, tasks.filter((task) => task.projectId === project.id).map((task) => task.id)))} (minutes:seconds)</p> : null}
             <progress value={progress.completed} max={Math.max(progress.total, 1)} aria-label="Project progress" className="mt-2 h-2 w-full accent-vt-green" />
             {project.status === 'archived' ? <p className="mt-3 text-sm text-vt-text-muted">Archived projects are hidden from the dashboard and calendar. Their tasks stay available.</p> : null}
             {message ? <p role="status" className="mt-3 text-sm">{message}</p> : null}
@@ -34,6 +37,6 @@ export function ProjectDetail({ project, projects, tasks }: { project: Project; 
             <div className="mt-4"><ProjectForm draft={project} id={project.id} editing /></div>
         </details>
         <ProjectTaskLinker projectId={project.id} projects={projects} tasks={tasks} />
-        <TasksView tasks={tasks.filter((task) => task.projectId === project.id)} projects={projects} initialProjectId={project.id} embedded />
+        <TasksView tasks={tasks.filter((task) => task.projectId === project.id)} projects={projects} initialProjectId={project.id} embedded focus={focus} />
     </div>;
 }
