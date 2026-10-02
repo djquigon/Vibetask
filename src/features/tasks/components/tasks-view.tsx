@@ -3,13 +3,15 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import type { ProjectOption } from '@/features/projects/types';
 import type { Task, TaskStatus } from '../types';
-import { changeTaskStatus, deleteTask } from '../server/actions';
+import { archiveTask, changeTaskStatus, deleteTask } from '../server/actions';
 import { TaskForm } from './task-form';
 import { SplitTaskForm } from '@/features/planning/components/split-task-form';
 import { taskEstimate } from '@/features/planning/logic';
-import { archiveTask } from '../server/actions';
+import type { FocusLoadResult } from '@/features/focus/types';
+import { actualSeconds, formatTime } from '@/features/focus/time';
+import { FocusLoadNotice } from '@/features/focus/components/focus-load-notice';
 
-export function TasksView({ tasks, projects = [], initialProjectId = null, embedded = false }: { tasks: Task[]; projects?: ProjectOption[]; initialProjectId?: string | null; embedded?: boolean }) {
+export function TasksView({ tasks, projects = [], initialProjectId = null, embedded = false, focus }: { tasks: Task[]; projects?: ProjectOption[]; initialProjectId?: string | null; embedded?: boolean; focus?: FocusLoadResult }) {
     const [filter, setFilter] = useState<TaskStatus | 'all'>('all');
     const [projectFilter, setProjectFilter] = useState(initialProjectId ?? 'all');
     const [showArchived, setShowArchived] = useState(false);
@@ -19,6 +21,7 @@ export function TasksView({ tasks, projects = [], initialProjectId = null, embed
     return (
         <div className="space-y-5">
             {embedded ? <h2 className="font-mono text-xl font-black uppercase text-vt-primary">Project tasks</h2> : <h1 className="font-mono text-2xl font-black uppercase text-vt-primary">Tasks</h1>}
+            {focus?.status === 'unavailable' ? <FocusLoadNotice setupRequired={focus.setupRequired} /> : null}
             <section className="rounded border border-vt-border bg-vt-surface p-4">
                 <h2 className="mb-3 font-mono text-lg text-vt-primary">Quick capture</h2>
                 <TaskForm key={projectFilter} projects={projects} defaultProjectId={projectFilter === 'all' || projectFilter === 'none' ? null : projectFilter} />
@@ -36,13 +39,13 @@ export function TasksView({ tasks, projects = [], initialProjectId = null, embed
                 </select>
             </label> : null}
             <div className="space-y-3">
-                {filtered.length === 0 ? <p className="text-vt-text-muted">No tasks here yet. Capture one above or ask the assistant to draft one.</p> : filtered.map((task) => <TaskRow key={task.id} task={task} projects={projects} tasks={tasks} />)}
+                {filtered.length === 0 ? <p className="text-vt-text-muted">No tasks here yet. Capture one above or ask the assistant to draft one.</p> : filtered.map((task) => <TaskRow key={task.id} task={task} projects={projects} tasks={tasks} actual={focus?.status === 'ready' ? actualSeconds(focus.sessions, [task.id]) : undefined} />)}
             </div>
         </div>
     );
 }
 
-function TaskRow({ task, projects, tasks }: { task: Task; projects: ProjectOption[]; tasks: Task[] }) {
+function TaskRow({ task, projects, tasks, actual }: { task: Task; projects: ProjectOption[]; tasks: Task[]; actual?: number }) {
     const [pending, start] = useTransition();
     const [error, setError] = useState('');
     const [editing, setEditing] = useState(false);
@@ -74,6 +77,10 @@ function TaskRow({ task, projects, tasks }: { task: Task; projects: ProjectOptio
             {!task.parentId && !task.archivedAt ? <button type="button" className="mt-2 text-sm text-vt-green" onClick={() => setSplitting(!splitting)}>{splitting ? 'Cancel subtasks' : children.length ? 'Add subtasks' : 'Split into subtasks'}</button> : null}
             {splitting ? <SplitTaskForm parentId={task.id} onSaved={() => setSplitting(false)} /> : null}
             {task.dueDate ? <p className="mt-2 font-mono text-xs text-vt-primary">Due {task.dueDate}</p> : null}
+            <div className="mt-2 flex flex-wrap gap-3 text-xs">
+                {actual !== undefined ? <span className="font-mono text-vt-primary">Actual work {formatTime(actual)} (minutes:seconds)</span> : null}
+                <Link href={'/dashboard/focus?task=' + task.id} className="text-vt-green">Start focus</Link>
+            </div>
             {task.projectId ? <Link href={'/dashboard/projects/' + task.projectId} className="mt-2 block text-xs text-vt-green">Project: {projects.find((project) => project.id === task.projectId)?.name ?? 'View project'}</Link> : null}
             {editing ? <div className="mt-4"><TaskForm id={task.id} draft={task} projects={projects} editing estimateDerived={children.length > 0} inheritedProject={Boolean(task.parentId)} onSaved={() => setEditing(false)} /></div> : null}
             {confirmDelete ? <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">

@@ -15,7 +15,7 @@ Server-only keys must never use a NEXT_PUBLIC prefix. The publishable Supabase k
 
 ## Checks
 
-- `npm test`: request validation, authenticated provider access, quota failure behavior, migrations, account isolation, task/project persistence, connected calendar events, and assistant confirmations.
+- `npm test`: request validation, authenticated provider access, quota failure behavior, migrations, account isolation, task/project persistence, focus transitions and actual time, connected calendar events, and assistant confirmations.
 - `npm run lint`
 - `npm run build`
 
@@ -35,9 +35,15 @@ The dashboard and Daily plan view support a fresh daily time budget, estimates, 
 
 Choose a timezone in Daily plan before planning your day; the initial default is UTC. Existing plans retain their saved timezone. Work blocks use that timezone, while calendar times display in your device timezone. The planner loads the 90 most recent saved plans; older history remains stored.
 
-The assistant receives account-scoped task, project, and planning context. It proposes editable tasks, projects, daily plans with optional scheduling, and actionable task splits. Nothing is saved until confirmed through the same validated persistence paths as manual actions. Stable task/subtask IDs make creation retries idempotent; plans use revision checks.
+The assistant receives account-scoped task, project, and planning context. It proposes editable tasks, projects, daily plans with optional scheduling, and actionable task splits. Nothing is saved until confirmed through the same validated persistence paths as manual actions. Stable task/subtask IDs make creation retries idempotent; plans use revision checks. The assistant cannot start or change focus sessions.
 
-Calendar displays project timelines, task deadlines, and daily-plan work blocks linked to their source records. Notes, focus sessions, habits, milestones, analytics, XP progression, and the command palette remain future work.
+Calendar displays project timelines, task deadlines, and daily-plan work blocks linked to their source records, with links back to their editing views. Changes refresh all affected views; there is no separate calendar copy to synchronize.
+
+Focus sessions start from the dashboard or any saved task. Work and break timers support durations of 1–180 minutes, with 25/5 minute Pomodoro defaults. One running or paused session is allowed per account. Timers survive reloads and navigation; open focus controls refresh account state every 15 seconds and when the window regains focus. Database row locking and version checks reject stale changes from another tab.
+
+Finish saves actual elapsed seconds, excluding paused time and capped at the chosen target. At zero, the timer stops accruing time and waits for Finish or Discard. Completing a focus session never completes its task or changes a deadline. Breaks and discarded sessions remain in history but do not count toward actual work. Task and project totals on the dashboard and editing views derive from completed work sessions; moving a task moves its time with it. Deleting a task preserves session history and account totals, with its source link removed. Session labels remain as history snapshots; source tasks remain the editable records.
+
+Focus storage is read-only through the Data API. Authenticated RPCs enforce ownership, session transitions, server timestamps, and idempotent starts/finishes; clients cannot write elapsed totals directly. Apply `20261001230406_focus_sessions.sql` after the earlier migrations before using focus. Notes, habits, milestones, analytics, XP progression, and the command palette remain future work.
 
 Apply migrations before deploying the updated endpoints. No hosted database changes happen automatically during the build.
 

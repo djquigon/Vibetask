@@ -39,6 +39,7 @@ for (const page of ['src/app/(app)/dashboard/page.tsx', 'src/app/(app)/dashboard
             '@/features/projects/server/queries': { listProjects: async () => [] },
             '@/features/planning/server/queries': { loadPlanningData: async () => ({ timezone: 'UTC', today: '2026-10-01', plans: [] }) },
             '@/features/planning/components/daily-planner': { DailyPlanner: () => null },
+            '@/features/focus/server/queries': { loadFocusSessions: async () => ({ status: 'ready', sessions: [] }) },
         };
         const result = await load(page, dependencies).default();
         assert.equal(result.type, notice);

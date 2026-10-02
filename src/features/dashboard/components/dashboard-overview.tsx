@@ -5,8 +5,12 @@ import type { Task } from '@/features/tasks/types';
 import { TaskForm } from '@/features/tasks/components/task-form';
 import type { Project } from '@/features/projects/types';
 import { projectProgress } from '@/features/projects/progress';
+import type { FocusLoadResult } from '@/features/focus/types';
+import { actualSeconds, formatTime } from '@/features/focus/time';
+import { FocusConsole } from '@/features/focus/components/focus-console';
+import { FocusLoadNotice } from '@/features/focus/components/focus-load-notice';
 
-export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects: Project[] }) {
+export function DashboardOverview({ tasks, projects, focus }: { tasks: Task[]; projects: Project[]; focus: FocusLoadResult }) {
     const currentUser = useCurrentUser();
     const topLevel = tasks.filter((task) => !task.parentId && !task.archivedAt);
     const done = topLevel.filter((task) => task.status === 'done').length;
@@ -17,7 +21,7 @@ export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects
         <div className="space-y-4">
             <section className="rounded border border-vt-border-strong bg-vt-display p-4 text-vt-ink">
                 <h1 className="break-words font-mono text-3xl font-black uppercase">Welcome, {currentUser?.displayName || 'Vibetask user'}</h1>
-                <p className="mt-2 font-mono text-sm">Your tasks, your next steps.</p>
+                <p className="mt-2 font-mono text-sm">Choose your next task, then start a focused work session.</p>
             </section>
             <section className="grid gap-3 sm:grid-cols-3">
                 {[['Open tasks', active.length], ['Completed', done], ['Completion', topLevel.length ? Math.round(done / topLevel.length * 100) + '%' : '0%']].map(([title, value]) => (
@@ -27,6 +31,10 @@ export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects
                     </div>
                 ))}
             </section>
+            {focus.status === 'ready' ? <>
+                <p className="font-mono text-sm text-vt-green">Actual work: {formatTime(actualSeconds(focus.sessions))} minutes:seconds recorded · <Link href="/dashboard/focus">Review focus history</Link></p>
+                <FocusConsole tasks={tasks} sessions={focus.sessions} />
+            </> : <FocusLoadNotice setupRequired={focus.setupRequired} />}
             <section className="rounded border border-vt-border bg-vt-surface p-4">
                 <h2 className="mb-3 font-mono text-lg font-bold uppercase text-vt-primary">Quick capture</h2>
                 <TaskForm projects={projects} />
@@ -41,7 +49,7 @@ export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects
                         const progress = projectProgress(project.id, tasks);
                         return <li key={project.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm">
                             <Link href={'/dashboard/projects/' + project.id} className="break-words font-bold">{project.name}</Link>
-                            <span className="font-mono text-vt-primary">{progress.completed}/{progress.total} complete · {progress.percent}%</span>
+                            <span className="font-mono text-vt-primary">{progress.completed}/{progress.total} complete · {progress.percent}%{focus.status === 'ready' ? ' · Actual ' + formatTime(actualSeconds(focus.sessions, tasks.filter((task) => task.projectId === project.id).map((task) => task.id))) : ''}</span>
                         </li>;
                     })}
                 </ul>}
@@ -56,6 +64,7 @@ export function DashboardOverview({ tasks, projects }: { tasks: Task[]; projects
                         {active.slice(0, 6).map((task) => <li key={task.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm">
                             <Link href="/dashboard/tasks" className="break-words font-bold">{task.title}</Link>
                             <span className="font-mono text-vt-primary">{task.priority} · {task.dueDate ?? 'No due date'}</span>
+                            <Link href={'/dashboard/focus?task=' + task.id} className="text-vt-green">Focus on task</Link>
                         </li>)}
                     </ul>
                 )}
